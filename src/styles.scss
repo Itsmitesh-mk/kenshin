@@ -765,9 +765,9 @@ a, button
             .cs-left
             {
                 width: 100%;
+                transition: 0.5s padding linear;
                 transition: width 0.5s linear;
                 padding-left: 150px;
-                transition: 0.5s padding linear;
                 
                 
                 .head

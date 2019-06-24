@@ -21,10 +21,18 @@ export class LoginComponent implements OnInit {
 
 constructor(public service: ConstantService, public ses:sessionStorage, private router: Router,private route: ActivatedRoute, public dialog:DialogComponent) { }
  ngOnInit(){
+   this.setAnimation()
 
 
  }
 
+ active:any;
+ setAnimation()
+ {
+  setTimeout(() => {
+    this.active=true;
+  }, 3500);
+ }
   login() {
 
     this.loading = true;
