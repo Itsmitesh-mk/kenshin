@@ -1,0 +1,119 @@
+<div class="main-container">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <img src="assets/img/holiday.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Leaves & Holidays</h2>
+        <p>Add New Leave Rule & Holiday</p>
+      </div>
+    </div>
+  </div>
+  <div class="container-outer">
+  <!-- <app-master-tab></app-master-tab> -->
+  <!-- <div class="container tab-container" > -->
+    <div class="row">
+      <form name="form" (ngSubmit)="f.form.valid && onSubmit()"  #f="ngForm" novalidate>
+      <div class="col s12">
+        <div class="sprate-box pt0">
+          <div class="cs-heading">
+            <h2>ADD LEAVES & HOLIDAYS</h2>
+            <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+          </div>
+          <div class="row">
+            <div class="col s12 padding0">
+              <div class="tabs mt15">
+                <ul>
+                  <li><a routerLink="/add-leave-rules/0" routerLinkActive="active">LEAVES RULES</a></li>
+                  <li><a routerLink="/add-holiday" routerLinkActive="active">HOLIDAYS</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col s12">
+              <div class="select-one">
+                <mat-radio-group  name="type" [(ngModel)]="holiday_form.type"  #type="ngModel" [ngClass]="{ 'is-invalid': f.submitted && type.invalid }" required>
+                  <mat-radio-button value="1" >National</mat-radio-button>
+                  <mat-radio-button value="2" >Regional</mat-radio-button>
+                  <mat-error *ngIf="f.submitted && type.invalid" class="invalid-feedback">
+                    <mat-error *ngIf="type.errors.required">Type is required</mat-error>
+                  </mat-error>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+          
+
+          <div class="from-fields">
+            <div class="row">
+
+              <div class="col s6 pl0">
+                <div class="control-field">
+                    <mat-form-field class="cs-input">
+
+                        <input matInput [matDatepicker]="picker" placeholder="Choose a date" name="date" [(ngModel)]="holiday_form.date"  #date="ngModel" [ngClass]="{ 'is-invalid': f.submitted && date.invalid }" readonly required>
+
+                        <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+
+                      </mat-form-field>
+
+                      <mat-error *ngIf="f.submitted && date.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="date.errors.required">Date is required</mat-error>
+                      </mat-error>
+
+                </div>
+              </div>
+              
+              <div class="col s6 pr0">
+                <div class="control-field">
+                  <mat-form-field class="cs-input">
+                    <input matInput placeholder="Holiday Title" name="title" [(ngModel)]="holiday_form.title"  #title="ngModel" [ngClass]="{ 'is-invalid': f.submitted && title.invalid }" required>
+                  </mat-form-field>
+                  <mat-error *ngIf="f.submitted && title.invalid" class="invalid-feedback">
+                    <mat-error *ngIf="title.errors.required">Holiday Title is required</mat-error>
+                  </mat-error>
+                </div>
+              </div>
+
+                 <div class="col s6 pl0">
+                  <div class="control-field"  *ngIf="holiday_form.type=='2'">
+                  <mat-form-field class="cs-input">
+                      <mat-select placeholder="State"  name="states" [(ngModel)]="holiday_form.states" #states="ngModel" [ngClass]="{ 'is-invalid': f.submitted && states.invalid }" multiple  required >
+                        <mat-option *ngFor="let states of statedata" [value]="states">{{states}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-error *ngIf="f.submitted && states.invalid" class="invalid-feedback">
+                      <mat-error *ngIf="states.errors.required">state Title is required</mat-error>
+                    </mat-error>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <div class="row">
+              <div class="col s12 padding0">
+                <div class="cs-btn fixedd mt30 text-right">
+                  <div class="in-btn">
+                    <button mat-raised-button color="accent">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+      </div>
+      </form>
+    </div>
+  <!-- </div> -->
+  </div>
+</div>
+
+<div class="h50"></div>

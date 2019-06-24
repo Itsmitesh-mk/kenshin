@@ -1,0 +1,266 @@
+<div class="main-container" >
+
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+
+  <div class="middle-container pb15">
+    <div class="page-heading">
+      <img src="assets/img/allowance .svg" class="h-icon h26">
+      <div class="heading-text">
+        <h2>Allowance </h2>
+      </div>
+    </div>
+
+    <div class="left-auto">
+        <div class="cs-btn fixedd text-right">
+            <div class="in-btn" (click)="saveAllowance()">
+              <button mat-raised-button color="accent" >Update</button>
+            </div>
+          </div>
+    </div>
+  </div>
+  
+  <div class="container-outer pt0">
+    <div class="container" >
+
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table">
+            
+            <div class="flat-table">
+              <table>
+                <tr>
+                  <th class="padding0 w200 text-left"><p>Role</p></th>
+                  <th class="padding0 w950"><p>Travel Entitlement</p>
+                    <table class="multi-table">
+                      <tr>
+                        <th class="w100 padding0"><p>Flight</p>
+                          <table class="multi-table">
+                            <th><p>Economy Class (Air)</p></th>
+                          </table>
+                        </th>
+                        <th class="w400 padding0"><p>Train</p>
+                          <table class="multi-table">
+                            <tr>
+                              <th class="w200"><p>Train (Executive Chair car, 2nd tier AC sleeper, 1st Class)</p></th>
+                              <th class="w100"><p>Train (III tier AC)</p></th>
+                              <th class="w100"><p>Train (III tier sleeper)</p></th>
+                            </tr>
+                          </table>
+                        </th>
+                        <th class="w200 padding0"><p>Buses</p>
+                          <table class="multi-table">
+                            <tr>
+                              <th class="w100"><p>AC Buses</p></th>
+                              <th class="w100"><p>Non - AC Buses</p></th>
+                            </tr>
+                          </table>
+                        </th>
+                        <th class="w250 padding0"><p>Taxi</p>
+                          <table class="multi-table">
+                            <tr>
+                              <th class="w125"><p>Private Taxi/ OLA /UBER #</p></th>
+                              <th class="w125"><p>Shared Taxi</p></th>
+                            </tr>
+                          </table>
+                        </th>
+                      </tr>
+                    </table>
+                  </th>
+                  <th class="w400 padding0"><p>Hotel</p>
+                    <table class="multi-table">
+                      <tr>
+                        <th class="w100 padding0"><p>A+</p>
+                          <table class="multi-table">
+                            <th><p><a (click)="openDialog()">City Detail</a></p></th>
+                          </table>
+                        </th>
+                        <th class="w100 padding0"><p>A</p>
+                          <table class="multi-table">
+                            <th><p><a (click)="openDialog()">City Detail</a></p></th>
+                          </table>
+                        </th>
+                        <th class="w100 padding0"><p>B</p>
+                          <table class="multi-table">
+                            <th><p><a (click)="openDialog()">City Detail</a></p></th>
+                          </table>
+                        </th>
+                        <th class="w100 padding0"><p>C</p>
+                          <table class="multi-table">
+                            <th><p><a (click)="openDialog()">City Detail</a></p></th>
+                          </table>
+                        </th>
+                      </tr>
+                    </table>
+                  </th>
+                  <th class="w400 padding0"><p>Food Expense</p>
+                    <table class="multi-table">
+                      <tr>
+                        <th class="w100 padding0"><p>A+</p>
+                          <table class="multi-table">
+                            <th><p><a (click)="openDialog()">City Detail</a></p></th>
+                          </table>
+                        </th>
+                        <th class="w100 padding0"><p>A</p>
+                          <table class="multi-table">
+                            <th><p><a (click)="openDialog()">City Detail</a></p></th>
+                          </table>
+                        </th>
+                        <th class="w100 padding0"><p>B</p>
+                          <table class="multi-table">
+                            <th><p><a (click)="openDialog()">City Detail</a></p></th>
+                          </table>
+                        </th>
+                        <th class="w100 padding0"><p>C</p>
+                          <table class="multi-table">
+                            <th><p><a (click)="openDialog()">City Detail</a></p></th>
+                          </table>
+                        </th>
+                      </tr>
+                    </table>
+                  </th>
+                  <th class="padding0 w500"><p>Local Conveyance</p>
+                    <table class="multi-table">
+                      <tr>
+                        <th class="w100 padding0"><p>A/c Taxi</p>
+                        </th>
+                        <th class="w100 padding0"><p>Non A/c Taxi</p>
+                        </th>
+                        <th class="w100 padding0"><p>Auto</p>
+                        </th>
+                        <th class="w100 padding0"><p>Bus</p>
+                        </th>
+                        <th class="w100 padding0"><p>Two Wheeler</p>
+                        </th>
+                      </tr>
+                    </table>
+                  </th>
+                  <th class="padding0 w200"><p>Self</p>
+                    <table class="multi-table">
+                      <tr>
+                        <th class="w100 padding0"><p>Car/km</p>
+                        </th>
+                        <th class="w100 padding0"><p>Bike/km</p>
+                        </th>
+                      </tr>
+                    </table>
+                  </th>
+                </tr>
+
+                <tr *ngFor="let list of designationArr; let index = index">
+                  <td>{{list.designationName}}</td>
+                  <td class="padding0 text-center">
+                    <table class="multi-table">
+                      <tr>
+                        <td class="w100 padding0">
+                          <table class="multi-table">
+                            <td><mat-checkbox [(ngModel)]="list.flightEconomyClass" name="flightEconomyClass{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+                          </table>
+                        </td>
+                        <td class="w400 padding0">
+                          <table class="multi-table">
+                            <tr>
+                              <td class="w200"><mat-checkbox [(ngModel)]="list.travelTrain2A" name="travelTrain2A{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+                              <td class="w100"><mat-checkbox [(ngModel)]="list.travelTrain3A" name="travelTrain3A{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+                              <td class="w100"><mat-checkbox [(ngModel)]="list.travelTrainSL" name="travelTrainSL{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td class="w200 padding0">
+                          <table class="multi-table">
+                            <tr>
+                              <td class="w100"><mat-checkbox [(ngModel)]="list.travelBusAC" name="travelBusAC{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+                              <td class="w100"><mat-checkbox [(ngModel)]="list.travelBusNonAC" name="travelBusNonAC{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td class="w250 padding0">
+                          <table class="multi-table">
+                            <tr>
+                              <td class="w125"><mat-checkbox [(ngModel)]="list.travelTaxiPrivate" name="travelTaxiPrivate{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+                              <td class="w125"><mat-checkbox [(ngModel)]="list.travelTaxiShared" name="travelTaxiShared{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  
+                  <td class="padding0">
+                    <table class="multi-table">
+                      <tr>
+                        <td class="w100">
+                          <input type="text" [(ngModel)]="list.lodgingAllowanceAPlus" name="lodgingAllowanceAPlus{{index}}" class="simple-input">
+                        </td>
+                        <td class="w100">
+                          <input type="text" [(ngModel)]="list.lodgingAllowanceA" name="lodgingAllowanceA{{index}}" class="simple-input">
+                        </td>
+                        <td class="w100">
+                          <input type="text" [(ngModel)]="list.lodgingAllowanceB" name="lodgingAllowanceB{{index}}" class="simple-input">
+                        </td>
+                        <td class="w100">
+                          <input type="text" [(ngModel)]="list.lodgingAllowanceC" name="lodgingAllowanceC{{index}}" class="simple-input">
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td class="padding0">
+                    <table class="multi-table">
+                      <tr>
+                        <td class="w100">
+                          <input type="text" [(ngModel)]="list.foodAllowanceAPlus" name="foodAllowanceAPlus{{index}}" class="simple-input">
+                        </td>
+                        <td class="w100">
+                          <input type="text" [(ngModel)]="list.foodAllowanceA" name="foodAllowanceA{{index}}" class="simple-input">
+                        </td>
+                        <td class="w100">
+                          <input type="text" [(ngModel)]="list.foodAllowanceB" name="foodAllowanceB{{index}}" class="simple-input">
+                        </td>
+                        <td class="w100">
+                          <input type="text" [(ngModel)]="list.foodAllowanceC" name="foodAllowanceC{{index}}" class="simple-input">
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td class="padding0 text-center">
+                    <table class="multi-table">
+                      <tr>
+                        <td><mat-checkbox [(ngModel)]="list.localTaxiAC" name="localTaxiAC{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+
+                        <td><mat-checkbox [(ngModel)]="list.localTaxiNonAC" name="localTaxiNonAC{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+
+                        <td><mat-checkbox [(ngModel)]="list.localAuto" name="localAuto{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+
+                        <td><mat-checkbox [(ngModel)]="list.localBus" name="localBus{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+
+                        <td><mat-checkbox [(ngModel)]="list.localTwoWheeler" name="localTwoWheeler{{index}}" color="accent">&nbsp;</mat-checkbox></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td class="padding0 text-center">
+                    <table class="multi-table">
+                      <tr>
+                        <td>
+                          <input type="text" [(ngModel)]="list.selfCarPerKM" name="selfCarPerKM{{index}}" class="simple-input">
+                        </td>
+                        <td>
+                          <input type="text" [(ngModel)]="list.selfBikePerKM" name="selfBikePerKM{{index}}" class="simple-input">
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="h50"></div>

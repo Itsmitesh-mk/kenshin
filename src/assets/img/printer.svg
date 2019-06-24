@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="510" height="459" viewBox="0 0 510 459">
+  <g id="printer-printing-document" transform="translate(0 -25.5)">
+    <g id="print">
+      <path id="Path_5" data-name="Path 5" d="M433.5,153H76.5C33.15,153,0,186.15,0,229.5v153H102v102H408v-102H510v-153C510,186.15,476.85,153,433.5,153ZM357,433.5H153V306H357ZM433.5,255c-15.3,0-25.5-10.2-25.5-25.5S418.2,204,433.5,204,459,214.2,459,229.5,448.8,255,433.5,255ZM408,25.5H102v102H408Z" fill="#158700"/>
+    </g>
+  </g>
+</svg>

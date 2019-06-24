@@ -1,0 +1,91 @@
+
+<div   *ngIf="system_data.type=='address'"  class="edit-modal">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div mat-dialog-content>
+  <p class="heading">Update Address</p>
+  <div class="from-fields">
+    <div class="col s12">          
+    <div class="row">
+      <div class="col s4 pl0">
+          <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select placeholder="State" name="state" [(ngModel)]="system_data.state" >
+                  <mat-option (click)="get_district()"  *ngFor="let state of statelist" value="{{state}}">{{state}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+      </div>
+      <div class="col s4 ">
+          <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select placeholder="District"   name="district" [(ngModel)]="system_data.district" >
+                  <mat-option (click)="get_city()"  *ngFor="let district of district1" value="{{district.districtName}}">{{district.districtName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+      </div>
+      <div class="col s4 pr0">
+          <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select placeholder="City"  name="city" [(ngModel)]="system_data.city" >
+                  <mat-option   *ngFor="let city of cities" value="{{city.cityName}}">{{city.cityName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+      </div>
+    </div>
+    
+    <div class="row mb20">
+      <div class="col s8 pl0">
+          <div class="control-field">
+              <mat-form-field class="cs-input" >
+                <textarea matInput placeholder="Address" name="street" [(ngModel)]="system_data.street" class="h45"></textarea>
+              </mat-form-field>
+            </div>
+      </div>
+      <div class="col s4 empty"></div>
+    </div>
+    </div>
+  </div>
+  </div>
+  <div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="update_salesuser()">Save</button>
+  </div>
+</div>
+  <!-- Email &&&& Mobile Dialog -->
+  <div *ngIf="data.type=='email' || data.type=='mobile'" class="edit-modal">
+      <form name="form" (ngSubmit)="f.form.valid && updateMobileEmail()"  #f="ngForm" novalidate>
+      <div *ngIf="loader"> 
+              <mat-spinner class="loader"></mat-spinner> 
+      </div>
+  <div *ngIf="data.type=='email'" mat-dialog-content>
+      <p class="heading">Update Email</p>
+      <mat-form-field class="example-full-width cs-field">
+         <!-- <input matInput placeholder="Email" value="email" [(ngModel)]="data.email"> -->
+         <input matInput placeholder="Email-ID" name="email" value="email" [(ngModel)]="data.email" #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+      </mat-form-field>
+      <div class="alert alert-danger" *ngIf="!email.valid && email.touched">
+          Please Enter Valid Email....
+        </div>
+  </div>
+  <div *ngIf="data.type=='mobile'" mat-dialog-content>
+       <p class="heading">Update Mobile</p>
+       <mat-form-field class="example-full-width cs-field">
+          <input matInput type="text"  maxlength="10" type=text  placeholder="Mobile" name="mobile"   value="mobile" [(ngModel)]="data.mobile" minlength="10" maxlength="10" min="0" #mobile="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mobile.invalid }" (keypress)="MobileNumber($event)" required>
+          <!-- <input matInput placeholder="Mobile" value="mobile" [(ngModel)]="data.mobile"> -->
+      </mat-form-field>
+      <div class="alert alert-danger" *ngIf="!mobile.valid && mobile.touched">
+        Please Enter Valid Mobile....
+    </div>
+  </div>
+  <div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-button>Save</button>
+  </div>
+ </form>
+  </div>

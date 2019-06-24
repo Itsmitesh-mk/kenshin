@@ -1,0 +1,30 @@
+<div class="edit-modal">
+    <form name="form" (ngSubmit)="f.form.valid && updateactivity()"  #f="ngForm" novalidate>
+        <div *ngIf="loader"> 
+            <div class="cs-loader">
+              <img src="assets/img/loader.png" class="rotate"> 
+            </div>
+          </div>
+  <mat-dialog-content class="mat-typography pl15 pr15" style="overflow-x: hidden !important;">
+      <p class="heading">Update Remark</p>
+      <div class="from-fields">
+        <div class="row">
+          <div class="col s12">
+            <div class="control-field">
+              <mat-form-field class="cs-input infix-bodr8">
+                <textarea matInput placeholder="Remark" name="remarkSecondary" #remarkSecondary="ngModel" [(ngModel)]="update_data.remarkSecondary" [ngClass]="{ 'is-invalid': f.submitted && remarkSecondary.invalid }" class="h170"></textarea>
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!remarkSecondary.valid && remarkSecondary.touched">
+                Please Enter Remark..
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+      <button mat-raised-button color="accent">Update</button>
+      <button mat-raised-button color="warn" [mat-dialog-close]="false">Close</button>
+  </mat-dialog-actions>
+</form>
+</div>

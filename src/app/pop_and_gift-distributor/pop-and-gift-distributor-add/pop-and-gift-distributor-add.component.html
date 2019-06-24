@@ -1,0 +1,125 @@
+<div class="main-container">
+  
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <img src="assets/img/gift.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Gift</h2>
+        <p>POP & Gift Order</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row" *ngIf="userType!=3"> 
+        <div class="sprate-box pt0">
+          <div class="cs-heading">
+            <h2>Select Distributor</h2>
+          </div>
+          <div class="col s6 from-fields">
+            <div class="control-field">
+              <mat-form-field class="cs-input infix-bodr8">
+                <mat-select placeholder="Distributor" name="networkId" [(ngModel)]="distributorId.networkId">
+                  <mat-option (click)="getNetworkRedeemPointData()" *ngFor="let distributor of distributorList" [value]="distributor.networkId">{{distributor.establishment}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div  *ngIf="distributorId.networkId" class="row">
+        <div class="col s8">
+          <div class="sprate-box pt0">
+            <div class="cs-heading">
+              <h2>POP & GIFT Order</h2>
+            </div>
+            
+            <div class="gift-secation">
+              <ul>
+                <li [ngClass]="{'add-cart': list.itemSelected}" *ngFor="let list of giftlist;let i=index">
+                  
+                  <img [hidden]="list.documents.length>0 && j!=0" src="{{api+doc.documentId+'/'+'1'}}" *ngFor="let doc of list.documents;let j=index">
+                  
+                  <img *ngIf="list.documents.length==0" src="assets/img/pp.png">
+                  
+                  <div class="tittle">
+                    {{list.name}}
+                  </div>
+                  <div class="dflex">
+                    <div class="value">
+                      <p>Points</p>
+                      <p>{{list.redeem}}</p>
+                    </div>
+                    <div class="add-qty">
+                      <input type="number" [(ngModel)]="list.qty" (keyup)="qtyChangeHandler(list.popId )" (keyup.enter)="addToCartHandler()">
+                    </div>
+                  </div>
+                </li>
+                
+              </ul>
+            </div>
+            
+            <div class="add-cart mt5">
+              <div class="cs-btn text-right">
+                <div class="in-btn">
+                  <button (click)="addToCartHandler()" [disabled]="walletBalance < 1" mat-raised-button color="accent">Add To Cart</button>
+                </div>
+              </div>
+              <div *ngIf="walletBalance < 1" class="has-error"> 
+                Your Have Not Enough Wallet Points....
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col s4 right-sticky">
+          <div class="sprate-box pt0">
+            <div class="cs-logs">
+              <div class="cs-heading">
+                <h2>Wallet Section</h2>
+              </div>
+              <div class="wallet-details">
+                <p>Total Wallet Points</p>
+                <span>{{walletBalance}}</span>
+              </div>
+              
+              <div class="wallet-procsess">
+                <ul>
+                  <li>
+                    <p>Total Item</p>
+                    <span>{{cartData.length}}</span>
+                  </li>
+                  <li>
+                    <p>Used Points</p>
+                    <span>{{totalPointsRedeemed ? totalPointsRedeemed : 0}}</span>
+                  </li>
+                  <li>
+                    <p>Available Points</p>
+                    <span>{{totalPointsRedeemed ? walletBalance - totalPointsRedeemed : walletBalance}}</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div *ngIf="this.cartData && this.cartData.length>0" class="add-cart mt5">
+                <a class="full-detail" mat-button (click)="openDialog()">View Details</a>
+              </div>
+              
+              <div class="add-cart mt5">
+                <div class="cs-btn text-right">
+                  <div class="in-btn">
+                    <button [disabled]="this.cartData.length==0" (click)="placeOrder();" mat-raised-button color="accent">Place Gift Order</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

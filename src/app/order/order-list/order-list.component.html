@@ -1,0 +1,189 @@
+<div class="main-container">
+  <div class="cs-loader" *ngIf="loader"> 
+    <img src="assets/img/loader.png" class="rotate">
+  </div>
+  
+  <div class="middle-container pb15">
+    <div class="page-heading">
+      <img src="assets/img/order_icon.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Order</h2>
+        <p>Total Order {{orderlist.length}}</p>
+        <!-- <div class="item-filter" >
+          <mat-form-field class="wp100">
+            <mat-select  name="travelPlanApprovel" #travelPlanApprovel="ngModel" [(ngModel)]="forApprovel">
+              <mat-option (click)="getTravelList(2)" value=1>My Travel Plan</mat-option>
+              <mat-option (click)="getTravelList(2)" value=2>Wating For Approvel</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div> -->
+      </div>
+    </div>
+    
+    
+    <div class="left-auto">
+      <div *ngIf="data.userName|| data.createdOn||data.companyName" class="filter-container left-auto">
+        <div (click)="clearfilter()" class="filter-btn">
+          <button mat-button >CLEAR FILTER</button>
+        </div>
+      </div>
+      <div class="tabs right-tab none-af">
+        <ul>
+          <li>
+            <a class="pr40 all" [ngClass]="{'tab-active':orderActive==true}" (click)="order_list(0,0)">All
+              <span class="counter">{{allOredrQty.length}}</span>
+            </a>
+          </li>
+          <li>
+            <a class="pr40 pending" [ngClass]="{'tab-active':pendingActive==true}" (click)="order_list(0,1)">PENDING
+              <span class="counter">{{pendingOrderQty.length}}</span>
+            </a>
+          </li>
+          <li>
+            <a class="pr40 approved" [ngClass]="{'tab-active':approvedActive==true}" (click)="order_list(3,2)">APPROVE
+              <span  class="counter">{{approvedOrderQty.length}}</span>
+            </a>
+          </li>
+          <li >
+            <a class="pr40 hold" [ngClass]="{'tab-active':holdActive==true}" (click)="order_list(0,3)">HOLD
+              <span class="counter">{{holdOrderQty.length}}</span>
+            </a>
+          </li>
+          <li>
+            <a class=" pr40 draft" [ngClass]="{'tab-active':cartActive==true}" (click)="order_list(1,0)">Draft
+              <span class="counter" >{{draftOrderQty.length}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- <div class="top-pagination m-right-data">
+      <ul>
+        <li class="refresh-area af-none">
+          <a class="refresh-btn" mat-raised-button  matTooltip="Refresh"><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+    </div> -->
+  </div>
+  
+  <div class="container-outer pt0">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table class="sno-border"> 
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th class="w150"> Date</th>
+                    <th *ngIf="userRole==1" class="w170">Created By</th>
+                    <th>Company Name</th>
+                    <th *ngIf="cartActive==false && pendingActive==false" class="w125"> Order No</th>
+                    <th class="w70 text-center">QTY.</th>
+                    <th class="w100 text-right">Amount</th>
+                    <th *ngIf="cartActive==false" class="w100"> Dist. Status</th>
+                    <th *ngIf="cartActive==false" class="w100"> Comp. Status</th>
+                  </tr>
+                </table>
+              </div>
+              <div class="table-head bdrt">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th class="w150">
+                      <div class="th-search padding0" >
+                        <mat-form-field class="wp100 toggle-date-picker">
+                          <input matInput (dateChange)="order_list(data.dealerStatus,data.companyStatus)" name="createdOn" [(ngModel)]="createdaDate" [matDatepicker]="picker" >
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker  #picker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th  *ngIf="userRole==1" class="w170">
+                      <div class="th-search">
+                        <input type="text" name="userName" [(ngModel)]="data.userName" (input)="order_list(data.dealerStatus,data.companyStatus)">
+                        <!-- <a class="close-mat" matRipple  matTooltip="Clear" (click)="removenamefilter()"></a> -->
+                      </div>
+                    </th>
+                    <th>
+                      <div class="th-search">
+                        <input type="text" placeholder="Search...." name="establishment" [(ngModel)]="data.companyName" (input)="order_list(data.dealerStatus,data.companyStatus)">  
+                        <!-- <a class="close-mat" matRipple  matTooltip="Clear" (click)="removenamefilter()"></a> -->
+                      </div>
+                    </th>
+                    <th *ngIf="cartActive==false&& pendingActive==false" class="w125">&nbsp;</th>
+                    <th class="w70">&nbsp;</th>
+                    <th class="w100">&nbsp;</th>
+                    <th *ngIf="cartActive==false" class="w100">&nbsp;</th>
+                    <th *ngIf="cartActive==false" class="w100">&nbsp;</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let order of finalOrderList; let index = index">
+                    <td class="w30">{{index+1}}</td>
+                    <td class="w150">{{order.createdOn |date :'EEEE, MMMM d, y'}}</td>
+                    <td *ngIf="userRole==1" class="w170">{{order.createdByName}}</td>
+                    <td><a class="link-btn" (click)="orderDetail(index)">{{order.establishment}}</a></td>
+                    <td *ngIf="cartActive==false && pendingActive==false" class="w125">{{order.orderNumber}}</td>
+                    <td class="w70 text-center">{{order.quantity}}</td>
+                    <td class="w100 text-right">{{order.amount | currency: 'INR':true}}</td>
+                    <td *ngIf="cartActive==false" [ngClass]="{'draft':order.dealerStatus==1,'pending':order.dealerStatus==2,'approved':order.dealerStatus==3}" class="w100">
+                      <span class="text-center" *ngIf="order.dealerStatus=='1'">Draft</span>
+                      <span class="text-center" *ngIf="order.dealerStatus=='2'">Pending</span>
+                      <span class="text-center" *ngIf="order.dealerStatus=='3'">Approve</span>
+                    </td>
+                    <td *ngIf="cartActive==false" [ngClass]="{'pending':order.companyStatus==1,'approved':order.companyStatus==2,'reject':order.companyStatus==3}" class="w100">
+                      <span class="text-center " *ngIf="order.companyStatus=='1'">Pending</span>
+                      <span class="text-center " *ngIf="order.companyStatus=='2'">Approve</span>
+                      <span class="text-center " *ngIf="order.companyStatus=='3'">Hold</span>
+                    </td>
+                    
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="data-not-available" *ngIf="div">
+      <div class="outer">
+        <div class="iinear">
+          <div class="figure" matRipple>
+            <div class="header">
+              <img src="assets/img/data-not-available-header.svg" alt="">
+            </div>
+            
+            <div class="description">
+              <!-- <div class="cs-heading">
+                <h2 *ngIf="cartActive=='active'">Nothing In Draft</h2>
+                <h2 *ngIf="orderActive=='active'">No Order List</h2>
+                
+              </div> -->
+              <div class="img">
+                <i class="material-icons">error_outline</i>
+              </div>
+              <div class="psc">
+                <p>data not available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fixed-multibtn-botm">
+    <ul>
+      <li><a  matTooltip="Add New" matRipple routerLink="/add-order" routerLinkActive="active"><i class="material-icons">add</i></a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="h50"></div>

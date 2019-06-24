@@ -1,0 +1,11 @@
+<div class="master-tab" >
+    <ul>
+      <li routerLink="/product-list" routerLinkActive="active"><a>Products</a></li>
+      <li *ngIf="userRole==1" routerLink="/sale-user-list" routerLinkActive="active"><a>Users</a></li>
+      <li *ngIf="userRole==1" routerLink="/territory-list" routerLinkActive="active"><a>Postal / Territory Master</a></li>
+      <li *ngIf="userRole!-3" routerLink="/gift-list" routerLinkActive="active"><a>POP & Gift</a></li>
+      <li *ngIf="userRole!=3" routerLink="/leave-rule-list" routerLinkActive="active"><a>Leaves & Holidays</a></li>
+      <li  *ngIf="userType!=3" routerLink="/annoucement-list" routerLinkActive="active"><a>Announcement</a></li>
+    </ul>
+  </div>
+  

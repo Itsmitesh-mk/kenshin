@@ -1,0 +1,51 @@
+
+<div class="edit-modal">
+  <div class="cs-loader" *ngIf="loader"> 
+          <img src="assets/img/loader.png" class="rotate">
+        </div>
+      
+<mat-dialog-content class="mat-typography pl15 pr15" style="overflow-x: hidden !important; position: relative;">
+<p class="heading">PRODUCT INFORMATION</p>
+<div class="col s12 padding0">
+  <div class="cs-table left-right-15">
+      <div class="table-head">
+          <table>
+              <tr>
+                  <th class="w180">Order Date</th>
+                  <th class="w100">Order QTY</th>
+                  <th class="w100">Order Amount</th>
+                  <th class="w130">Order Number</th>
+                  <th class="w110">Distributor Status</th>
+                  <th class="w110">Company Status</th>
+              </tr>
+          </table>
+      </div>
+      <div class="table-container pb0">
+          <div class="table-content">
+              <table>
+                  <tr *ngFor="let order of productList;let index=index">
+                      <td class="w180">{{order.createdOn |date :'EEEE, MMMM d, y'}}</td>
+                      <td class="w100">{{order.quantity}}</td>
+                      <td class="w100">{{order.amount}}</td>
+                      <td class="w130">---</td>
+                      <td class="w110" [ngClass]="{'pending':order.dealerStatus==2,'approved':order.dealerStatus==3}">
+                          <span class="text-center" *ngIf="order.dealerStatus==2">Pending</span>
+                          <span class="text-center" *ngIf="order.dealerStatus==3">Approved</span>
+                        </td>
+                        <td class="w110 "[ngClass]="{'pending':order.companyStatus==1,'approved':order.companyStatus==2,'reject':order.companyStatus==3}">
+                          <span class="text-center" *ngIf="order.companyStatus==1">Pending</span>
+                          <span class="text-center" *ngIf="order.companyStatus==2">Approved</span>
+                          <span class="text-center" *ngIf="order.companyStatus==3">Hold</span>
+                        </td>
+                    </tr>
+              </table>
+          </div>
+      </div>
+  </div>
+</div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+<button mat-raised-button [mat-dialog-close]="false" color="warn">Close</button>
+</mat-dialog-actions>
+</div>

@@ -1,0 +1,117 @@
+<div class="cs-loader" *ngIf="loader"> 
+    <img src="assets/img/loader.png" class="rotate">
+  </div>
+
+
+<div class="edit-modal">
+<mat-dialog-content >
+    <p class="heading">Other Address</p>
+  
+  <div class="from-fields">
+    <div class="row">
+      <div class="col s6">
+        <div class="control-field">
+          <mat-form-field class="cs-input">
+            <input matInput placeholder="Shop/Office No" name="office" id="office"  #office="ngModel" [(ngModel)]="networkShippings.office" required>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col s6">
+        <div class="control-field">
+          <mat-form-field class="cs-input">
+            <input matInput placeholder="Landline No" name="landline" id="landline" minlength="10" maxlength="13" (keypress)="MobileNumber($event)"  #landline="ngModel" [(ngModel)]="networkShippings.landline">
+          </mat-form-field>
+          <div *ngIf="landline.invalid && landline.touched">
+              <mat-error *ngIf="landline.length<10" >Minimum 10 Digits Required </mat-error>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        <div class="control-field">
+          <mat-form-field class="cs-input">
+            <input matInput placeholder="Mobile No*" name="mobile" id="mobile" minlength="10" maxlength="10" (keypress)="MobileNumber($event)" #mobile="ngModel" [(ngModel)]="networkShippings.mobile" required>
+          </mat-form-field>
+           <div *ngIf="mobile.invalid && mobile.touched">
+              <mat-error *ngIf="mobile.length!=10" >Minimum 10 Digits Required </mat-error>
+            </div>
+        </div>
+      </div>
+      <div class="col s6">
+        <div class="control-field">
+          <mat-form-field class="cs-input">
+            <input matInput placeholder="Fax No" name="fax" id="fax" (keypress)="MobileNumber($event)" maxlength="15"  #fax="ngModel" [(ngModel)]="networkShippings.fax">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col s6">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput placeholder="Email ID" id="email" name="email" #email="ngModel" [(ngModel)]="networkShippings.email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+            </mat-form-field>
+            <div class="alert alert-danger" *ngIf="!email.valid && email.touched">
+                Email Id is Not Valid...
+              </div>
+          </div>
+        </div>
+          <div class="col s6 pr0">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <textarea matInput placeholder="Street" name="street" [(ngModel)]="networkShippings.street" required></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+      </div>
+    <div class="row">
+      <div class="col s6 pl0">
+        <div class="control-field">
+          <mat-form-field class="cs-input">
+            <mat-select placeholder="State*" name="state" [(ngModel)]="networkShippings.state"  #state="ngModel">
+              <mat-option  (click)="getShippingDistrict(networkShippings.state)" *ngFor='let state of shippingState' value="{{state}}">{{state}}</mat-option>  
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      
+      <div class="col s6">
+        <div class="control-field">
+          <mat-form-field class="cs-input">
+            <mat-select placeholder="District*" name="district" [(ngModel)]="networkShippings.district"  #district="ngModel" >
+              <mat-option (click)="getShippingCity(networkShippings.state,networkShippings.district)"  value="{{district.districtName}}" *ngFor="let district of shippingDistrict">{{district.districtName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6 p10">
+        <div class="control-field">
+          <mat-form-field class="cs-input">
+            <mat-select placeholder="City*" name="city" [(ngModel)]="networkShippings.city" #city="ngModel" >
+              <mat-option (click)="getShippingPin(city.stateMasterId)" *ngFor="let city of shippingCity"  value="{{city.cityName}}">{{city.cityName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+   
+      <div class="col s6 pl0">
+        <div class="control-field">
+          <mat-form-field class="cs-input">
+            <mat-select placeholder="Pincode*"  name="pin" [(ngModel)]="networkShippings.pin"  #pin="ngModel" >
+              <mat-option *ngFor="let pin of shippingPin"  value="{{pin}}">{{pin}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+  <button mat-raised-button color="accent" [mat-dialog-close]="true" style="color: #fff;" cdkFocusInitial [disabled]="!networkShippings.office||!networkShippings.mobile||!networkShippings.email||!networkShippings.state||!networkShippings.district||!networkShippings.city||!networkShippings.pin||!networkShippings.street" (click)="saveAddress()">Save</button>
+</mat-dialog-actions>
+</div>

@@ -1,0 +1,363 @@
+<div class="main-container">
+  <div class="cs-loader" *ngIf="loader"> 
+      <img src="assets/img/loader.png" class="rotate">
+    </div>
+  
+<div class="middle-container">
+  <div class="page-heading">
+    <img src="assets/img/payment_icon.svg" class="h-icon">
+    <div class="heading-text">
+      <h2>Expense</h2>
+      <p>Add Expense</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="container-outer" >
+  <div class="container" >
+    <div class="row">
+      <div class="col s12">
+        <div class="sprate-box pt0 mb15">
+          <div class="cs-heading">
+            <h2>Promotion EXPENSE</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form (ngSubmit)="f2.form.valid && promotionexpense()" #f2="ngForm" novalidate>
+      <div class="cs-bill">
+        <div class="row">
+          <div class="col s12">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>BASIC INFORMATION</h2>
+              </div>
+              <div class="from-fields">
+                <div class="row">
+                  <div class="col s4 ">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="Purpose Of Visit" type="text" id="purposeOfVisit" name="purposeOfVisit" #purposeOfVisit="ngModel" [(ngModel)]="salesExpense.purposeOfVisit" [ngClass]="{'has-error' : purposeOfVisit.invalid }" required>
+                      </mat-form-field>
+                      <mat-error *ngIf="f2.submitted && purposeOfVisit.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="purposeOfVisit.errors.required">Purpose of Visit required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  <div class="col s4">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="ADVANCE AMOUNT" type="number" id="advanceAmount" name="advanceAmount" #advanceAmount="ngModel" [(ngModel)]="salesExpense.advanceAmount"  [ngClass]="{'has-error' : advanceAmount.invalid }" required>
+                        </mat-form-field>
+                        <mat-error *ngIf="f2.submitted && advanceAmount.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="advanceAmount.errors.required">Purpose Of Visit required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            
+            <div class="collaps flat-collaps mt15">
+              <div class="collaps-area">
+                <mat-accordion>
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header class="outer-panel form-collaps mb10">
+                      <mat-panel-title>
+                        SALES PERMOTION ACTIVITY
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="inner-body">
+                      <div class="from-fields"> 
+                        <div class="row">
+                          <div class="col s3 pl0">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input infix-bodr8">
+                                <mat-select placeholder="Sales Promotion" name="salesActivityType" #salesActivityType="ngModel" [(ngModel)]="promation_Expense.salesActivityType">
+                                  <mat-option value="1">Mechanic get together</mat-option>
+                                  <mat-option value="2">Retailer get together</mat-option>
+                                  <mat-option value="3">van Campaign</mat-option>
+                                  <mat-option value="4">Stall Campaign</mat-option>
+                                  <mat-option value="5">Exhibition Participation</mat-option>
+                                  <mat-option value="6">Signboard</mat-option>
+                                  <mat-option value="7">Wall/Shop Painting</mat-option>
+                                  <mat-option value="8">GiveAways</mat-option>
+                                  <mat-option value="9">Printing Of Lesafelts,banners, posters etc.</mat-option>
+                                  <!-- <mat-option value="10">Other</mat-option> -->
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div class="col s3">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input infix-bodr8">
+                                <input matInput [matDatepicker]="two" readonly [max]='currentDate' placeholder="Date" name="date" #date="ngModel" [(ngModel)]="promation_Expense.date">
+                                <mat-datepicker-toggle matSuffix [for]="two"></mat-datepicker-toggle>
+                                <mat-datepicker #two></mat-datepicker>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div class="col s3">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input infix-bodr8">
+                                <input matInput placeholder="Place Of Activity" name="placeOfActivity" #placeOfActivity="ngModel" [(ngModel)]="promation_Expense.placeOfActivity" >
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div class="col s3 pr0">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input infix-bodr8">
+                                <input matInput type="number" placeholder="No Of Attendees" name="noOfAttendees" #noOfAttendees="ngModel" [(ngModel)]="promation_Expense.noOfAttendees">
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="row">
+                          <div class="col s6 pl0">
+                            <div class="row">
+                              <div class="col s6 pl0">
+                                <div class="control-field">
+                                  <mat-form-field class="cs-input infix-bodr8">
+                                    <input matInput placeholder="Rental Expense" type="number" name="rentalExpenses" #rentalExpenses="ngModel" [(ngModel)]="promation_Expense.rentalExpenses">
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                              <div class="col s6 pr0">
+                                <div class="control-field">
+                                  <mat-form-field class="cs-input infix-bodr8">
+                                    <input matInput placeholder="Food Expense"  type="number" name="foodExpense" #foodExpense="ngModel" [(ngModel)]="promation_Expense.foodExpense">
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div class="row">
+                              <div class="col s6 pl0">
+                                <div class="control-field">
+                                  <mat-form-field class="cs-input infix-bodr8">
+                                    <input matInput placeholder="Av Aids Expense"  type="number" name="avAidsExpense" #avAidsExpense="ngModel" [(ngModel)]="promation_Expense.avAidsExpense">
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                              <div class="col s6 pr0">
+                                <div class="control-field">
+                                  <mat-form-field class="cs-input infix-bodr8">
+                                    <input matInput placeholder="Gift Expense"  type="number" name="giftsExpense" #giftsExpense="ngModel" [(ngModel)]="promation_Expense.giftsExpense">
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div class="row">
+                              <div class="col s6 ">
+                                <div class="control-field">
+                                  <mat-form-field class="cs-input infix-bodr8">
+                                    <input matInput placeholder="Misc Expense"  type="number" name="miscExpense" #miscExpense="ngModel" [(ngModel)]="promation_Expense.miscExpense">
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                              <div class="col s6 padding0">
+                                <div class="control-field">
+                                  <mat-form-field class="cs-input infix-bodr8">
+                                    <input matInput placeholder="Approved Amount"  type="number" name="approvedAmount" #approvedAmount="ngModel" [(ngModel)]="promation_Expense.approvedAmount">
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                          
+                          
+                          <div class="col s6 pr0">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input infix-bodr8">
+                                <textarea matInput placeholder="Remark" name="remarks" #remarks="ngModel" [(ngModel)]="promation_Expense.remarks" class="h165"></textarea>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col s12 mt15">
+                        <div class="cs-btn text-right">
+                          <div class="in-btn">
+                            <button mat-raised-button color="accent" (click)="addToPromationList()" type="button">Add To List</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </div>
+            </div>
+            
+            <div class="row mt15">
+              <div class="cs-table left-right-20">
+                <div class="table-head">
+                  <table> 
+                    <tr>
+                      <th class="w160">Date</th>
+                      <th>Sales Promotion</th>
+                      <th class="w90">Place of Activity</th>
+                      <th class="w80">No Of Attendees</th>
+                      <th class="w90 text-right">Rental Exp.</th>
+                      <th class="w90 text-right">Food Exp.</th>
+                      <th class="w90 text-right">Av-Aids Exp.</th>
+                      <th class="w80 text-right">Gift Exp.</th>
+                      <th class="w90 text-right">Misc Exp.</th>
+                      <th class="w90 text-right">Aprroved Amt</th>
+                      <th class="w80 text-right">Total</th>
+                      <th>Remark</th>
+                    </tr>
+                  </table>
+                </div>
+                
+                <div class="table-container">
+                  <div class="table-content">
+                    <table>
+                      <tr *ngFor=" let promation of SalesExpenseList;let i=index">
+                        <td class="w160"> {{promation.date |date:'EEEE, MMMM d, y'}}</td>
+                        <!-- <td>{{promation.salesActivityType}}</td> -->
+                        <td *ngIf="promation.salesActivityType==1">Mechanic get together</td>
+                        <td *ngIf="promation.salesActivityType==2"> Retailer get together</td>
+                        <td *ngIf="promation.salesActivityType==3">van Campaign</td>
+                        <td *ngIf="promation.salesActivityType==4">Stall Campaign</td>
+                        <td *ngIf="promation.salesActivityType==5">Exhibition Participation</td>
+                        <td *ngIf="promation.salesActivityType==6">Signboard</td>
+                        <td *ngIf="promation.salesActivityType==7">Wall/Shop Painting</td>
+                        <td *ngIf="promation.salesActivityType==8">GiveAways</td>
+                        <td *ngIf="promation.salesActivityType==9">Printing Of Lesafelts,banners, posters etc.</td>
+                        <td class="w90">{{promation.placeOfActivity}}</td>
+                        <td class="w80">{{promation.noOfAttendees}}</td>
+                        <td class="w90 text-right">&#x20B9; {{promation.rentalExpenses}}</td>
+                        <td class="w90 text-right">&#x20B9; {{promation.foodExpense}}</td>
+                        <td class="w90 text-right">&#x20B9; {{promation.avAidsExpense}}</td>
+                        <td class="w80 text-right"> &#x20B9; {{promation.giftsExpense}}</td>
+                        <td class="w90 text-right">&#x20B9; {{promation.miscExpense}}</td>
+                        <td class="w90 text-right">&#x20B9; {{promation.approvedAmount}}</td>
+                        <td class="w80 text-right"> &#x20B9; {{promation.total}}</td>
+                        <td> {{promation.remarks}}
+                          <div class="action-btns default-action" style="right: 3px;">
+                            <button  mat-button class="delete" (click)="removeExpense(i)"><i class="material-icons">delete_sweep</i></button>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt15">
+                <div class="col s12">
+                    <div class="cs-file-multiple scroll">
+                      <ul>
+                        <li class="w110 pr10" *ngFor="let urlData of SalesExpenseList.documents;let i=index">
+                          <label>
+                            <img src="{{api+urlData.documentId+'/'+'2'}}">
+                            <a (click)="deleteimg(urlData.documentId,urlData.fileName)" class="close"><i class="material-icons">delete_sweep</i></a>
+                          </label>
+                        </li>
+                        <li class="w110 pr10">
+                          <div class="cs-file wp100">
+                            <label>
+                              <input type="file" (change)="insertImage($event)" style="display:none;">
+                              <i class="material-icons add-file-icon" >add</i>
+                            </label>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+            </div>
+            <div class="row">
+              <div class="col s12">
+                <div class="sm-table">
+                  <table>
+                    <tr>
+                      <th class="text-right">Total Rental Exp.</th>
+                      <th class="w30 text-center">:</th>
+                      <td class="w100 text-right">&#x20B9; {{totalrentalExp}}</td>
+                    </tr>
+                    <tr>
+                      <th class="text-right">Total Food Exp.</th>
+                      <th class="text-center">:</th>
+                      <td class="text-right">&#x20B9; {{totalfoodExpense}}</td>
+                    </tr>
+                    <tr>
+                      <th class="text-right">Total AV Aids Exp.</th>
+                      <th class="w30 text-center">:</th>
+                      <td class="text-right">&#x20B9; {{totalavAidsExpense}}</td>
+                    </tr>
+                    <tr>
+                      <th class="text-right">Total Gifts Exp.</th>
+                      <th class="text-center">:</th>
+                      <td class="text-right">&#x20B9; {{totalgiftsExpense}}</td>
+                    </tr>
+                    <tr>
+                      <th class="text-right">Total Misc Exp.</th>
+                      <th class="text-center">:</th>
+                      <td class="text-right">&#x20B9; {{totalotherExpense}}</td>
+                    </tr>
+                    <tr>
+                      <th class="text-right">Total promational Exp.</th>
+                      <th class="text-center">:</th>
+                      <td class="text-right">&#x20B9; {{totalPromationalExp}}</td>
+                    </tr>
+                  </table>
+                  <!-- <table>
+                      <tr>
+                        <th class="text-right">Advance Amount </th>
+                        <th class="w30 text-center">:</th>
+                        <td class="w100 text-right">&#x20B9; {{advanceAmount}}</td>
+                      </tr>
+                      <tr>
+                        <th class="text-right">Claim Amount</th>
+                        <th class="text-center">:</th>
+                        <td class="text-right">&#x20B9; {{claimAmount}}</td>
+                      </tr>
+                      </table> -->
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row">
+              <div class="col s12 mt15 mb15">
+                <div class="cs-btn fixedd text-right">
+                  <div class="in-btn">
+                    <button mat-raised-button color="accent" (click)="promotionexpense(1)">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col s12 mt15 mb15">
+                  <div class="cs-btn fixedd text-right">
+                    <div class="in-btn">
+                      <button mat-raised-button color="accent" (click)= "promationExpense(2)">Save as Draft</button>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+              <div class="row">
+                <div class="col s12 mt15">
+                  <div class="cs-btn text-right">
+                    <div class="in-btn">
+                      <button mat-raised-button color="accent"(click)="salesExpense.status=1" >Save as Draft</button>
+                      <button mat-raised-button color="accent" (click)="salesExpense.status=2">Subbmit For Approvel</button>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <div class="h50"></div>

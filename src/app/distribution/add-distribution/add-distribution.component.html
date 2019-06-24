@@ -1,0 +1,735 @@
+<form #f="ngForm" (ngSubmit)="f.valid && p.valid && onSubmit()">
+  <div class="main-container" >
+    <div *ngIf="loader"> 
+      <div class="cs-loader">
+        <img src="assets/img/loader.png" class="rotate"> 
+      </div>
+    </div>
+    <div class="middle-container">
+      <div class="page-heading">
+        <img src="assets/img/distribution_icon.svg " class="h-icon">
+        <div class="heading-text">
+          <h2>Distribution network</h2>
+          <p>Add New Network</p>
+        </div>
+      </div>
+    </div>
+    <div class="container-outer">
+      <div class="container" >
+        <div class="row">
+          <div class="col s12">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>BASIC INFORMATION</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <div class="from-fields">
+                <div class="row">
+                  <div class="col s8 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="Company Name" id="establishment" #establishment="ngModel" name="establishment" #establishment="ngModel" [ngClass]="{'has-error' : establishment.invalid } " [(ngModel)]="distribution_form.establishment" required>
+                      </mat-form-field>
+                      
+                      
+                      <mat-error *ngIf="f.submitted && establishment.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="establishment.errors.required">Company Name is required</mat-error>
+                      </mat-error>
+                    </div>
+                    
+                  </div>
+                  <div class="col s4  pr0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="Distributor Code" id="networkCode"  name="distCode" #networkCode="ngModel" [ngClass]="{'has-error' : networkCode.invalid } " [(ngModel)]="distribution_form.networkCode" required>
+                      </mat-form-field>
+                      <mat-error *ngIf="f.submitted && networkCode.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="networkCode.errors.required">Distributor Code is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s4 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="GST No." #gst="ngModel" id="gst" name="gst" [(ngModel)]="distribution_form.gst"  minlength="15" maxlength="15" min="0" required>
+                      </mat-form-field>
+                      
+                      <mat-error *ngIf="gst.invalid && gst.touched" class="invalid-feedback">
+                        <mat-error >GST No. Must be 15 Digit</mat-error>
+                      </mat-error>
+                      
+                      <mat-error *ngIf="f.submitted && gst.invalid && !gst.touched" class="invalid-feedback">
+                        <mat-error *ngIf="gst.errors.required">GST No. is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  <div class="col s4 ">
+                    <div class="control-field"> 
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="Pan No." #pan="ngModel" id="pan" name="pan" [(ngModel)]="distribution_form.pan"  minlength="10" maxlength="10" min="0" required>
+                      </mat-form-field>
+                      
+                      <mat-error *ngIf="f.submitted && pan.invalid && pan.touched" class="invalid-feedback">
+                        <mat-error>Pan No. must be 10 digit!</mat-error>
+                      </mat-error>
+                      
+                      <mat-error *ngIf="f.submitted && pan.invalid && !pan.touched" class="invalid-feedback">
+                        <mat-error *ngIf="pan.errors.required">Pan No. is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  <div class="col s4 pr0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput [matDatepicker]="picker" placeholder="Date Of Commencement"   #date="ngModel" id="dateOfCommencement" #dateOfCommencement="ngModel" name="dateOfCommencement"  [(ngModel)]="distribution_form.dateOfCommencement" [max]="currentDate" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                      
+                      <!-- <div class="alert alert-danger" *ngIf="!dateOfCommencement.valid && dateOfCommencement.touched">
+                        Date Of Commencement is required
+                      </div>
+                      <mat-error *ngIf="f.submitted && dateOfCommencement.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="dateOfCommencement.errors.required">Date Of Commencement is required</mat-error>
+                      </mat-error> -->
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col s4 pl0">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <mat-select placeholder="Source" matNativeControl name="source" id="source" #source="ngModel" [(ngModel)]="distribution_form.source"  [ngClass]="{'has-error' : source.invalid }">
+                              <mat-option value="" disabled>Select Source</mat-option>
+                              <mat-option value="1">SOCIAL</mat-option>
+                              <mat-option value="5">CALL</mat-option>
+                              <mat-option value="2">DIRECT</mat-option>
+                              <mat-option value="3">WALK-IN</mat-option>
+                              <mat-option value="4">REFERRAL</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          
+                        </div>
+                      </div>
+
+                  </div>
+
+              </div>
+            </div>
+            
+            <div class="sprate-box pt0 mt15">
+              <div class="cs-heading">
+                <h2>Applicant INFORMATION</h2>
+              </div>
+              <div class="from-fields">
+                <div class="row">
+                  <div class="col s4 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="Name Of Applicant" id="nameOfApplicant" #nameOfApplicant="ngModel" name="nameOfApplicant"  [(ngModel)]="distribution_form.nameOfApplicant" required >
+                      </mat-form-field>
+                      
+                      
+                      <mat-error *ngIf="f.submitted && nameOfApplicant.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="nameOfApplicant.errors.required">Applicant Name is required</mat-error>
+                      </mat-error>
+                      
+                    </div>
+                  </div>
+                  <div class="col s4 ">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="Mobile" #mobile="ngModel" id="mobile" name="mobile" minlength="10" maxlength="10" min="0" (keypress)="MobileNumber($event)" [(ngModel)]="distribution_form.mobile" required>
+                      </mat-form-field>
+                      
+                      <mat-error *ngIf="f.submitted && mobile.invalid && mobile.touched" class="invalid-feedback">
+                        <mat-error >mobile must be 10 digit</mat-error>
+                      </mat-error>
+                      
+                      <mat-error *ngIf="f.submitted && mobile.invalid && !mobile.touched" class="invalid-feedback">
+                        <mat-error *ngIf="mobile.errors.required">mobile is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  <div class="col s4 pr0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="Email" #email="ngModel" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [(ngModel)]="distribution_form.email" required >
+                      </mat-form-field>
+                      
+                      <mat-error *ngIf="f.submitted && email.invalid && email.touched" class="invalid-feedback">
+                        <mat-error>Email is invalid</mat-error>
+                      </mat-error>
+                      
+                      <mat-error *ngIf="f.submitted && email.invalid && !email.touched" class="invalid-feedback">
+                        <mat-error *ngIf="email.errors.required">Email is required</mat-error>
+                      </mat-error>
+                      
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  
+                  <div class="col s4 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="Landline" #landline="ngModel" id="landline" name="landline" minlength="6" maxlength="13" min="0" (keypress)="MobileNumber($event)" [(ngModel)]="distribution_form.landline">
+                      </mat-form-field>
+                      
+                      <mat-error *ngIf="f.submitted && landline.invalid && landline.touched" class="invalid-feedback">
+                        <mat-error>Landline is must be atleast 6 digit</mat-error>
+                      </mat-error>
+                      
+                      <mat-error *ngIf="f.submitted && landline.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="landline.errors.required">Landline is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  <div class="col s4 ">
+                    <div class="control-field">
+                      <!-- <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput type="date" placeholder="Date Of Birth" id="dateOfBirth" #dateOfBirth="ngModel" name="dateOfBirth" min="0"  [(ngModel)]="distribution_form.dateOfBirth" >
+                      </mat-form-field> -->
+                      
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput [matDatepicker]="pickerone" placeholder="Date Of Birth"   #date="ngModel"id="dateOfBirth" #dateOfBirth="ngModel" name="dateOfBirth" min="0"  [(ngModel)]="distribution_form.dateOfBirth" [max]="currentDate" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="pickerone"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerone></mat-datepicker>
+                      </mat-form-field>
+                      <!-- <div class="alert alert-danger" *ngIf="!dateOfBirth.valid && dateOfBirth.touched">
+                        Date Of Birth is required
+                      </div>
+                      <mat-error *ngIf="f.submitted && dateOfBirth.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="dateOfBirth.errors.required">Date Of Birth is required</mat-error>
+                      </mat-error> -->
+                    </div>
+                  </div>
+                  <div class="col s4 pr0">
+                    <div class="control-field">
+                      <!-- <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput type="date" placeholder="Date Of Marriage" id="dateOfMarriage" #dateOfMarriage="ngModel" name="dateOfMarriage" [(ngModel)]="distribution_form.dateOfMarriage" >
+                      </mat-form-field> -->
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput [matDatepicker]="pickertwo" placeholder="Date Of Marriage"   #date="ngModel" id="dateOfMarriage" #dateOfMarriage="ngModel" name="dateOfMarriage" [(ngModel)]="distribution_form.dateOfMarriage" [max]="currentDate" >
+                        <mat-datepicker-toggle matSuffix [for]="pickertwo"></mat-datepicker-toggle>
+                        <mat-datepicker #pickertwo></mat-datepicker>
+                      </mat-form-field>
+                      
+                      <!-- <div class="alert alert-danger" *ngIf="!dateOfMarriage.valid && dateOfMarriage.touched">
+                        Date Of Marriage is required...
+                      </div>
+                      <mat-error *ngIf="f.submitted && dateOfMarriage.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="dateOfMarriage.errors.required">Date Of Marriage is required</mat-error>
+                      </mat-error> -->
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="sprate-box pt0 mt15" >
+              <div class="cs-heading">
+                <h2>Target INFORMATION</h2>
+              </div>
+              <div class="from-fields">
+                <div class="row">
+                  
+                  <div class="col s4 ">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <mat-select placeholder="Select year" name="financialYear" id="financialYear" [(ngModel)]="distribution_form.financialYear" #financialYear="ngModel" [ngClass]="{ 'is-invalid': f.submitted && financialYear.invalid }" required>
+                          <mat-option value="2019-2020"  >2019-2020</mat-option>
+                          <mat-option value="2020-2021"  >2020-2021</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-error *ngIf="f.submitted && financialYear.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="financialYear.errors.required">Financial Year is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  
+                  <div class="col s4 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="Yearly Target" type="number" id="targetLimit"  #targetLimit="ngModel" name="targetLimit" #targetLimit="ngModel" [ngClass]="{'has-error' : targetLimit.invalid } " [(ngModel)]="distribution_form.targetLimit" required>
+                      </mat-form-field>
+                      
+                      
+                      <mat-error *ngIf="f.submitted && targetLimit.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="targetLimit.errors.required">Yearly Target is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="sprate-box pt0 mt15">
+              <div class="cs-heading">
+                <h2>CONTACT PERSON INFORMATION</h2>
+              </div>
+              <form #p="ngForm" (ngSubmit)="p.valid && add_contact()" novalidate>
+                <div class="from-fields">
+                  <div class="row">
+                    <div class="col s4 pl0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="Name" name="name" #name="ngModel" (keypress)="namecheck($event)" [(ngModel)]="distribution_form.name" required="{{distribution_form.mobile1 ? true : false}}" [ngClass]="{'has-error' : name.invalid } ">
+                        </mat-form-field>
+                        
+                        <mat-error *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="name.errors.required">Contact person is required</mat-error>
+                        </mat-error>
+                        
+                      </div>
+                    </div>
+                    <div class="col s4">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="Mobile No. 1" name="mobile1" id="mobile1" #mobile1="ngModel" minlength="10" maxlength="10" min="0" (keypress)="MobileNumber($event)" [(ngModel)]="distribution_form.mobile1" required="{{distribution_form.name ? true : false}}" [ngClass]="{'has-error' : mobile1.invalid } ">
+                        </mat-form-field>
+                        
+                        <mat-error *ngIf="f.submitted && !mobile1.valid && !mobile1.touched" class="invalid-feedback">
+                          <mat-error *ngIf="mobile1.errors.required">Mobile No 1 is required</mat-error>
+                        </mat-error>
+                        
+                        <mat-error *ngIf="(f.submitted || p.submitted) && !mobile1.valid  && mobile1.touched" class="invalid-feedback">
+                          <mat-error>Mobile No Must be 10 digit</mat-error>
+                        </mat-error>
+                        
+                        
+                      </div>
+                    </div>
+                    <div class="col s4 pr0">
+                      <div class="control-field pr80">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="Mobile No. 2" name="mobile2"  #mobile2 = "ngModel" id="mobile2" minlength="10" maxlength="10" min="0" (keypress)="MobileNumber($event)" [(ngModel)]="distribution_form.mobile2" [ngClass]="{'has-error' : mobile2.invalid } ">
+                        </mat-form-field>
+                        
+                        <mat-error *ngIf="f.submitted && mobile2.invalid && !mobile2.touched" class="invalid-feedback">
+                          <mat-error *ngIf="mobile2.errors.required">Mobile No is required</mat-error>
+                        </mat-error>
+                        
+                        <mat-error *ngIf="f.submitted && mobile2.invalid && mobile2.touched" class="invalid-feedback">
+                          <mat-error>Mobile No must be 10 digit!</mat-error>
+                        </mat-error>
+                        
+                        
+                        <div class="plus-btn" style="top: 12px;">
+                          <button [disabled]="!distribution_form.name || !distribution_form.mobile1" mat-raised-button color="accent">
+                            
+                            <i class="material-icons">add</i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <div *ngIf="distribution_form.networkContacts.length>0" class="row mt15">
+                <div class="col s12 padding0">
+                  <div class="cs-table left-right-20">
+                    <div class="table-head">
+                      <table>
+                        <tr>
+                          <th>Name</th>
+                          <th class="w200">Mobile1</th>
+                          <th class="w200 bdr0">Mobile2</th>
+                          <th class="w130">&nbsp;</th>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="table-container">
+                      <div class="table-content none-shadow">
+                        <table>
+                          <tr  *ngFor="let contact of distribution_form.networkContacts;let i=index">
+                            <td>{{contact.name}}</td>
+                            <td class="w200">{{contact.mobile1}}</td>
+                            <td class="w200">{{contact.mobile2}}</td>
+                            <td class="w130">
+                              <a mat-button class="del-btn" (click)="removeContact(index)">Delete</a>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="sprate-box pt0 mt15">
+              <div class="cs-heading">
+                <h2>ADDRESS INFORMATION</h2>
+              </div>
+              <div class="from-fields">
+                <div class="row">
+                  <div class="col s6 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <textarea matInput placeholder="Street" name="street" id="street" #street="ngModel" [(ngModel)]="distribution_form.street" class="h100"></textarea>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  
+                  <div class="col s6 pr0">
+                    <div class="row">
+                      <div class="col s6">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <mat-select placeholder="State" name="state" id="state" [(ngModel)]="distribution_form.state"  #state="ngModel" [ngClass]="{ 'is-invalid': f.submitted && state.invalid }" required>
+                              <mat-option  (click)="get_district()" *ngFor='let state of statelist' value="{{state}}">{{state}}</mat-option>  
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-error *ngIf="f.submitted && state.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="state.errors.required">State is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      <div class="col s6 pr0">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <mat-select placeholder="District" name="district" id="district" [(ngModel)]="distribution_form.district"  #district="ngModel" [ngClass]="{ 'is-invalid': f.submitted && district.invalid }" required >
+                              <mat-option (click)="get_city()"  value="{{district.districtName}}" *ngFor="let district of district1">{{district.districtName}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-error *ngIf="f.submitted && district.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="district.errors.required"> District is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col s6">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <mat-select placeholder="City" (keyup.enter)="get_pincode(city.stateMasterId)" id="city" name="city" [(ngModel)]="distribution_form.city" #city="ngModel" [ngClass]="{ 'is-invalid': f.submitted && city.invalid }" required >
+                              <mat-option (click)="get_pincode(city.stateMasterId)" *ngFor="let city of cities"  value="{{city.cityName}}">{{city.cityName}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-error *ngIf="f.submitted && city.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="city.errors.required"> City is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      
+                      <div class="col s6 pr0">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <mat-select placeholder="Pincode"  name="pin" id="pin" [(ngModel)]="distribution_form.pin"  #pin="ngModel" [ngClass]="{ 'is-invalid': f.submitted && pin.invalid }" required>
+                              <mat-option (click)="get_sales_terrtory(distribution_form.pin)" *ngFor="let pin of areas"  value="{{pin}}">{{pin}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-error *ngIf="f.submitted && pin.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="pin.errors.required"> Pincode is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            <div *ngIf="distribution_form.pin" class="sprate-box pt0 mt15">
+              <div class="cs-heading">
+                <h2>
+                  SHIPPING ADDRESS
+                </h2>
+              </div>
+              <div class="same-as">
+                <mat-checkbox (change)="sameAsAddress($event)"></mat-checkbox>Shipping Address same as Address
+              </div>
+              <div class="from-fields">
+                <div class="row">
+                  <div class="col s6 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <textarea matInput placeholder="Street" name="shippingStreet"  id="shippingStreet" [(ngModel)]="networkShippings.street" #shippingStreet="ngModel" class="h220"></textarea>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  
+                  <div class="col s6 pr0">
+                      <div class="row">
+                          <div class="col s6">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input infix-bodr8">
+                                <input matInput placeholder="shop no" #shippingoffice="ngModel" name="shippingoffice" id="shippingoffice"  [(ngModel)]="networkShippings.office" required>
+                              </mat-form-field>
+                              
+                              <mat-error *ngIf="f.submitted && shippingoffice.invalid && shippingoffice.touched" class="invalid-feedback">
+                                <mat-error *ngIf="shippingoffice.errors.required">Office No is invalid</mat-error>
+                              </mat-error>
+                              
+                              <mat-error *ngIf="f.submitted && shippingoffice.invalid && !shippingoffice.touched" class="invalid-feedback">
+                                <mat-error *ngIf="shippingoffice.errors.required">Office No is required</mat-error>
+                              </mat-error>
+                            </div>
+                          </div>
+                        </div>
+                    <div class="row">
+                      <div class="col s6">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <input matInput placeholder="Email" #shippingEmail="ngModel" name="shippingEmail" id="shippingEmail"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [(ngModel)]="networkShippings.email" required>
+                          </mat-form-field>
+                          
+                          <mat-error *ngIf="f.submitted && shippingEmail.invalid && shippingEmail.touched" class="invalid-feedback">
+                            <mat-error *ngIf="shippingEmail.errors.required">Email is invalid</mat-error>
+                          </mat-error>
+                          
+                          <mat-error *ngIf="f.submitted && shippingEmail.invalid && !shippingEmail.touched" class="invalid-feedback">
+                            <mat-error *ngIf="shippingEmail.errors.required">Email is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      <div class="col s6 pr0">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <input matInput placeholder="Landline" #shippingLandline="ngModel" name="shippingLandline" id="shippingLandline" minlength="6" maxlength="13" min="0" (keypress)="MobileNumber($event)" [(ngModel)]="networkShippings.landline">
+                          </mat-form-field>
+                          
+                          <mat-error *ngIf="f.submitted && shippingLandline.invalid && shippingLandline.touched" class="invalid-feedback">
+                            <mat-error>Landline must be atleast 6 digit</mat-error>
+                          </mat-error>
+                          
+                          
+                          <mat-error *ngIf="f.submitted && shippingLandline.invalid && !shippingLandline.touched" class="invalid-feedback">
+                            <mat-error *ngIf="shippingLandline.errors.required">Landline is required</mat-error>
+                          </mat-error>
+                          
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col s6">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <input matInput placeholder="Fax" id="fax" #fax="ngModel" name="landline" minlength="10" maxlength="13" min="0" (keypress)="MobileNumber($event)" [(ngModel)]="networkShippings.fax">
+                          </mat-form-field>
+                          
+                          <mat-error *ngIf="f.submitted && fax.invalid && fax.touched" class="invalid-feedback">
+                            <mat-error *ngIf="shippingLandline.errors.required">Enter Valid FAX No</mat-error>
+                          </mat-error>
+                          
+                        </div>
+                      </div>
+                      <div class="col s6 pr0">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <input matInput placeholder="Mobile" #shippingMobile1="ngModel" name="shippingMobile1" id="shippingMobile1" minlength="10" maxlength="10" min="0" (keypress)="MobileNumber($event)" [(ngModel)]="networkShippings.mobile" required>
+                          </mat-form-field>
+                          
+                          <mat-error *ngIf="f.submitted && shippingMobile1.invalid && shippingMobile1.touched" class="invalid-feedback">
+                            <mat-error>mobile must be 10 digit</mat-error>
+                          </mat-error>
+                          
+                          
+                          <mat-error *ngIf="f.submitted && shippingMobile1.invalid && !shippingMobile1.touched" class="invalid-feedback">
+                            <mat-error *ngIf="shippingMobile1.errors.required">mobile is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col s6">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <mat-select placeholder="State" id="Shipingstate" name="Shipingstate" [(ngModel)]="networkShippings.state"  #Shipingstate="ngModel" [ngClass]="{ 'is-invalid': f.submitted && Shipingstate.invalid }" required>
+                              <mat-option  (click)="getShippingDistrict(networkShippings.state)" *ngFor='let state of shippingState' value="{{state}}">{{state}}</mat-option>  
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-error *ngIf="f.submitted && Shipingstate.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="Shipingstate.errors.required">State is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      <div class="col s6 pr0">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <mat-select placeholder="District" id="Shippingdistrict" name="Shippingdistrict" [(ngModel)]="networkShippings.district"  #Shippingdistrict="ngModel" [ngClass]="{ 'is-invalid': f.submitted && Shippingdistrict.invalid }" required >
+                              <mat-option (click)="getShippingCity(networkShippings.state,networkShippings.district)"  value="{{district.districtName}}" *ngFor="let district of shippingDistrict">{{district.districtName}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-error *ngIf="f.submitted && Shippingdistrict.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="Shippingdistrict.errors.required"> District is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div> 
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col s6">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <mat-select placeholder="City" id="Shippingcity" name="Shippingcity" [(ngModel)]="networkShippings.city" #Shippingcity="ngModel" [ngClass]="{ 'is-invalid': f.submitted && Shippingcity.invalid }" required >
+                              <mat-option (click)="getShippingPin(city.stateMasterId)" *ngFor="let city of shippingCity"  value="{{city.cityName}}">{{city.cityName}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-error *ngIf="f.submitted && Shippingcity.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="Shippingcity.errors.required"> City is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      <div class="col s6 pr0">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <mat-select placeholder="Pincode" id="Shippingpin" name="Shippingpin" [(ngModel)]="networkShippings.pin"  #Shippingpin="ngModel" [ngClass]="{ 'is-invalid': f.submitted && Shippingpin.invalid }" required>
+                              <mat-option *ngFor="let pin of shippingPin"  value={{pin}}>{{pin}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-error *ngIf="f.submitted && Shippingpin.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="Shippingpin.errors.required"> Pincode is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          <div *ngIf="distribution_form.pin" class="sprate-box pt0 mt15">
+
+              <div class="cs-heading">
+                <h2>
+                  ASSIGN INFORMATION
+                </h2>
+              </div>
+              <div class="from-fields">
+
+                <div class="col s4 pl0">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input infix-bodr8">
+                      <mat-select placeholder="Select Segment" id="segment" name="segment" [(ngModel)]="distribution_form.segment" #segment="ngModel" [ngClass]="{ 'is-invalid': f.submitted && segment.invalid }" multiple required>
+                        <mat-option value="{{segment.text}}"  *ngFor='let segment of segmentlist'>{{segment.text}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-error *ngIf="f.submitted && segment.invalid" class="invalid-feedback">
+                      <mat-error *ngIf="segment.errors.required">Segment is required</mat-error>
+                    </mat-error>
+                  </div>
+                </div>
+
+                <!-- <div *ngIf="distribution_form.segment" class="col s4">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input infix-bodr8">
+                      <mat-select placeholder="Territory" id="tid" name="tid" [(ngModel)]="distribution_form.tid"  #tid="ngModel" [ngClass]="{ 'is-invalid': f.submitted && tid.invalid }" multiple>
+                        <mat-option (click)="rolelist1()" *ngFor="let saleslist of saleslist;let index=index"  value="{{saleslist.territoryID}}" >{{saleslist.territoryName}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-error *ngIf="f.submitted && tid.invalid" class="invalid-feedback">
+                      <mat-error *ngIf="tid.errors.required"> Territory is required</mat-error>
+                    </mat-error>
+                  </div>
+                </div>
+                <div *ngIf="distribution_form.segment" class="col s4">
+                    <div class="control-field">
+                       <mat-form-field class="cs-input">
+                        <mat-select placeholder="Select Role Type" id="salesuserrole" name="salesuserrole" [(ngModel)]="distribution_form.salesuserrole"  #salesuserrole="ngModel" [ngClass]="{ 'is-invalid': f.submitted && salesuserrole.invalid }"  required >
+                          <mat-option (click)="get_sales_user(distribution_form.tid,$event.checked,index)" *ngFor="let user of AllUserList " value={{user.roleId}}>{{user.roleName}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-error *ngIf="f.submitted && salesuserrole.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="salesuserrole.errors.required">Sales User Role is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                
+                <div *ngIf="distribution_form.segment" class="col s4 pr0">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input infix-bodr8">
+                      <mat-select placeholder="Select SalesUser"  name="salesUsers" id="salesUsers" [(ngModel)]="distribution_form.salesUsers"  #salesUsers="ngModel" multiple>
+                        <mat-option *ngFor="let sales of sales_user_data;let i=index" value="{{sales.userId}}">{{sales.userName}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div> -->
+
+              </div>
+            </div>
+            
+            <div class="sprate-box pt0 mt15">
+              <div class="cs-heading">
+                <h2>
+                  BANK DEATIL
+                </h2>
+              </div>
+              <div class="from-fields">
+                <div class="col s4 pl0">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <input matInput placeholder="Bank Name" id="bankName" #bankName="ngModel" name="bankName"  [(ngModel)]="distribution_form.bankName" required >
+                    </mat-form-field>
+                    <div class="alert alert-danger" *ngIf="!bankName.valid && bankName.touched">
+                      Bank Name is required
+                    </div>
+                    <mat-error *ngIf="f.submitted && bankName.invalid" class="invalid-feedback">
+                      <mat-error *ngIf="bankName.errors.required">Bank Name is required</mat-error>
+                    </mat-error>
+                  </div>
+                </div>
+                <div class="col s4 ">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <input matInput placeholder="Account Number" id="accountNumber" #accountNumber="ngModel" name="accountNumber" minlength="10" maxlength="14" min="0" (keypress)="MobileNumber($event)" [(ngModel)]="distribution_form.accountNumber" required>
+                    </mat-form-field>
+                    
+                    <mat-error *ngIf="f.submitted && accountNumber.invalid && accountNumber.touched" class="invalid-feedback">
+                      <mat-error>Account Number must be atleast 10 digit</mat-error>
+                    </mat-error>
+                    
+                    <mat-error *ngIf="f.submitted && accountNumber.invalid && !accountNumber.touched" class="invalid-feedback">
+                      <mat-error *ngIf="accountNumber.errors.required">Account Number is required</mat-error>
+                    </mat-error>
+                  </div>
+                </div>
+                <div class="col s4 pr0">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <input matInput placeholder="IFSC Code" id="ifscCode" #ifscCode="ngModel" minlength="11" maxlength="11" name="ifscCode"  [(ngModel)]="distribution_form.ifscCode" required>
+                    </mat-form-field>
+                    
+                    <mat-error *ngIf="f.submitted && ifscCode.invalid && ifscCode.touched"  class="invalid-feedback">
+                      <mat-error>IFSC Code Must be 11 digit</mat-error>
+                    </mat-error>
+                    <mat-error *ngIf="f.submitted && ifscCode.invalid && !ifscCode.touched" class="invalid-feedback">
+                      <mat-error *ngIf="ifscCode.errors.required">IFSC Code is required</mat-error>
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <div class="cs-btn fixedd mt32 text-right">
+              <div class="in-btn">
+                <button mat-raised-button color="accent" (click)="setFocus(f.form, p.form)" >Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="h50"></div>
+
+

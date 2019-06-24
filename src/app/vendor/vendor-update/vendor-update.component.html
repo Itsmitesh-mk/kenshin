@@ -1,0 +1,169 @@
+<div class="edit-modal">
+    <form name="form" (ngSubmit)="f.form.valid && updateMobileEmail()"  #f="ngForm" novalidate>
+        <div *ngIf="loader"> 
+            <div class="cs-loader">
+              <img src="assets/img/loader.png" class="rotate"> 
+            </div>
+          </div>
+        
+        <div *ngIf="vendordetail.typeofupdate=='email'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update Email</p>
+            <div class=" from-fields">
+                <div class="control-field">
+                    <mat-form-field class="example-full-width cs-input">
+                        <input matInput placeholder="Email-ID" name="emailid" value="emailid" [(ngModel)]="vendordetail.emailid" #emailid="ngModel" [ngClass]="{ 'is-invalid': f.submitted && emailid.invalid }" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+                    </mat-form-field>
+                    <div class="alert alert-danger" *ngIf="!emailid.valid && emailid.touched">
+                        Please Enter Valid Email!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="vendordetail.typeofupdate=='contact_person'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update Contact Person</p>
+            <div class=" from-fields">
+                <div class="control-field">
+                    <mat-form-field class="example-full-width cs-input">
+                        <input matInput placeholder="Name" name="contactPersonName" (keypress)="namecheck($event)" value="contactPersonName" [(ngModel)]="vendordetail.contactPersonName" #contactPersonName="ngModel"  [ngClass]="{ 'is-invalid': f.submitted && contactPersonName.invalid }" required>
+                    </mat-form-field>
+                    <div class="alert alert-danger" *ngIf="!contactPersonName.valid && contactPersonName.touched">
+                        Please Enter Name..
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="vendordetail.typeofupdate=='gstNo'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update GST</p>
+            <div class=" from-fields">
+                <div class="control-field">
+                    <mat-form-field class="example-full-width cs-input">
+                        <input matInput placeholder="GST" name="gstNo" value="gstNo" [(ngModel)]="vendordetail.gstNo" #gstNo="ngModel" minlength="15" maxlength="15" min="0" [ngClass]="{ 'is-invalid': f.submitted && gstNo.invalid }" required>
+                    </mat-form-field>
+                    <div class="alert alert-danger" *ngIf="!gstNo.valid && gstNo.touched">
+                        Please Enter 15 Digit GST
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="vendordetail.typeofupdate=='mobile'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update Mobile</p>
+            <div class=" from-fields">
+                <div class="control-field">
+                    <mat-form-field class="example-full-width cs-input">
+                        <input matInput type="text" placeholder="mobile" name="mobile1"   value="mobile1" [(ngModel)]="vendordetail.mobile1" minlength="10" maxlength="10" min="0" #mobile1="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mobile1.invalid }" (keypress)="MobileNumber($event)" required>
+                    </mat-form-field>
+                    
+                    <div class="alert alert-danger" *ngIf="!mobile1.valid && mobile1.touched">
+                        Please Enter Valid Mobile
+                    </div>
+                    <mat-error *ngIf="f.submitted && mobile1.invalid && mobile1.touched" class="invalid-feedback">
+                      <mat-error >mobile must be 10 digit</mat-error>
+                    </mat-error>
+                </div>
+            </div>
+        </div>
+
+
+        <div *ngIf="vendordetail.typeofupdate=='mobile2'" mat-dialog-content style="overflow: hidden;">
+          <p class="heading">Update Mobile</p>
+          <div class=" from-fields">
+              <div class="control-field">
+                  <mat-form-field class="example-full-width cs-input">
+                      <input matInput type="text" placeholder="mobile" name="mobile2"   value="mobile2" [(ngModel)]="vendordetail.mobile2" minlength="10" maxlength="10" min="0" #mobile1="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mobile2.invalid }" (keypress)="MobileNumber($event)" required>
+                  </mat-form-field>
+                  
+                  <div class="alert alert-danger" *ngIf="!mobile2.valid && mobile2.touched">
+                      Please Enter Valid Mobile
+                  </div>
+                  <mat-error *ngIf="f.submitted && mobile2.invalid && mobile2.touched" class="invalid-feedback">
+                    <mat-error >mobile must be 10 digit</mat-error>
+                  </mat-error>
+              </div>
+          </div>
+      </div>
+
+
+        <div *ngIf="vendordetail.typeofupdate=='landline'" mat-dialog-content style="overflow: hidden;">
+                <p class="heading">Update Landline</p>
+                <div class=" from-fields">
+                    <div class="control-field">
+                        <mat-form-field class="example-full-width cs-input">
+                            <input matInput type="text"  maxlength="10"  placeholder="Landline" name="landline" (keypress)="MobileNumber($event)" value="landline" [(ngModel)]="vendordetail.landline"  minlength="6" maxlength="13" #landline="ngModel" [ngClass]="{ 'is-invalid': f.submitted && landline.invalid }" required>
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="landline.invalid && landline.touched">
+                                Landline is must be atleast 6 digit
+                            </div>
+                            <div class="alert alert-danger" *ngIf="landline.invalid && landline.errors.required">
+                                    Landline is required
+                            </div>
+                    </div>
+                </div>
+       </div>
+
+
+       <div mat-dialog-content *ngIf="vendordetail.typeofupdate=='address'">
+          <p class="heading">Update Address</p>
+          <div class="from-fields">
+            <div class="row">
+              <div class="col s6">
+                  <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="State" name="vendorState" [(ngModel)]="vendordetail.vendorState" >
+                          <mat-option (click)="get_district()"  *ngFor="let state of statelist" value="{{state}}">{{state}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+              </div>
+              <div class="col s6">
+                  <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="District"   name="district" [(ngModel)]="vendordetail.district" >
+                          <mat-option (click)="get_city()"  *ngFor="let district of district1" value="{{district.districtName}}">{{district.districtName}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+              </div>
+              <div class="col s6">
+                  <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="City"  name="city" [(ngModel)]="vendordetail.city" >
+                          <mat-option *ngFor="let city of cities" (click)="get_pincode(city.stateMasterId)" value="{{city.cityName}}">{{city.cityName}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+              </div>
+              <div class="col s6">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-select placeholder="Pincode"  name="pincode" [(ngModel)]="vendordetail.pincode" >
+                        <mat-option *ngFor="let pin of areas" value="{{pin}}">{{pin}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+            </div>
+            
+            <div class="row mb15">
+              <div class="col s12">
+                  <div class="control-field">
+                      <mat-form-field class="cs-input" >
+                        <textarea matInput placeholder="Address" name="street" [(ngModel)]="vendordetail.street" class="h100"></textarea>
+                      </mat-form-field>
+                    </div>
+              </div>
+              
+            </div>
+          </div>
+          </div>
+
+
+
+        <div mat-dialog-actions>
+            <button mat-raised-button  color="warn" [mat-dialog-close]="false">Cancel</button>
+            <button mat-raised-button color="accent">Save</button>
+        </div>
+    </form>
+</div>

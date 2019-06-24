@@ -1,0 +1,148 @@
+<div class="edit-modal" *ngIf="extraData.check=='extrafield'">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div mat-dialog-content>
+    <p class="heading">Update Fields</p>
+    <div class="from-fields" >
+        <div class="row mb0 mt15">
+            <div class="col s4">
+              <p class="cs-lable">Labels</p>
+            </div>
+            <div class="col s8">
+              <p class="cs-lable">Values</p>
+            </div>
+          </div>
+      <div class="row mb0">
+        <div class="col s4">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr">
+              <input matInput  name="label1" placeholder ="Label 1" [(ngModel)]="extraData.aditionalField1Label">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col s8">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr">
+              <input matInput  name="value1" placeholder ="Value" [(ngModel)]="extraData.aditionalField1Value">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="row mb0">
+        <div class="col s4">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput  name="label2" placeholder ="Label 2" [(ngModel)]="extraData.aditionalField2Label">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col s8">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput name="value2" placeholder ="Value" [(ngModel)]="extraData.aditionalField2Value">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="row mb0">
+        <div class="col s4">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput name="label3" placeholder ="Label 3" [(ngModel)]="extraData.aditionalField3Label">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col s8">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput  name="value3" placeholder ="Value" [(ngModel)]="extraData.aditionalField3Value">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="row mb0">
+        <div class="col s4">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput  name="label4" placeholder ="Label 4" [(ngModel)]="extraData.aditionalField4Label">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col s8">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput name="Value4" placeholder ="Value" [(ngModel)]="extraData.aditionalField4Value">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onNoClick()">Cancel</button>
+    <button mat-raised-button color="accent" (click)="update_detail()">Save</button>
+  </div>
+</div>
+<div class="edit-modal" *ngIf="extraData.check=='requiredfield'">
+  <div *ngIf="loader">
+    <mat-spinner  class="loader"></mat-spinner>
+  </div>
+  <div class="cs-heading">
+    <p class="heading"> Update Pop And Gift</p>
+  </div>
+  <form name="form" (ngSubmit)="f.form.valid && update_detail()" #f="ngForm" novalidate>
+    <div class="from-fields" >
+      <div class="row">
+        <div class="col s4 pr0">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput placeholder="NAME" name="name" [(ngModel)]="extraData.name" #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required>
+            </mat-form-field>
+            <mat-error *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+              <mat-error *ngIf="name.errors.required">Name is required</mat-error>
+            </mat-error>
+          </div>
+        </div>
+        <div class="col s4 pr0">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput placeholder="Qty" name="quantity" [(ngModel)]="extraData.quantity" #quantity="ngModel" (keypress)="MobileNumber($event)" [ngClass]="{ 'is-invalid': f.submitted && quantity.invalid }" required>
+            </mat-form-field>
+            <mat-error *ngIf="f.submitted && quantity.invalid" class="invalid-feedback">
+              <mat-error *ngIf="quantity.errors.required">Quantity is required</mat-error>
+            </mat-error>
+          </div>
+        </div>
+        <div class="col s4 pr0">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput placeholder="Points" name="redeem" [(ngModel)]="extraData.redeem" (keypress)="MobileNumber($event)">
+            </mat-form-field>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <div class="from-fields">
+          <div class="control-field">
+            <mat-form-field class="cs-input wp100 h-input">
+              <textarea matInput placeholder="Description"  name="description" [(ngModel)]="extraData.description"  #description="ngModel" [ngClass]="{ 'is-invalid': f.submitted && description.invalid }" required></textarea>
+            </mat-form-field>
+            <mat-error *ngIf="f.submitted && description.invalid" class="invalid-feedback">
+              <mat-error *ngIf="description.errors.required">Description is required</mat-error>
+            </mat-error>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-raised-button color="warn"  [mat-dialog-close]='false'>Cancel</button>
+      <button mat-raised-button color="accent" style="color: #fff;"  >Save</button>
+    </div>
+  </form>
+</div>

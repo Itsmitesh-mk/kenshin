@@ -1,0 +1,156 @@
+<div *ngIf="loader"> 
+  <div class="cs-loader">
+    <img src="assets/img/loader.png" class="rotate"> 
+  </div>
+</div>
+<div class="main-container" >
+  <div class="middle-container padding0">
+    <div class="master-heading">
+      <div class="vl-info">
+        <ul>
+          <li><p>Total Mechanic : <span *ngIf='wholeSalerList'>{{wholeSalerList.length}}</span><span *ngIf='!wholeSalerList'>0</span></p></li>
+          <!-- <li><p>Active : <span class="green-clr">15</span></p></li>
+            <li><p>Deactive : <span class="yellow-clr">25</span></p></li>
+            <li class="af-none"><p class="pl30"><img src="assets/img/filter.svg" class="icon"><span>FILTER</span></p></li> -->
+          </ul>
+        </div>
+        <!-- <div class="top-pagination m-right-data">
+          <ul>
+            <li class="refresh-area af-none">
+              <a class="refresh-btn" mat-raised-button (click)="refreshlist()" matTooltip="Refresh"><i class="material-icons"> refresh</i></a>
+            </li>
+            <li><p>Pages 2 of 6</p></li>
+            <li><button mat-button class="left-btn"><i class="material-icons">keyboard_arrow_left</i></button></li>
+            <li><input type="text" placeholder="GO TO"></li>
+            <li><button mat-button class="right-btn"><i class="material-icons">keyboard_arrow_right</i></button></li>
+          </ul>
+        </div> -->
+        <div *ngIf="filter.companyname || filter.nameOfApplicant || filter.mobile || filter.segment" class="filter-container left-auto">
+          <div (click)="clearfilter()" class="filter-btn">
+            <button mat-button >CLEAR FILTER</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container-outer">
+      <div class="container" >
+        <div class="row">
+          <div class="col s12">
+            <div class="cs-table left-right-20">
+              <div class="sticky-head-flat">
+                <div class="table-head">
+                  <table>
+                    <tr>
+                      <th class="w100">Date</th>
+                      <th class="w190">Name</th>
+                      <th class="w190">Applicant Name</th>
+                      <th class="w110"> Mobile</th>
+                      <!-- <th class="w100 text-right"> Target</th>
+                      <th class="w110 text-right"> Credit Limit</th> -->
+                      <th class="w120">Segments</th>
+                      <!-- <th *ngIf="role==1" class="w250">Assign To</th> -->
+                      <th>Address</th>
+                      <th class="w60" *ngIf="role==1">Action</th>
+                    </tr>
+                  </table>
+                </div>
+                <div class="table-head bdrt">
+                  <table>
+                    <tr>
+                      <th class="w100">
+                        
+                      </th>
+                      <th class="w190">
+                        <div class="th-search">
+                          <input type="text" (keyup)="Whole_saler_list()" name="companyname" #companyname="ngModel" [(ngModel)]="filter.companyname" placeholder="Search....">
+                          
+                        </div>
+                      </th>
+                      <th class="w190">
+                        <div class="th-search">
+                          <input type="text" (keyup)="Whole_saler_list()" name="nameOfApplicant" #nameOfApplicant="ngModel" [(ngModel)]="filter.nameOfApplicant" placeholder="Search....">
+                          
+                        </div>
+                      </th>
+                      <th class="w110">
+                        <div class="th-search">
+                          <input type="text" (keyup)="Whole_saler_list()" name="mobile" #mobile="ngModel" [(ngModel)]="filter.mobile" placeholder="Search....">
+                          
+                        </div>
+                      </th>
+                      <!-- <th class="w100"></th>
+                      <th class="w110"></th> -->
+                      <th class="w120">
+                        <div class="th-search">
+                          <mat-select placeholder="Select" id="segment" name="segment" [(ngModel)]="filter.segment" #segment="ngModel"  multiple>
+                            <mat-option value="{{segment.text}}" (click)="Whole_saler_list()" *ngFor='let segment of segmentlist'>{{segment.text}}</mat-option>
+                          </mat-select>
+                        </div>
+                      </th>
+                      <th *ngIf="role==1"></th>
+                      <!-- <th>&nbsp;</th> -->
+                      <th class="w60" *ngIf="role==1">&nbsp;</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor="let retailer of wholeSalerList">
+                      <td class="w100">{{retailer.createdOn|date:'d MMM y'}}</td>
+                      <td class="w190"><a class="link-btn" mat-button routerLink="/distribution-detail/{{retailer.networkId}}" routerLinkActive="active">{{retailer.establishment}}</a></td>
+                      <td class="w190">{{retailer.nameOfApplicant}}</td>
+                      <td class="w110">{{retailer.mobile}}</td>
+                      <!-- <td class="w100 text-right">&#x20B9; {{retailer.targetLimit}}</td>
+                      <td class="w110 text-right">&#x20B9; {{retailer.creditLimit}}</td> -->
+                      <td class="w120"><ng-container  *ngFor="let segments of retailer.networkSegments"><span>{{segments.segmentCode}},</span><br></ng-container></td>
+                      <!-- <td *ngIf="role==1" class="w250">
+                        <div class="tags"> 
+                          <ul>
+                            <li  *ngFor="let sales of retailer.networkSalesUsers"><span>{{sales.salesUserName}}</span></li>
+                          </ul>
+                        </div>
+                      </td> -->
+                      <td>{{retailer.state}}</td>
+                      <td *ngIf="this.role==1" class="w60">
+                        <div class="action-btns default-action">
+                          <!-- <a mat-button class="edit"><i class="material-icons">add</i></a> -->
+                          <button mat-button class="delete"  (click)="delete_network(retailer.networkId)"><i class="material-icons">delete_sweep</i></button>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="div" class="data-not-available" >
+        <div class="outer">
+          <div class="iinear">
+            <div class="figure" matRipple>
+              <div class="header">
+                <img src="assets/img/data-not-available-header.svg" alt="">
+              </div>
+              
+              <div class="description">
+                <div class="img">
+                  <i class="material-icons">error_outline</i>
+                </div>
+                <div class="psc">
+                  <p>data not available</p>
+                  <!-- <p>Tap on <a href="">ADD NEW</a> for Service Plan</p> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <div class="h50"></div>

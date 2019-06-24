@@ -1,0 +1,161 @@
+<div class="edit-modal">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+
+
+  <div mat-dialog-content *ngIf="data.type=='additonal'">
+  <p class="heading">Update Specification Information</p>
+  <div class="from-fields">
+    <div class="col s12">          
+    <div class="row">
+      <div class="col s4">
+          <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input matInput name="productSpecification1" [(ngModel)]="extraData.productSpecification1" placeholder="Specification 1">
+              </mat-form-field>
+            </div>
+      </div>
+      <div class="col s4">
+        <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput  name="productSpecification2" [(ngModel)]="extraData.productSpecification2" placeholder="Specification 2">
+            </mat-form-field>
+          </div>
+      </div>
+      <div class="col s4">
+          <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input matInput  name="productSpecification3" [(ngModel)]="extraData.productSpecification3" placeholder="Specification 3">
+              </mat-form-field>
+            </div>
+      </div>
+    </div>
+    
+    <div class="row mb20">
+      <div class="col s4">
+          <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input matInput   name="productSpecification4" [(ngModel)]="extraData.productSpecification4" placeholder="Specification 4">
+              </mat-form-field>
+            </div>
+      </div>
+      <div class="col s4">
+          <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input matInput  name="productSpecification5" [(ngModel)]="extraData.productSpecification5" placeholder="Specification 5">
+              </mat-form-field>
+            </div>
+      </div>
+      <div class="col s4 empty"></div>
+    </div>
+    </div>
+  </div>
+  </div>
+
+  <div mat-dialog-content  *ngIf="data.type=='specification'">
+    <p class="heading">Update Additional Fields</p>
+    <div class="from-fields" >
+      <div class="row mt15 mb0">
+          <div class="col s4">
+              <p class="cs-lable">Labels</p>
+          </div>
+          <div class="col s8">
+              <p class="cs-lable">Values</p>
+          </div>
+        <div class="col s4">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr">
+              <input matInput  name="label1" [(ngModel)]="extraData.aditionalField1Label" placeholder="Label 1">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col s8">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr">
+              <input matInput  name="value1" [(ngModel)]="extraData.aditionalField1Value" placeholder="Value">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="row mb0">
+        <div class="col s4">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput name="label2" [(ngModel)]="extraData.aditionalField2Label" placeholder="Label 2">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col s8">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput  name="value2" [(ngModel)]="extraData.aditionalField2Value" placeholder="Value">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="row mb0">
+        <div class="col s4">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput  name="label3" [(ngModel)]="extraData.aditionalField3Label" placeholder="Label 3">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col s8">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput  name="value3" [(ngModel)]="extraData.aditionalField3Value" placeholder="Value">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="row mb0">
+        <div class="col s4">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput name="label4" [(ngModel)]="extraData.aditionalField4Label" placeholder="Label 4">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col s8">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <input matInput name="Value4" [(ngModel)]="extraData.aditionalField4Value" placeholder="Value">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+    <div mat-dialog-content  *ngIf="data.type=='App'">
+        <p class="heading">Update Field</p>
+        <div class="from-fields">
+        <div class="row">
+        <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input infix-bodr">
+                <mat-select   name="isLive" #isLive="ngModel" [(ngModel)]="extraData.isLive" selected>
+                  <mat-option  [value]=true>
+                   Yes
+                  </mat-option>
+                  <mat-option  [value]=false>
+                  No
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        </div>
+    </div>
+
+  <div mat-dialog-actions>
+  <button mat-raised-button color="warn" (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="accent" (click)="update_detail()">Save</button>
+  </div>
+  </div>

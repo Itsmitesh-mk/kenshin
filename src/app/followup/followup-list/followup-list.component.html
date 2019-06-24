@@ -1,0 +1,225 @@
+<div class="main-container" >
+    <div *ngIf="loader"> 
+        <div class="cs-loader">
+          <img src="assets/img/loader.png" class="rotate"> 
+        </div>
+      </div>
+    <div class="middle-container pb15">
+        <div class="page-heading">
+            <img src="assets/img/folowup.svg" class="h-icon">
+            <div class="heading-text">
+                <h2>Follow Ups</h2>
+                <p>Total Follow Up - {{this.followupList.length}}</p>
+            </div>
+        </div>
+        <div class="tabs right-tab">
+            <ul>
+                <li>
+                    <a class="pr40" [ngClass]= "{'active' : filter.followUpBeforeDate == 1}" (click)="filter.followUpBeforeDate=1;filter.followUpAfterDate = 0;filter.date=0;todayFollowUpList(currentDate)">Today's Follow-Ups</a>
+                </li>
+                <li>
+                    <a class="pr40" [ngClass]= "{'active' : filter.followUpAfterDate == 1}" (click)="filter.followUpAfterDate = 1;filter.followUpBeforeDate = 0;filter.date=0;todayFollowUpList(currentDate)">Up Coming Follow-Ups</a>
+                </li>
+                <!-- <li>
+                    <a class="pr40" [ngClass]= "{'active' : tab_class == true}" (click)="tab_class = !tab_class">Today's Follow-Ups | {{tab_class}}</a>
+                </li>
+                <li>
+                    <a class="pr40" [ngClass]= "{'active' : tab_class == false}" (click)="tab_class = !tab_class">Up Coming Follow-Ups</a>
+                </li> -->
+            </ul>
+        </div>
+        <!-- <div  class="filter-container left-auto" *ngIf="filter.date!='' || filter.establishment!='' || filter.nextFollowUpType!=''">
+            <div  class="filter-btn">
+                <button mat-button >CLEAR FILTER</button>
+            </div>
+        </div> -->
+    </div>
+    
+    <div class="container-outer pt0">
+        <div class="container">
+            <div class="row">
+                <!-- <div class="col s3">
+                    <div class="cs-calender">
+                        <div class="calendar">
+                            <div class="calendar-navs">
+                                <div class="outer">
+                                    <div class="innear">
+                                        <div class="cal-header">
+                                            <div class="month-nav ">
+                                                <button (click)="prevMonth()" class="chevron">
+                                                    <i class="material-icons dp48">chevron_left</i>
+                                                </button>
+                                                <p>{{ currentDate.format('MMMM') }} {{ currentDate.format('YYYY') }}</p>
+                                                <button (click)="nextMonth()" class="chevron">
+                                                    <i class="material-icons dp48">chevron_right</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="year-nav">
+                                    <button (click)="prevYear()">&lt;</button>
+                                    <span></span>
+                                    <button (click)="nextYear()">&gt;</button>
+                                </div>
+                            </div>
+                            <div class="month-grid">
+                                <div class="day-names">
+                                    <div *ngFor="let name of dayNames" class="day-name p9">
+                                        {{ name }}
+                                    </div>
+                                </div>
+                                <div class="weeks">
+                                    <div *ngFor="let week of weeks" class="week">
+                                        <ng-container *ngFor="let day of week">
+                                            <div class="week-date disabled" *ngIf="!isSelectedMonth(day.mDate,currentDate)">
+                                                <p class="date-text">{{ day.mDate.date() }}</p>
+                                            </div>
+                                            <div  class="week-date enabled" *ngIf="isSelectedMonth(day.mDate,currentDate)" (click)="selectDate(day.mDate)"
+                                            [ngClass]="{ today: day.today, selected: day.selected, workday: day.worked,'workday': day.mDate.format('DD')==date  }"><p class="date-text">{{ day.mDate.date() }}</p></div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col s12 padding0">
+                    <div class="cs-table left-right-15">
+                        <div class="sticky-head">
+                            <div class="table-head">
+                                <table class="sno-border"> 
+                                    <tr>
+                                        <th class="w30">&nbsp;</th>
+                                        <th class="w110">Date</th>
+                                        <th class="w200">Company</th>
+                                        <th class="w150">Network Type</th>
+                                        <th *ngIf="role==1" class="w150">Users</th>
+                                        <th class="w150">Follow-Up Type</th>
+                                        <th class="w150">Status</th>
+                                        <!-- <th>Remark</th> -->
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="table-head bdrt">
+                                <table class="sno-border">
+                                    <tr>
+                                        <th class="w30">&nbsp;</th>
+                                        <th class="w110">
+                                            <div class="th-search padding0" >
+                                                <mat-form-field class="wp100 toggle-date-picker">
+                                                    <input matInput [matDatepicker]="picker" (dateChange)="filter.followUpBeforeDate=0;filter.followUpAfterDate=0;selectDate(filter.date)" #date="ngModel" [(ngModel)]="filter.date"  readonly>
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker  #picker></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+                                        <th  class="w200">
+                                            <div class="th-search">
+                                                <input type="text" name="   " (keyup)="todayFollowUpList(currentDate)" #establishment="ngModel" [(ngModel)]="filter.establishment" placeholder="Search....">
+                                            </div>
+                                        </th>
+                                        <th  class="w150">
+                                            <!-- <div class="th-search">
+                                                <select placeholder="Select Role" (change)="todayFollowUpList(currentDate)" name="role" #role="ngModel" [(ngModel)]="filter.role"  >
+                                                    <option value="" disabled>Select</option>
+                                                    <option  *ngFor="let user of userRole" value={{user.roleId}}>{{user.roleName}}</option>
+                                                </select>
+                                            </div> -->
+                                        </th>
+                                        <th *ngIf="role==1" class="w150">
+                                            <!-- <div class="th-search">
+                                                <input type="text" name="userName" (keyup)="todayFollowUpList(currentDate)" #userName="ngModel" [(ngModel)]="filter.userName" placeholder="Search....">
+                                            </div> -->
+                                            <div class="th-search">
+                                                <select placeholder="Select Role" (change)="todayFollowUpList(currentDate)" name="role" #role="ngModel" [(ngModel)]="filter.role"  >
+                                                    <option value="" disabled>Select</option>
+                                                    <option  *ngFor="let user of userRole" value={{user.roleId}}>{{user.roleName}}</option>
+                                                </select>
+                                            </div>
+                                        </th>
+                                        <th class="w150">
+                                            <div class="th-search">
+                                                <select (change)="todayFollowUpList(currentDate)" placeholder="Select Type" name="nextFollowUpType" #nextFollowUpType="ngModel" [(ngModel)]="filter.nextFollowUpType">
+                                                    <option value="" disabled>Select</option>
+                                                    <option value="1">Call</option>
+                                                    <option value="2">Meeting</option>
+                                                    <option value="3">Email</option>
+                                                </select>
+                                            </div>
+                                        </th>
+                                        <th class="w150">
+                                            <div class="th-search">
+                                                <select (change)="todayFollowUpList(currentDate)" placeholder="Select Type" name="isClosed" #isClosed="ngModel" [(ngModel)]="filter.isClosed">
+                                                    <option value="" disabled>Select</option>
+                                                    <option value="false">Open</option>
+                                                    <option value="true">Closed</option>
+                                                    
+                                                </select>
+                                            </div>
+                                        </th>
+                                        <!-- <th>&nbsp;</th> -->
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="table-container">
+                            <div class="table-content">
+                                <table class="sno-border">
+                                    <tr  *ngFor="let data of followupList;let i = index">
+                                        <td class="w30">{{i+1}}</td>
+                                        <td class="w110">{{data.followUpDate |date:'d MMM y'}}</td>
+                                        <td class="w200"><a class="link-btn" mat-button routerLink="/all-followup-list/{{data.followUpId}}" routerLinkActive="active" ><span *ngIf='data.networkEstablishement'>{{data.networkEstablishement}}</span><span *ngIf='data.otherCustomer'>{{data.otherCustomer}}</span></a></td>
+                                        <td class="w150">{{data.activityModuleName}}</td>
+                                        <td *ngIf="role==1" class="w150">{{data.userName}}</td>
+                                        <td class="w150"><span *ngIf="data.followUpType==1">Call</span><span *ngIf="data.followUpType==2">Meeting</span><span *ngIf="data.followUpType==3">Email</span>
+                                            <!-- <div class="action-btns">
+                                                <a mat-button class="view" (click)="goToDetail(data.followUpId)"><i class="material-icons"  >remove_red_eye</i> View</a>
+                                            </div> -->
+                                        </td>
+                                        <td class="w150"><span *ngIf="data.isClosed==true">Closed</span><span *ngIf="data.isClosed==false">Open</span>
+                                            <div class="action-btns">
+                                                <a mat-button class="view" (click)="goToDetail(data.followUpId)"><i class="material-icons"  >remove_red_eye</i> View</a>
+                                            </div>
+                                        </td>
+                                        <!-- <td>{{data.remarks}}</td> -->
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="data-not-available" *ngIf="div" >
+                        <div class="outer">
+                            <div class="iinear">
+                                <div class="figure" matRipple>
+                                    <div class="header">
+                                        <img src="assets/img/data-not-available-header.svg" alt="">
+                                    </div>
+                                    
+                                    <div class="description">
+                                        <!-- <div class="cs-heading">
+                                            <h2>No FollowUp</h2>
+                                        </div> -->
+                                        <div class="img">
+                                            <i class="material-icons">error_outline</i>
+                                        </div>
+                                        <div class="psc">
+                                            <p>data not available</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fixed-multibtn-botm">
+        <ul>
+            <li><a  matTooltip="Add New" routerLink="/add-followup/32" routerLinkActive="active" matRipple><i class="material-icons">add</i></a></li>
+        </ul>
+    </div>
+</div>
+<div class="h50"></div>

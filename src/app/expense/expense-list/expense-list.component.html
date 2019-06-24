@@ -1,0 +1,168 @@
+<div class="main-container" >
+  <div class="cs-loader" *ngIf="loader"> 
+    <img src="assets/img/loader.png" class="rotate">
+  </div>
+  
+  
+  <div class="middle-container pb15">
+    <div class="page-heading">
+      <img src="assets/img/payment_icon.svg" class="h-icon">
+      <div class="heading-text flex-heading">
+        <div class="content">
+          <h2>Expense List</h2>
+          <p>{{expenseList.length}}</p>
+        </div>
+       
+        <div *ngIf="userRole!=10" class="item-filter" >
+          <mat-form-field *ngIf="userRole!=17" class="wp100">
+            <mat-select   name="expense" #expense="ngModel" [(ngModel)]="filter.expense">
+              <mat-option (click)="getExpenseList(1,2)" [value]=1>My Expense</mat-option>
+              <mat-option (click)="getExpenseList(2,2)" [value]=2>Wating For Approvel</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="userRole!=17" class="left-auto">
+        <div *ngIf="filterData.expenseType|| filterData.createdOn||filterData.createdByName" class="filter-container left-auto">
+            <div (click)="clearfilter()" class="filter-btn">
+              <button mat-button >CLEAR FILTER</button>
+            </div>
+          </div>
+      <div class="tabs right-tab none-af">
+        <ul>
+          <li><a class="pending" [ngClass]="{'tab-active':expenseStatus==2}" (click)="getExpenseList(filter.expense,2)" >PENDING</a></li>
+          <li><a class="approved" [ngClass]="{'tab-active':expenseStatus==5}" (click)="getExpenseList(filter.expense,5)" >APPROVED</a></li>
+          <li><a class="reject" [ngClass]="{'tab-active':expenseStatus==6}" (click)="getExpenseList(filter.expense,6)" >REJECT</a></li>
+          <li *ngIf="filter.expense==1"><a class="draft" [ngClass]="{'tab-active':expenseStatus==1}" (click)="getExpenseList(filter.expense,1)" >DRAFT</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="container-outer pt0">
+    <div class="row">
+      <div class="col s12">
+        <div class="cs-table left-right-20">
+          
+          <div class="sticky-head">
+            <div class="table-head">
+              <table class="sno-border">
+                <tr>
+                  <th  class="w30">&nbsp;</th>
+                  <th class="w160">Date</th>
+                  <th>User Name</th>
+                  <th class="w180">designation</th>
+                  <th class="w180">Expense Type</th>
+                  <th class="w150 text-right">Expense Amount</th>
+                  <th class="w150">Status</th>
+                </tr>
+              </table>
+            </div>
+            <div class="table-head bdrt">
+              <table class="sno-border">
+                <tr>
+                  <th class="w30">&nbsp;</th>
+                  <th class="w160">
+                    <div class="th-search padding0" >
+                      <mat-form-field class="wp100 toggle-date-picker">
+                        <input matInput (dateChange)="getExpenseList(filter.expense,expenseStatus)" name="createdOn" [(ngModel)]="filterData.createdOn" [matDatepicker]="picker" >
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker  #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="th-search">
+                      <input type="text" name="createdByName" [(ngModel)]="filterData.createdByName" (input)="getExpenseList(filter.expense,expenseStatus)">
+                    </div>
+                  </th>
+                  <th class="w180">&nbsp;
+                  </th>
+                  <th class="w180">
+                    <div class="th-search padding0">
+                      <mat-select   name="expenseType" #expenseType="ngModel" [(ngModel)]="filterData.expenseType">
+                        <mat-option (click)="getExpenseList(filter.expense,expenseStatus)" [value]=1>Local Expense</mat-option>
+                        <mat-option (click)="getExpenseList(filter.expense,expenseStatus)" [value]=2>Out Station Expense</mat-option>
+                        <mat-option (click)="getExpenseList(filter.expense,expenseStatus)" [value]=3>Sales Promotion Expense</mat-option>
+                        <mat-option (click)="getExpenseList(filter.expense,expenseStatus)" [value]=4>Misc Expense</mat-option>
+                      </mat-select>
+                    </div>
+                  </th>
+                  <th class="w150">&nbsp;</th>
+                  <th class="w150">&nbsp;</th>
+                </tr>
+              </table>
+            </div>
+          </div>
+          
+          
+          <div class="table-container">
+            <div class="table-content">
+              <!-- <div infinite-scroll
+                [infiniteScrollDistance]="2"
+                [infiniteScrollThrottle]="1000"
+                [scrollWindow]="true"
+                (scrolled)="onScrollDown($event)"
+                [infiniteScrollDisabled]="isFullListDisplayed"
+                >
+              </div> -->
+              <table class="sno-border">
+                <tr *ngFor="let expense of expenseList;let i=index">
+                  <td class="w30">{{i+1}}</td>
+                  <td class="w160" *ngIf="expense.status==1"><a class="link-btn" (click)="editExpense(expense.expenseId,expense.expenseType)" mat-button>{{expense.createdOn | date :'EEEE, MMMM d, y'}}</a></td>
+                  <td class="w160" *ngIf="expense.status!=1"><a class="link-btn" routerLink="/detail-by-date/{{expense.expenseId}}" routerLinkActive="active" mat-button>{{expense.createdOn | date :'EEEE, MMMM d, y'}}</a></td>
+                  <td>{{expense.userName}}</td>
+                  <td class="w180">{{expense.designationName}}</td>
+                  
+                  <td *ngIf="expense.expenseType==1" class="w180">Local Conveyance</td>
+                  <td *ngIf="expense.expenseType==2" class="w180">Outstation Travel</td>
+                  <td *ngIf="expense.expenseType==3" class="w180">Sales Promotion Activity</td>
+                  <td *ngIf="expense.expenseType==4" class="w180">Misc Exp.</td>
+                  <td class="w150 text-right">{{expense.actualExpenseAmount |currency: 'INR':true}}</td>
+                  <td  class="w150 txt-center" [ngClass]="{'pending':expense.status==2||expense.status==3,'approved':expense.status==5,'reject':expense.status==4||expense.status==6,'draft':expense.status==1}">
+                    <span *ngIf="expense.status==2 ||expense.status==3">Pending</span>
+                    <span *ngIf="expense.status==5">Approve</span>
+                    <span *ngIf="expense.status==6" >Reject</span>
+                    <span *ngIf="expense.status==1">Draft</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="data-not-available" *ngIf="div">
+    <div class="outer">
+      <div class="iinear">
+        <div class="figure" matRipple>
+          <div class="header">
+            <img src="assets/img/data-not-available-header.svg" alt="">
+          </div>
+          
+          <div class="description">
+            <div class="cs-heading">
+              <h2>No Expense of This User</h2>
+            </div>
+            <div class="img">
+              <i class="material-icons">error_outline</i>
+            </div>
+            <div class="psc">
+              <p>data not available</p>
+              <!-- <p>Tap on <a href="">ADD NEW</a> for Service Plan</p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fixed-multibtn-botm">
+    <ul>
+      <li><a  matTooltip="Add New" routerLink="/add-expense" routerLinkActive="active" matRipple><i class="material-icons">add</i></a></li>
+    </ul>
+  </div>
+</div>

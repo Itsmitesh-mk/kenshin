@@ -1,0 +1,767 @@
+<div class="main-container">
+    <div class="cs-loader" *ngIf="loader"> 
+        <img src="assets/img/loader.png" class="rotate">
+    </div>
+    
+    <div class="middle-container">
+        <div class="page-heading">
+            <img src="assets/img/order_icon.svg" class="h-icon">
+            <div class="heading-text">
+                <h2>Order</h2>
+                <p>Add New Order</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- <form #f="ngForm" (ngSubmit)=" f.valid && placeOrder() "> -->
+        <div class="container-outer">
+            <div class="container" >
+                <div class="row">
+                    <div class="col s12">
+                        <div class="sprate-box mb20 pt0" style="overflow: inherit;">
+                            <div class="cs-heading" *ngIf="userRole !=12">
+                                <h2><span>Dealer :</span> {{order_data.establishment}}/{{distributorDetail.networkCode}}</h2>
+                            </div>
+                            <div class="from-fields" >
+                                <div class="row mt15">
+                                    <div class="col s6">
+                                        <div class="multi-all-select">
+                                            <label>Shipping Address</label>
+                                            <ng-multiselect-dropdown
+                                            [placeholder]="'Shipping Address'"
+                                            [data]="tmpShippingAddress"
+                                            [(ngModel)]="adrs.shipping"
+                                            name="shipping"
+                                            #shipping="ngModel"
+                                            [settings]="dropdownSettings4"
+                                            (onSelect)="selectAddress($event)"
+                                            (onDeSelect)="selectAddress(adrs.shipping)"
+                                            >
+                                        </ng-multiselect-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt15">
+                                <div  class="col s4">
+                                    <div class="multi-all-select">
+                                        <label>Segment</label>
+                                        <ng-multiselect-dropdown
+                                        [placeholder]="'Select Segment'"
+                                        [data]="segmentList"
+                                        [(ngModel)]="data.segment"
+                                        name="segment"
+                                        #segment="ngModel"
+                                        [settings]="dropdownSettings1"
+                                        (onSelect)="productList(data.segment,data.category)"
+                                        (onDeSelect)="productList(data.segment,data.category)"
+                                        >
+                                        
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>                           
+                            <div class="col s4">
+                                <div class="multi-all-select">
+                                    <label>Category</label>
+                                    <ng-multiselect-dropdown
+                                    [placeholder]="'Select Category'"
+                                    [data]="category_list"
+                                    [(ngModel)]="data.category"
+                                    name="category"
+                                    #category="ngModel"
+                                    [settings]="dropdownSettings2"
+                                    (onSelect)="productList(data.segment,data.category)"
+                                    (onDeSelect)="productList(data.segment,data.category)"
+                                    >
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>                                
+                        <div   class="col s4 ">
+                            <div class="multi-all-select">
+                                <label>Product Name</label>
+                                <ng-multiselect-dropdown
+                                [placeholder]="'Select Product'"
+                                [data]="ProductName_list"
+                                [(ngModel)]="data.product"
+                                name="product"
+                                #product="ngModel"
+                                [settings]="dropdownSettings3"
+                                (onSelect)="getCartProductList(data.segment,data.category,data.product)"
+                                (onDeSelect)="getCartProductList(data.segment,data.category,data.product)">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div >
+        <!-- <div class="row">
+            <div class="col s4">
+                <div class="territory-info ">
+                    <div class="head" [ngClass]="{'active':active.subcategory==true}">
+                        <h2>SEGMENT</h2>
+                        <i class="material-icons search-icon right20" (click)="toggleterritory('subcategory','open')"  matRipple>search</i>
+                        <input type="text" placeholder="search..." id="subcategory" (input)="segmentSearch()" name="search" [(ngModel)]="segsearch.search" class="fix-search">
+                        <i class="material-icons close-icon" (click)="toggleterritory('subcategory','close')" matRipple>clear</i>
+                    </div>
+                    <div class="cs-checkbox">
+                        <div class="checkbox-outer">
+                            <section class="checkbox-inner"  >
+                                <mat-radio-button class="check-list category-bg" name="segment" (change)="productList(data.category,segment.value)"(change)="selectedItem(segment.value,'','','')" *ngFor="let segment of segmentList" value="{{segment.value}}">{{segment.text}}</mat-radio-button>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col s4">
+                <div class="territory-info ">
+                    <div class="head" [ngClass]="{'active':active.category==true}">
+                        <h2>CATEGORY</h2>
+                        <i class="material-icons search-icon right20" (click)="toggleterritory('category','open')"  matRipple>search</i>
+                        <input type="text" placeholder="search..." id="category" (input)="categorySearch()" name="search" [(ngModel)]="catsearch.search" class="fix-search">
+                        <i class="material-icons close-icon" (click)="toggleterritory('category','close')" matRipple>clear</i>
+                    </div>
+                    <div class="cs-checkbox">
+                        <div class="checkbox-outer">
+                            <section class="checkbox-inner">
+                                <mat-radio-button class="check-list category-bg"  (change)="productList(cat.value,data.segment)" (change)="selectedItem('',cat.value,'','')" *ngFor="let cat of category_list" name="category"  value={{cat.value}}>{{cat.text}}</mat-radio-button>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="territory-info ">
+                    <div class="head" [ngClass]="{'active':active.series1==true}">
+                        <h2>Product Name</h2>
+                        <i class="material-icons search-icon right20" (click)="toggleterritory('series1','open')"  matRipple>search</i>
+                        <input type="text" placeholder="search..." id="series1" (input)="subSegmentSearch()" name="search" [(ngModel)]="subsegsearch.search" class="fix-search">
+                        <i class="material-icons close-icon" (click)="toggleterritory('series1','close')" matRipple>clear</i>
+                    </div>
+                    <div class="cs-checkbox">
+                        <div class="checkbox-outer">
+                            <section class="checkbox-inner" >
+                                <mat-checkbox class="check-list category-bg" name="subSegment" (change)="getCartProductList($event,data.category,data.segment,product.productName)" (change)="selectedItem('','',product.productName,$event)"*ngFor="let product of product_list;let index=index" value="{{product.productName}}">{{product.productName}}</mat-checkbox>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div> -->
+        
+        <div class="sprate-box mb20 mt20">
+            <div class="row mb0">
+                <div class="col s4 ml0">
+                    <div class="upload-excel">
+                        <label>
+                            <input multiple="" style="display: none;" name="attachment" type="file" id="selectfile"  (change)="incomingfile('selectfile',$event)" required >
+                            <div class="outer">
+                                <div class="innear">
+                                    <i class="material-icons upload-ic" >cloud_upload</i>
+                                    <p>Import Attachment</p>
+                                </div>
+                            </div>
+                        </label>
+                        <p></p>
+                    </div>
+                </div>
+                <div class="col s8 text-right">
+                    <div class="cs-btn">
+                        <div *ngIf="productlist.length!=0" class="in-btn">
+                            <button mat-raised-button color="accent" (click)="downloadFile()" >
+                                <i class="material-icons">cloud_download</i> Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div  *ngIf="productlist.length!=0 || productdiv==true" class="col s12 padding0">
+            <div class="heading-bg left-right-15 mb0">
+                <h2>PRODUCT INFORMATION</h2>
+            </div>
+            <div class="cs-table left-right-15">
+                <div class="table-head pr28">
+                    <table>
+                        <tr>
+                            <th class="w30"></th>
+                            <th class="w150">Part Number</th>
+                            <th >Product Model</th>
+                            <th class="w70">Min. Qty</th>
+                            <th class="w80">Order Qty</th>
+                            <th class="w80">Pending Order</th>
+                            <th class="w90 text-right">Price</th>
+                            <th class="w100 ">Price Support</th>
+                            <th class="w100 ">Net Item Value</th>
+                            <th class="w120">Net Order Value</th>
+                            <th class="w55">GST %</th>
+                            <th class="w70">Scheme</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="table-head bdrt pr28" >
+                    <table>
+                        <tr>
+                            <th class="w30"></th>
+                            <th class="w130">
+                                <div class="th-search-acmt">
+                                    <mat-form-field>
+                                        <input type="text"  name="search" [(ngModel)]="productName.search" (input)="productSearchByNumber(productName.search,modelName.search)" matInput [matAutocomplete]="auto1">
+                                        <mat-autocomplete #auto1="matAutocomplete" >
+                                        </mat-autocomplete>
+                                    </mat-form-field> 
+                                </div>
+                            </th>
+                            <th >
+                                <div class="th-search-acmt">
+                                    <mat-form-field>
+                                        <input type="text"  name="search" [(ngModel)]="modelName.search" (input)="productSearchByNumber(productName.search,modelName.search)"  matInput [matAutocomplete]="auto4">
+                                        <mat-autocomplete #auto4="matAutocomplete" >
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                            </th>
+                            <th class="w70">&nbsp;</th>
+                            <th class="w80">&nbsp;</th>
+                            <th class="w80">&nbsp;</th>
+                            <th class="w90">&nbsp;</th>
+                            <th class="w100">&nbsp;</th>
+                            <th class="w100">&nbsp;</th>
+                            <th class="w120">&nbsp;</th>
+                            <th class="w55">&nbsp;</th>
+                            <th class="w70">&nbsp;</th>
+                            
+                        </tr>
+                    </table>
+                </div>
+                
+                <div *ngIf="productdiv==true" class="table-container ">
+                    <div class="table-content height-scroll">
+                        <table>
+                            <tr *ngFor="let product of productlist;let index=index">
+                                <td class="w30"><span *ngIf="product.ifcheck"><mat-checkbox  name="datacheck" [checked]="product.datacheck"  (change)="addCart(product,index,$event)" >&nbsp; </mat-checkbox></span></td>
+                                <td class="w130">{{product.partNumber}}</td>
+                                <td  >{{product.model}}</td>
+                                <td class="w70">{{product.moq}}</td>
+                                <td class="w80">
+                                    <div class="td-input">
+                                        <input type="number" (keyup.enter)="addToMyCart(index)" (change)="checkValidate(index)" (input)="selectProduct(index)" (input)="calculateAmount(product.moq,product.quantity,index)" name="qty" #quantity="ngModel" [(ngModel)]="product.quantity" required>
+                                    </div>
+                                </td>
+                                <td class="w80" >
+                                    <a class="link-btn" (click)="pendingOrder(product.productId)" >{{product.pendingQty}}</a>
+                                </td>
+                                <td class="w90" >&#8377; {{product.discountedListPrice}}</td>
+                                <td class="w100" >&#8377; {{product.priceSupport}}</td>
+                                <!-- <td class="w100">
+                                    <div class="td-input">
+                                        <input type="number" readonly name="priceSupport" #priceSupport="ngModel" (keyup.enter)="calculatePriceSupport(index,product.priceSupport)" [(ngModel)]="product.priceSupport" required>
+                                    </div>
+                                </td> -->
+                                <td class="w100" >&#8377; {{product.itemValue}}</td>
+                                <td class="w120">&#8377; {{product.amount}}</td>
+                                <td class="w55">{{product.gstPercentage}} %</td>
+                                <td class="w70 " (click)="SchemeDetail(product.partNumber,index)">
+                                    <div *ngIf="product.schemeCount!=0" class="icons-list">
+                                        <i class="material-icons check">check_circle </i>
+                                        <i class="material-icons forword">keyboard_arrow_right </i>
+                                        <!-- <i *ngIf="product.schemeCount==0" class="material-icons close">clear </i> -->
+                                    </div>
+                                    
+                                </td>  
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="data-not-available" *ngIf="productlist.length==0">
+                        <div class="outer">
+                            <div class="iinear">
+                                <div class="figure" matRipple>
+                                    <div class="header">
+                                        <img src="assets/img/data-not-available-header.svg" alt="">
+                                    </div>
+                                    
+                                    <div class="description">
+                                        <div class="cs-heading">
+                                            <h2>No Product</h2>
+                                        </div>
+                                        <div class="img">
+                                            <i class="material-icons">error_outline</i>
+                                        </div>
+                                        <div class="psc">
+                                            <p>data not available</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cs-btn mt20 text-right">
+                <div class="in-btn">
+                    <button mat-raised-button color="accent" [disabled]="tmp_orderDetail.length==0" (click)="addToCart()" >Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="col s12 padding0">
+            
+            <div class="heading-bg left-right-15">
+                <h2>Product In Cart</h2>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <div class="cs-table left-right-15">
+                        <div class="table-head">
+                            <table>
+                                <tr>
+                                    <th class="w110">Category</th>
+                                    <th class="w110">Items</th>
+                                    <th class="w110">Net Order Value</th>
+                                    <!-- <th class="w80">Action</th> -->
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="table-container">
+                            <div class="table-content">
+                                <table>
+                                    <tr *ngFor="let order of tmp_array;let i=index">
+                                        <td class="w110"><a mat-button class="link-btn" (click)="productDetail(order.category)" >{{order.category}}</a></td>
+                                        <td class="w110">{{order.quantity}}</td>
+                                        <td class="w110">{{order.amount}}</td>
+                                        <!-- <td class="w80 text-center">
+                                            <a class="action-cart" mat-button><i class="material-icons red-clr"(click)="removeFromCart(i)">delete_forever</i></a>
+                                        </td> -->
+                                        
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="from-fields">
+                <div class="row">
+                    <div class="col s6">
+                        <div class="details-info pt0">
+                            <div class="basic-details ">
+                                <div class="row">
+                                    <div class="col s12 padding0 cs-figure">
+                                        <h2>CREDIT LIMIT</h2>
+                                        <ul>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Limit</span>
+                                                        <p>{{distributorDetail.creditLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Used</span>
+                                                        <p>{{distributorDetail.creditUsed | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balanced</span>
+                                                        <p>{{distributorDetail.creditBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row mt15">
+                                    <div class="col s12 padding0 cs-figure">
+                                        <h2>Target Info</h2>
+                                        <ul *ngIf="currentMonth==1">
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>{{current_month}} Target</span>
+                                                        <p>{{monthleyTarget.janTargetLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Achived</span>
+                                                        <p>{{monthleyTarget.janTargetAchieved | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balance</span>
+                                                        <p>{{monthleyTarget.janTargetBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <ul *ngIf="currentMonth==2">
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>{{current_month}} Target</span>
+                                                        <p>{{monthleyTarget.febTargetLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Achived</span>
+                                                        <p>{{monthleyTarget.febTargetAchieved | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balance</span>
+                                                        <p>{{monthleyTarget.febTargetBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <ul *ngIf="currentMonth==3">
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>{{current_month}} Target</span>
+                                                        <p>{{monthleyTarget.marTargetLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Achived</span>
+                                                        <p>{{monthleyTarget.marTargetAchieved | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balance</span>
+                                                        <p>{{monthleyTarget.marTargetBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul> 
+                                        <ul *ngIf="currentMonth==4">
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>{{current_month}} Target</span>
+                                                        <p>{{monthleyTarget.aprTargetLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Achived</span>
+                                                        <p>{{monthleyTarget.aprTargetAchieved | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balance</span>
+                                                        <p>{{monthleyTarget.aprTargetBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <ul *ngIf="currentMonth==5">
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>{{current_month}} Target</span>
+                                                        <p>{{monthleyTarget.mayTargetLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Achived</span>
+                                                        <p>{{monthleyTarget.mayTargetAchieved | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balance</span>
+                                                        <p>{{monthleyTarget.mayTargetBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul> 
+                                        <ul *ngIf="currentMonth==6">
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>{{current_month}} Target</span>
+                                                        <p>{{monthleyTarget.junTargetLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Achived</span>
+                                                        <p>{{monthleyTarget.junTargetAchieved | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balance</span>
+                                                        <p>{{monthleyTarget.junTargetBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul> 
+                                        <ul *ngIf="currentMonth==7">
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>{{current_month}} Target</span>
+                                                        <p>{{monthleyTarget.julTargetLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Achived</span>
+                                                        <p>{{monthleyTarget.julTargetAchieved | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balance</span>
+                                                        <p>{{monthleyTarget.julTargetBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul> 
+                                        <ul *ngIf="currentMonth==8">
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>{{current_month}} Target</span>
+                                                        <p>{{monthleyTarget.augTargetLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Achived</span>
+                                                        <p>{{monthleyTarget.augTargetAchieved | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balance</span>
+                                                        <p>{{monthleyTarget.augTargetBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul> 
+                                        <ul *ngIf="currentMonth==9">
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>{{current_month}} Target</span>
+                                                        <p>{{monthleyTarget.sepTargetLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Achived</span>
+                                                        <p>{{monthleyTarget.sepTargetAchieved | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balance</span>
+                                                        <p>{{monthleyTarget.sepTargetBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <ul *ngIf="currentMonth==10">
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>{{current_month}} Target</span>
+                                                        <p>{{monthleyTarget.octTargetLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Achived</span>
+                                                        <p>{{monthleyTarget.octTargetAchieved | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balance</span>
+                                                        <p>{{monthleyTarget.octTargetBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <ul *ngIf="currentMonth==11">
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>{{current_month}} Target</span>
+                                                        <p>{{monthleyTarget.novTargetLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Achived</span>
+                                                        <p>{{monthleyTarget.novTargetAchieved | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balance</span>
+                                                        <p>{{monthleyTarget.novTargetBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <ul *ngIf="currentMonth==12">
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>{{current_month}} Target</span>
+                                                        <p>{{monthleyTarget.decTargetLimit | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Achived</span>
+                                                        <p>{{monthleyTarget.decTargetAchieved | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="outer">
+                                                    <div class="inner">
+                                                        <span>Balance</span>
+                                                        <p>{{monthleyTarget.decTargetBalanced | currency: 'INR':true}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col s6">
+                        <div class="invoice-details">
+                            <table class="invoice-table">
+                                <tr>
+                                    <td class="td">Total Quantity</td>
+                                    <td class="w200 td">{{itemTotel}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="td">Basic Total</td>
+                                    <td class="td"> {{subTotal | currency: 'INR':true}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="td">GST</td>
+                                    <td class="td"> {{gstTotal | currency: 'INR':true}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="td">Grand Total</td>
+                                    <td class="td"> {{grandTotal | currency: 'INR':true}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="control-field wp70" style="float: right;">
+                            <mat-form-field class="cs-input">
+                                <input matInput placeholder="Enter Remark" name="remarks" #remarks="ngModel" [(ngModel)]="data.remarks" class="h110" style="background: #fff;">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col s12">
+                <div class="cs-btn mt32 text-right">
+                    <div class="in-btn  mr15">
+                        <button mat-raised-button color="accent" (click)="SaveOrder()" >Save As Draft</button>
+                    </div>
+                    <div class="in-btn">
+                        <button mat-raised-button color="accent" (click)="SubbmitOrder()" [disabled]="orderDetail.length==0" >Place Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<!-- <div class="fix-btn">
+    
+    <a  matTooltip="Download Sample File"  matTooltipPosition="left" href="http://nextstep.net.in/kenshin/sampleFile.xlsx" >
+        <i class="material-icons">arrow_downward</i>
+    </a>
+</div> -->
+</div>
+
+<div class="h50"></div>

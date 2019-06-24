@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="433.5" height="510" viewBox="0 0 433.5 510">
+  <g id="notifications-button" transform="translate(-38.25)">
+    <g id="notifications">
+      <path id="Path_1" data-name="Path 1" d="M255,510a51.15,51.15,0,0,0,51-51H204A51.15,51.15,0,0,0,255,510ZM420.75,357V216.75c0-79.05-53.55-142.8-127.5-160.65V38.25C293.25,17.85,275.4,0,255,0s-38.25,17.85-38.25,38.25V56.1C142.8,73.95,89.25,137.7,89.25,216.75V357l-51,51v25.5h433.5V408Z" fill="#fff"/>
+    </g>
+  </g>
+</svg>

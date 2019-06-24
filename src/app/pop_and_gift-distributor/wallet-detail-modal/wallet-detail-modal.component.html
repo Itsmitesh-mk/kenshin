@@ -1,0 +1,58 @@
+<div class="edit-modal" >
+  <p class="heading">Gift Item Deatils</p>
+  <div mat-dialog-content style="overflow-x: hidden;">
+      <div class="row">
+          <div class="col s12">
+            <div class="cs-table left-right-20">
+                <div class="table-head">
+                  <table class="sno-border">
+                    <tr>
+                      <th class="w30">&nbsp;</th>
+                      <!-- <th class="w200 text-center">Qty</th> -->
+                      <th class="padding0">
+                        <table>
+                          <tr>
+                            <th>Pop & Gift</th>
+                            <th class="w100">Qty</th>
+                            <th class="w130">Point/Qty</th>
+                          </tr>
+                        </table>
+                      </th>
+                      <th class="w170">Total Redeem</th>
+                    </tr>
+                  </table>
+                </div>
+              <div class="table-container">
+                <div class="table-content">
+                  <table class="sno-border">
+                    <tr>
+                   
+                      <td class="padding0">
+                        <table class="inner-table">
+                          <tr *ngFor="let list of itemData">
+                            <td>
+                              <a class="link-btn" mat-button routerLink="" routerLinkActive="active">{{list.name}}</a>
+                            </td>
+                            <td class="w100">{{list.quantity}}</td>
+                            <td class="w130">{{list.redeemPointsPerUnit}}</td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td class="w170">{{this.totalPointsRedeemed}}</td>
+                    </tr>
+                
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="warn"  [mat-dialog-close]="false" class="mr15">Cancel</button>
+    <div >
+      <!-- <button mat-raised-button  [mat-dialog-close]="true" color="accent">Save</button> -->
+    </div>
+  </div>
+</div>

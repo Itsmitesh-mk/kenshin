@@ -1,0 +1,135 @@
+<div class="main-container">
+    <!-- <div *ngIf="loader"> 
+      <div class="cs-loader">
+        <mat-spinner class="loader"></mat-spinner> 
+      </div>
+    </div> -->
+    <div class="middle-container">
+      
+      <div class="page-heading">
+        <div class="heading-text bc-space">
+          <div class="back-btn">
+            <a mat-button routerLink="/leave-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+          </div>
+          <h2>{{allDetailedData.userName}} || {{allDetailedData.leaveApplicationId}}</h2>
+
+          <button type="button" routerLink="/editleave/{{allDetailedData.leaveApplicationId}}" >EditData</button>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="container-outer">
+      <div class="container" >
+        <div class="row">
+          <div class="col s7">
+            <div class="details-info padding0">
+              <div class="basic-details">
+                <div class="col s12 cs-figure padding0">
+                  <h2>Basic Detail</h2>
+                  <ul>
+                    <li>
+                      <div class="outer">
+                        <div class="inner">
+                          <span>Leave Type</span>
+                          <p>{{allDetailedData.leaveTypeName}}</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="outer">
+                        <div class="inner">
+                          <span>Start Date {{allDetailedData.approvalStatus}}</span>
+                          <p>{{allDetailedData.startDate | date: 'dd-MM-yyyy'}}</p>
+                          <!-- <p>{{a.startDate | date: 'dd'}}-{{a.startDate | date:'MM'}}-{{a.startDate | date: 'yyyy'}}</p> -->
+                        </div>
+                      </div>
+                    </li>
+                    <!-- class="approved" -->
+
+                    <!-- status -->
+                 
+                    <!-- status -->
+                    <li >
+                      <div class="outer">
+                        <div class="inner">
+                          <span>End Date</span>
+                        <p>{{allDetailedData.endDate | date: 'dd-MM-yyyy'}}</p>
+                          <!-- <p>{{a.endDate | date: 'dd'}}-{{a.endDate | date:'MM'}}-{{a.endDate | date: 'yyyy'}}</p> -->
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <ul class="mt15">
+                    <li style="border-left: 1px solid #B29D9D; min-height: 100px;">
+                        <span>Remark</span>
+                        <p >{{allDetailedData.remarks}}</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p *ngIf="allDetailedData.approvalStatus==0">Pending</p>
+          <p *ngIf="allDetailedData.approvalStatus==1">Approved</p>
+          <p *ngIf="allDetailedData.approvalStatus==2">Reject</p>
+
+
+
+          
+          <div class="col s5" *ngIf="userId==1">
+            <div class="details-info padding0">
+              <div class="basic-details">
+                <div class="cs-figure">
+                  <h2 class="pb0">Update Status </h2>
+                 
+                </div>
+                <form name="form" (ngSubmit)="update_status(allDetailedData.approvalStatus,allDetailedData.leaveApplicationId)">
+                <div class="from-fields">
+                    <div class="row">
+                      <div class="col s12 padding0">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr">
+                              
+                            <mat-select placeholder="Select Status"  name="approvalStatus" [(ngModel)]="allDetailedData.approvalStatus">
+                              <mat-option value="1">Approved</mat-option>
+                              <mat-option value="0">Pending</mat-option>
+                              <mat-option value="2">Reject</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      
+                      <div class="col s12 padding0">
+                        <div class="control-field">
+                          <mat-form-field   class="cs-input infix-bodr8">
+                              <!-- -->
+                            <textarea matInput placeholder="Reason" class="h60" name="reason" [(ngModel)]="form.reason"  ></textarea>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      
+                      <div class="col s12 padding0">
+                        <div  class="cs-btn fixedd mt15 text-right">
+                          <div class="in-btn">
+                            <button mat-raised-button color="accent" mat-stroked-button  >Save</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+    
+  </div>
+  
+  <div class="h50"></div>
+  
+  

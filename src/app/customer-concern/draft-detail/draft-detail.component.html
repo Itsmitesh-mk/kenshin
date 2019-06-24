@@ -1,0 +1,968 @@
+<div class="main-container"  *ngIf="draftDetail.concernStatus==3">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+        <div class="middle-container">
+          <div class="page-heading">
+            <div class="heading-text bc-space">
+              <div class="back-btn">
+                <a mat-button routerLink="/concern-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+              </div>
+              <h2>{{categorydetail.networkEstablishment}}<a style="font-size: 12px; color: #123dd6; margin-left: 10px; text-decoration: underline;"  class="name" routerLink="/distribution-detail/{{categorydetail.raisedByNetworkId}}" routerLinkActive="active">View Detail</a></h2>
+              <p>Distributor</p>
+            </div>
+          </div>
+        </div>
+        <div class="container-outer">
+          <div class="container" >
+              <div class="row">
+                  <div class="col s12">
+                    <div class="details-info">
+                      <div class="basic-details">
+                        <div class="col s12 cs-figure padding0">
+                          <ul>
+                            <li style="width: 210px; min-width: 210px;">
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Concern Date</span>
+                                  <p> {{categorydetail.createdOn | date:'d, MMMM , y'}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Created by</span>
+                                  <p>{{categorydetail.createdByName}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            <li *ngIf="categorydetail.claimNo">
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Concern Number</span>
+                                  <p>{{categorydetail.claimNo}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                                <div class="outer">
+                                  <div class="inner">
+                                    <span>Concern Type</span>
+                                    <p>{{categorydetail.concernTypeName}}</p>
+                                  </div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="outer">
+                                  <div class="inner">
+                                    <span>Status</span>
+                                    <p *ngIf="categorydetail.concernStatus== '2'">UNDER VERIFICATION</p>
+                                    <p *ngIf="categorydetail.concernStatus== '3'">WAITING FOR DISTRIBUTOR APPROVAL</p>
+                                    <p *ngIf="categorydetail.concernStatus== '4'">Proceed For Approvel</p>
+                                    <p *ngIf="categorydetail.concernStatus== '5'">Approved</p>
+                                    <p *ngIf="categorydetail.concernStatus== '6'">Rejected</p>
+                                    <p *ngIf="categorydetail.concernStatus== '7'">Transporter Deatail</p>
+                                  </div>
+                                </div>
+                              </li> 
+                            
+                          </ul>
+
+                          <ul class="mt15">
+                              <li>
+                                  <div class="outer">
+                                    <div class="inner">
+                                      <span>Total Item</span>
+                                      <p>{{totalItems}}</p>
+                                    </div>
+                                  </div>
+                                  </li>
+                              
+                            <li>
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Total Qty</span>
+                                  <p>{{categorydetail.totalQty}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            <li *ngIf="categorydetail.concernType==1">
+                                <div class="outer">
+                                  <div class="inner">
+                                    <span>Product Type</span>
+                                    <p>{{categorydetail.productConcernTypeName}}</p>
+                                  </div>
+                                </div>
+                              </li>
+                           
+                            <li>
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Total Amount</span>
+                                  <p>{{categorydetail.totalAmount}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            <li *ngIf="user.data.userType==3">
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Assigned Sales</span>
+                                  <p><span *ngFor="let sales of user.data.distributerNetwork.networkSalesUsers">{{sales.salesUserName}}</span></p>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="sprate-box pt0">   
+                <div class="row pt15 pb15"  >
+                  <div  class="col s4 empty">
+                      <div class="multi-all-select">
+                          <label>Segment</label>
+                          <ng-multiselect-dropdown
+                          [placeholder]="'Select Segment'"
+                          [data]="segmentList"
+                          [(ngModel)]="data.segment"
+                          name="segment"
+                          #segment="ngModel"
+                          [settings]="dropdownSettings1"
+                          (onSelect)="productList(data.segment,data.category)"
+                          >
+                          
+                      </ng-multiselect-dropdown>
+                  </div>
+              </div>
+              <div class="col s4 empty">
+                  <div class="multi-all-select">
+                      <label>Category</label>
+                      <ng-multiselect-dropdown
+                      [placeholder]="'Select Category'"
+                      [data]="categorylist"
+                      [(ngModel)]="data.category"
+                      name="category"
+                      #category="ngModel"
+                      [settings]="dropdownSettings2"
+                      (onSelect)="productList(data.segment,data.category)"
+                      >
+                  </ng-multiselect-dropdown>
+              </div>
+          </div>     
+          <div   class="col s4 empty">
+              <div class="multi-all-select">
+                  <label>Product Name</label>
+                  <ng-multiselect-dropdown
+                  [placeholder]="'Select Product'"
+                  (onDeSelect)="onItemDeSelect($event,data.segment,data.category,data.product)"
+                  [data]="product_list"
+                  [(ngModel)]="data.product"
+                  name="product"
+                  #product="ngModel"
+                  [settings]="dropdownSettings3"
+                  (onSelect)="getCartProductList($event,data.segment,data.category,data.product)">
+              </ng-multiselect-dropdown>
+          </div>
+      </div>  
+     </div>
+     <div  *ngIf="productlist && productlist.length > 0" class="col s12 padding0">
+      <div class="heading-bg left-right-15">
+          <h2>PRODUCT INFORMATION</h2>
+      </div>
+      
+      
+      <div class="cs-table left-right-15">
+          <div class="table-head" [ngClass]="{ 'pr28' : productlist.length>6 }" >
+              
+              <table>
+                  <tr>
+                                  
+                   
+                      <th class="w40">&nbsp;</th>
+                      <th>Part Number</th>
+                      <th class="w130">Product Name</th>
+                      <th class="w130">Application No</th>
+                      <th class="w100">Image</th>
+                      <th class="w60 text-center">Qty<span>*</span></th>
+                      <th class="w110">MFG Date.<span *ngIf='draftDetail.productConcernType==1'>*</span></th>
+                      <th class="w120">Invoice No.<span *ngIf='draftDetail.productConcernType==1'>*</span></th>
+                      <th class="w70 text-right">Rate</th>
+                      <th class="w80 text-right">Amount</th>
+                      <th class="w80">Action</th>
+                  </tr>
+              </table>
+          </div>
+          
+          
+          <div class="table-head bdrt" [ngClass]="{ 'pr28' : productlist.length>6 }" >
+              <table>
+                  <tr>
+                      <th class="w40"></th>
+                      <th>
+                          <div class="th-search-acmt">
+                              <mat-form-field>
+                                  <input type="text"  name="search" [(ngModel)]="productName.search" (input)="productSearchByNumber()" matInput [matAutocomplete]="auto1">
+                                  <mat-autocomplete #auto1="matAutocomplete" >
+                                      
+                                  </mat-autocomplete>
+                                  
+                              </mat-form-field> 
+                          </div>
+                      </th>
+                      <th class="w130">&nbsp; </th>
+                      <th class="w130">&nbsp; </th>
+                      <th class="w100">&nbsp;</th>
+                      <th class="w60">&nbsp;</th>
+                      <th class="w110">&nbsp;</th>
+                      <th class="w120">&nbsp;</th>
+                      <th class="w70">&nbsp;</th>
+                      <th class="w80">&nbsp;</th>
+                      <th class="w80">&nbsp;</th>
+                  </tr>
+              </table>
+          </div>
+          
+          <div class="table-container height-scroll">
+              <div class="table-content shadow-none">
+                  <table>
+                      <tr *ngFor="let product of productlist;let index=index">
+                          <td class="w40"><span *ngIf='product.qty'><mat-checkbox name="{{check+index}}" [(ngModel)]="product.datacheck"  (change)="select(product,index)" >&nbsp; </mat-checkbox></span></td>
+                          <td >{{product.partNumber}}</td>
+                          <td class="w130">{{product.productName}}</td>
+                          <td class="w130">EF5678</td>
+                          <td class="w100">
+                            <a class="link-btn" *ngIf="!product.isImage">
+                                <label class="cs-file">
+                                    Add Image
+                                    <input type="file" (change)="insertImage($event,product.productName,index)" style="display: none;">
+                                </label>
+                            </a>
+                            <a *ngIf="product.isImage" class="link-btn" (click)="openImageDialog(index)"> View Image </a>
+                        </td>
+                          <td class="w60 text-center" >
+                              <div class="td-input">
+                                  <input type="number" (input)="calculateAmount(product.qty,index)"  (keyup.enter)="addProduct('checkIndividual')" name="qty" #qty="ngModel" [(ngModel)]="product.qty" [value]="product.qty" required min="1" >
+                              </div>
+                              <p *ngIf='isCart==true && product.datacheck==true && product.qty==""'>required</p>
+                          </td>
+                          <!--Pre-Fitment Field-->
+                          <td class="w110" *ngIf='draftDetail.productConcernType==1'>
+                              <div class="td-input" style="display: flex; align-items: center;">
+                                  <input matInput [matDatepicker]="picker"   placeholder="Choose a date" name="{{date+index}}" [(ngModel)]="product.date"  #date="ngModel"   [max]="maxDateValue" required>
+                                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                  <mat-datepicker #picker></mat-datepicker>
+                              </div>
+                              <p *ngIf='isCart&&!product.date&&product.datacheck'>required</p>
+                          </td>
+                          <td class="w120" *ngIf='draftDetail.productConcernType==1'> 
+                              <div class="td-input">
+                                  <input type="text"    (keyup.enter)="addProduct('checkIndividual')" name="{{invoice+index}}" #invoice="ngModel" [(ngModel)]="product.invoice" required>
+                              </div>
+                              <p *ngIf='isCart&&!product.invoice&&product.datacheck'>required</p>
+                          </td>
+                          
+                          <!--Pre-Fitment Field-->
+                          <!--Post-Fitment Field-->
+                          <td class="w110" *ngIf='draftDetail.productConcernType==2'>
+                              <div class="td-input" style="display: flex; align-items: center;">
+                                  <input matInput [matDatepicker]="picker"   placeholder="Choose a date" name="{{date+index}}" [(ngModel)]="product.date"  #date="ngModel"   [max]="maxDateValue" required>
+                                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                  <mat-datepicker #picker></mat-datepicker>
+                              </div>
+                          </td>
+                          <td class="w120" *ngIf='draftDetail.productConcernType==2'> 
+                              <div class="td-input">
+                                  <input type="text"    (keyup.enter)="addProduct('checkIndividual')" name="{{invoice+index}}" #invoice="ngModel" [(ngModel)]="product.invoice" required>
+                              </div>
+                              
+                          </td>
+                          
+                          <!--Post-Fitment Field-->
+                          <td class="w70 text-right">&#8377; {{product.priceUnit}}</td>
+                          <td class="w80 text-right">&#8377; {{product.amount}}</td>
+                          <td class="w80">
+                              <a *ngIf="product.qty!=''"class="action-cart" mat-button><i class="material-icons green-clr"(click)="addProduct('checkIndividual')">save</i></a>
+                          </td>
+                          
+                      </tr>
+                  </table>
+              </div>
+              <div class="data-not-available" *ngIf="productlist.length==0">
+                  <div class="outer">
+                      <div class="iinear">
+                          <div class="figure" matRipple>
+                              <div class="header">
+                                  <img src="assets/img/data-not-available-header.svg" alt="">
+                              </div>
+                              
+                              <div class="description">
+                                  <div class="cs-heading">
+                                      <h2>No Product</h2>
+                                  </div>
+                                  <div class="img">
+                                      <i class="material-icons">error_outline</i>
+                                  </div>
+                                  <div class="psc">
+                                      <p>data not available</p>
+                                      
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div *ngIf="add" class="cs-btn mt20 text-right">
+          <div class="in-btn">
+              <button mat-raised-button color="accent" type="button"  (click)="addProduct('checkk')" >Add to Cart</button>
+          </div>
+      </div>
+  </div>
+   
+            <div class="row">
+              <div class="col s12">
+                <div class="sprate-box   padding0" *ngIf="categorydetail.concernType==1">
+                  <div class="top-heading">
+                    <h2>Item List</h2>
+                  </div>
+                  <div class="row">
+                    <div class="cs-table">
+                      <div class="table-head">
+                        <table> 
+                          <tr>
+                            <th class="padding0">
+                              <table>
+                                <tr>
+                                  <th>Category</th>
+                                  <th class="w110 text-center">Total Items</th>
+                                  <th class="w110 text-center">Total QTY.</th>
+                                  <th class="w130 text-right">Amount</th>
+                                </tr>
+                              </table>
+                            </th>
+                          </tr>
+                        </table>
+                      </div>
+                      
+                      <div class="table-container">
+                        <div class="table-content none-shadow">
+                          <table>
+                            <tr  *ngFor="let concerns of tmp_array;let i=index" >
+                              <td class="padding0">
+                                <table>
+                                  <tr>
+                                    <td><a mat-button class="link-btn" (click)="Show_Item(concerns.category,i)" >{{concerns.category}}</a></td>
+                                    <td class="w110 text-center">{{concerns.qty}}</td>
+                                    <td class="w110 text-center">{{concerns.totalItem}}</td>
+                                    <td class="w130 text-right">&#x20B9; {{concerns.amount}}</td>
+                                  </tr>
+                                </table>
+                                <table class="multi-table"  *ngIf='isItem==true&&isIndex==i'>
+                                  <tr>
+                                    <!-- <td class="w40">&nbsp;</td> -->
+                                    <td>Part No.</td>
+                                    <td class="w80">Segment</td>
+                                    <td class="w120">Invoice</td>
+                                    <td class="w100">MFG Date</td>
+                                    <td class="w60"> Claim Qty</td>
+                                    <td class="w60" >Accept Qty</td>
+                                    <td class="w60" >Reject Qty</td>
+                                    <td class="w80 text-right">Rate</td>
+                                    <td class="w80 text-right">Amount</td>
+                                    <th class="w100">Image</th>
+                                    <td>Sales Remark</td>
+                                    <td>Distributor Remark</td>
+                                  </tr>
+                                  <tr [hidden]="product.category != concerns.category" *ngFor="let product of tmp_detail; let i=index" [ngClass]="{ 'distributer' :!product.verified}">
+                                    <!-- <td><mat-checkbox  name="{{check+i}}" [(ngModel)]="product.datacheck" (change)="checkkk()" >&nbsp; </mat-checkbox></td> -->
+                                    <td>{{product.partNumber}}</td>
+                                    <td>{{product.segment}}</td>
+                                    <td>{{product.invoice}}</td>
+                                    <td>{{product.date|date:'d MMM y'}}</td>
+                                    <td>{{product.qty}}</td>
+                                    <td>
+                                      <div class="td-input" *ngIf="categorydetail.concernStatus==2">
+                                          <input type="text" (input)="calculateAmount(product.acceptqty,i)"  name="acceptqty" #acceptqty="ngModel" [(ngModel)]="product.acceptqty" [value]="product.acceptqty" (keypress)="MobileNumber($event)" required >
+                                      </div>
+                                      <div *ngIf="categorydetail.concernStatus!=2">{{product.acceptqty}}</div>
+                                  
+                                      <!-- <p *ngIf='isCart==true && product.datacheck==true && product.qty==""'>required</p> -->
+                                  </td>
+                                  <td>{{product.rejectqty}}</td>
+                                    <td class="text-right">&#x20B9; {{product.priceUnit}}</td>
+                                    <td class="text-right">&#x20B9; {{product.amount}}</td>
+                                    <td class="w100">
+                                      <a *ngIf="product.verified" class="link-btn" (click)="openImageDialog1(i)"> View Image </a>
+                                      <a *ngIf="!product.verified" class="link-btn" (click)="openImageDialog(i)"> View Image </a>
+                                  </td>
+                                <td> 
+                                  <div class="td-input" *ngIf="categorydetail.concernStatus==2">
+                                      <textarea type="text"   name="{{salesremark+index}}" #salesremark="ngModel" [(ngModel)]="product.salesremark" required></textarea>
+                                  </div>
+                                  <div class="td-input" *ngIf="categorydetail.concernStatus!=2">
+                                      <textarea type="text"   name="{{salesremark+index}}" #salesremark="ngModel" [(ngModel)]="product.salesremark" required readonly></textarea>
+                                  </div>
+                                  <!-- <p *ngIf='isCart&&!product.invoice&&product.datacheck'>required</p> -->
+                              </td>
+                              <td> 
+                                    <div class="td-input">
+                                        <textarea type="text"   name="{{dealerremark+index}}" (input)="remark()" #dealerremark="ngModel" [(ngModel)]="product.dealerremark" required ></textarea>
+                                    </div>
+                                </td>
+                                    <!-- <td>{{product.statusName}}</td>
+                                    <td>{{product.natureOfProblem}}</td> -->
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    
+                  </div>
+                </div>
+                <div class="row"  >
+                  <div class="col s12 padding0" >
+                    <div class="cs-btn  mt15 text-right">
+                      <div class="in-btn" *ngIf="categorydetail.concernType==1">
+                        <button  *ngIf="user.data.userType==2 && isForward && !isProceed && categorydetail.concernStatus==2" mat-raised-button color="accent" type="button" (click)="submit(3)" >Forward To Distributer</button>
+                        <button  *ngIf="user.data.userType==3 &&categorydetail.concernStatus==3 &&  isResubmit==false" mat-raised-button color="accent" type="button" (click)="submit(4)" >Proceed</button>
+                        <button  *ngIf="user.data.userType==3 && categorydetail.concernStatus==3 && (isResubmit || isRemark)" mat-raised-button color="accent" type="button" (click)="submit(2)" >Submit For Varification</button>
+                        <button  *ngIf="user.data.userType==2 && user.data.salesUser.concernApprovalAccess==true && categorydetail.concernStatus==2" mat-raised-button color="accent" type="button" (click)="submit(5)" >Generate Concern</button>
+                        <button  *ngIf="user.data.userType==2 && isProceed && user.data.salesUser.concernApprovalAccess==false && categorydetail.concernStatus==2" mat-raised-button color="accent" type="button" (click)="submit(4)" >Proceed for APPROVAL</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="row"  *ngIf="categorydetail.concernType==1">
+                
+                </div> -->
+                
+                <div class="sprate-box mt15 padding0"  *ngIf="categorydetail.concernType==1&&categorydetail.concernStatus>4">
+                  <div class="full-address">
+                    <div class="top-heading">
+                      <h2>Transporter Detail</h2>
+                    </div>
+                    <a  *ngIf="this.user.data.role==12 && categorydetail.concernStatus>4" mat-button class="address-edit" matTooltip="EDIT" color="accent" ><i class="material-icons" (click)="edit()">edit</i></a>
+                    <div class="cs-table">
+                      <div class="table-head">
+                        <table>
+                          <tr>
+                            <th>Transporter Name</th>
+                            <th class="w140">Mode of Transport</th>
+                            <th class="w140">No. of Boxes</th>
+                            <th class="w150">LR No.</th>
+                            <th class="w140">E-way bill No.</th>
+                            <th class="w100">&nbsp;</th>
+                          </tr>
+                        </table>
+                      </div>
+                      <form  (ngSubmit)="f.form.valid && updateTransport() || setFocus(f.form)" #f="ngForm" novalidate>
+                        <div class="table-container">
+                          <div class="table-content none-shadow">
+                            <table>
+                              <tr *ngIf='categorydetail.transporterName||isEdit'>
+                                <td><span *ngIf="isEdit==false">{{categorydetail.transporterName}}</span>
+                                  
+                                  <div class="td-input" *ngIf="isEdit==true">
+                                    <input type="text" name="transporterName" #transporterName="ngModel" [(ngModel)]="categorydetail.transporterName" [ngClass]="{'has-error' : transporterName.invalid }" required>
+                                    
+                                    <mat-error *ngIf="f.submitted && transporterName.invalid " class="invalid-feedback">
+                                      <mat-error *ngIf="transporterName.errors.required">required</mat-error>
+                                    </mat-error>
+                                  </div>
+                                  
+                                  <!-- <div class="td-input" *ngIf="isEdit==true" >
+                                    <mat-form-field class="cs-input">
+                                      <input type="text"  matInput  name="transporterName" #transporterName="ngModel" [(ngModel)]="categorydetail.transporterName" [ngClass]="{'has-error' : transporterName.invalid }" required>
+                                    </mat-form-field>
+                                    <mat-error *ngIf="f.submitted && transporterName.invalid " class="invalid-feedback">
+                                      <mat-error *ngIf="transporterName.errors.required">Transporter Name required</mat-error>
+                                    </mat-error>
+                                    
+                                  </div> -->
+                                </td>
+                                <td class="w140"><span *ngIf="isEdit==false">{{categorydetail.modeOfTransport}}</span>
+                                  <div class="td-input" *ngIf="isEdit==true" >
+                                    <input type="text" name="modeOfTransport" #modeOfTransport="ngModel" [(ngModel)]="categorydetail.modeOfTransport"  [ngClass]="{'has-error' : modeOfTransport.invalid }" required>
+                                    <!-- <mat-form-field class="cs-input">
+                                      <input type="text" matInput name="modeOfTransport" #modeOfTransport="ngModel" [(ngModel)]="categorydetail.modeOfTransport"  [ngClass]="{'has-error' : modeOfTransport.invalid }" required>
+                                    </mat-form-field> -->
+                                    <mat-error *ngIf="f.submitted && modeOfTransport.invalid " class="invalid-feedback">
+                                      <mat-error *ngIf="modeOfTransport.errors.required">required</mat-error>
+                                    </mat-error>
+                                    
+                                  </div>
+                                </td>
+                                <td class="w140"><span *ngIf="isEdit==false">{{categorydetail.numberOfBoxes}}</span>
+                                  <div class="td-input"  *ngIf="isEdit==true">
+                                    <!-- <mat-form-field class="cs-input">
+                                      <input type="text" matInput  name="numberOfBoxes" #numberOfBoxes="ngModel" [(ngModel)]="categorydetail.numberOfBoxes" [ngClass]="{'has-error' : numberOfBoxes.invalid }" (keypress)="MobileNumber($event)"  required>
+                                    </mat-form-field> -->
+                                    <input type="text" name="numberOfBoxes" #numberOfBoxes="ngModel" [(ngModel)]="categorydetail.numberOfBoxes" [ngClass]="{'has-error' : numberOfBoxes.invalid }" (keypress)="MobileNumber($event)"  required>
+                                    
+                                    <mat-error *ngIf="f.submitted && numberOfBoxes.invalid " class="invalid-feedback">
+                                      <mat-error *ngIf="numberOfBoxes.errors.required">required</mat-error>
+                                    </mat-error>
+                                    
+                                  </div>
+                                </td>
+                                <td class="w150"><span *ngIf="isEdit==false">{{categorydetail.lrNumber}}</span>
+                                  <div class="td-input"  *ngIf="isEdit==true" >
+                                    <input type="text"  name="lrNumber" #lrNumber="ngModel" [(ngModel)]="categorydetail.lrNumber" [ngClass]="{'has-error' : lrNumber.invalid }" required>
+                                    <mat-error *ngIf="f.submitted && lrNumber.invalid " class="invalid-feedback">
+                                      <mat-error *ngIf="lrNumber.errors.required">required</mat-error>
+                                    </mat-error>
+                                  </div>
+                                </td>
+                                <td class="w140"><span *ngIf="isEdit==false">{{categorydetail.eWayBillNumber}}</span>
+                                  <div class="td-input" *ngIf="isEdit==true">
+                                    <input type="text"  name="eWayBillNumber" #eWayBillNumber="ngModel" [(ngModel)]="categorydetail.eWayBillNumber" [ngClass]="{'has-error' : eWayBillNumber.invalid }" required>
+                                    <mat-error *ngIf="f.submitted && eWayBillNumber.invalid " class="invalid-feedback">
+                                      <mat-error *ngIf="eWayBillNumber.errors.required">required</mat-error>
+                                    </mat-error>
+                                  </div>
+                                </td>
+                                <td class="w100 text-center">
+                                  <button  mat-raised-button color="accent"  *ngIf="isEdit==true"  >Update</button>
+                                  <!-- <a class="action-cart" mat-button><i class="material-icons red-clr"  *ngIf="isEdit==false" (click)="edit()">edit</i></a> -->
+                                  <!-- <a class="action-cart" mat-button><i class="material-icons red-clr"  *ngIf="isEdit==true" (click)="updateTransport()">save</i></a> -->
+                                  <!-- <a class="action-cart" mat-button><i class="material-icons red-clr" (click)="remove(product.productId,i)">delete_forever</i></a> -->
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="sprate-box pt0" *ngIf="categorydetail.concernType==2">
+                  <div class="cs-heading">
+                    <h2>Other Type Detail</h2>
+                  </div>
+                  <div class="row">
+                    <div class="col s8 pl0">
+                      <div class="from-fields">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input wp100 h-input infix-bodr8">
+                            <textarea matInput   name="concernDetails" #concernDetails="ngModel"  [(ngModel)]="categorydetail.concernDetails" readonly class="h200"></textarea>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col s4 pr0">
+                      <div class="territory-info mt12">
+                        <div class="head">
+                          <h2>SalesRole</h2>
+                        </div>
+                        <div class="cs-checkbox">
+                          <div class="checkbox-outer auto-height-scroll">
+                            <section class="checkbox-inner  bodr0">
+                              <mat-checkbox *ngFor="let role of categorydetail.concernRoles"  class="check-list bg-none check-none check-none check-hover check-none" style="cursor: unset;">
+                                <div class="name-outer">
+                                  <div class="outer">
+                                    <div class="inner">
+                                      <div class="name-inner">
+                                          <span *ngIf="role.role==6">N</span>
+                                          <span *ngIf="role.role==7">R</span>
+                                          <span *ngIf="role.role==8">A</span>
+                                          <span *ngIf="role.role==10">T</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="text-box">
+                                  <h2><span *ngIf="role.role==6">National Manager</span><span *ngIf="role.role==7">Regional Manager</span><span *ngIf="role.role==8">Area Manager</span><span *ngIf="role.role==10">Territory Incharge</span></h2>
+                                </div>
+                              </mat-checkbox>
+                            
+                            </section>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col s12 padding0">
+                  <div  class="cs-btn fixedd mt15 text-right">
+                    <div class="in-btn">
+                      <button *ngIf='user.data.userType==1' mat-raised-button color="warn" type="button" (click)="processed()" >Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>  
+            </div>
+  </div>
+          </div>
+        </div>
+        
+      </div>
+      
+<div *ngIf="draftDetail.concernStatus!=3" class="main-container">
+    <div *ngIf="loader"> 
+        <div class="cs-loader">
+          <img src="assets/img/loader.png" class="rotate"> 
+        </div>
+   </div>
+    <div class="container-outer">
+        <div class="container" >
+            <div class="row">
+                    <div class="sprate-box pt0 mt15" *ngIf="draftDetail.concernType== '2'">
+                            <!-- Other Claim Section Start -->
+                            <div >
+                                <div class="cs-heading">
+                                    <h2>BASIC INFORMATION</h2>
+                                </div>
+                                <form  (ngSubmit)="f.form.valid &&  onSubmit(3)" #f="ngForm" novalidate>
+                                    <div class="from-fields">
+                                        <div class="row">
+                                            <div class="col s8 pl0">
+                                                <div class="control-field">
+                                                    <mat-form-field class="cs-input wp100 h-input infix-bodr8">
+                                                        <textarea class="h150" matInput placeholder="Description"  name="description" [(ngModel)]="other_form.description"  #description="ngModel" [ngClass]="{ 'is-invalid': f.submitted && description.invalid }" required></textarea>
+                                                    </mat-form-field>
+                                                    <mat-error *ngIf="f.submitted && description.invalid" class="invalid-feedback">
+                                                        <mat-error *ngIf="description.errors.required">Description is required</mat-error>
+                                                    </mat-error>
+                                                </div>
+                                            </div>
+                                            <div class="col s4 pr0">
+                                                <div class="territory-info mt15">
+                                                    <div class="head" >
+                                                        <h2>Assign SalesRoles</h2>
+                                                    </div>
+                                                    <div class="cs-checkbox">
+                                                        <div class="checkbox-outer auto-height-scroll">
+                                                            <section class="checkbox-inner" >
+                                                                <ng-container  *ngFor="let role of rolelistsales1;let index=index"   aria-required="true">
+                                                                    <mat-checkbox class="check-list" (change)="select_role(role.roleId,index,role.isAssign)" name="{{role.roleId}}" [(ngModel)]="role.isAssign"  value="{{role.roleId}}" >{{role.roleName}}</mat-checkbox>
+                                                                </ng-container>
+                                                            </section>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <mat-error *ngIf="f.submitted && !isAssignCheck">Assign to required</mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <div class="cs-btn text-right mt15">
+                                                <div class="in-btn">
+                                                    <button *ngIf="concern_form.claim_type==2" mat-raised-button color="accent" [disabled]="concern_form.isProceed==false || concern_form.info==false">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- Other Claim Section End -->
+                        </div>
+                <div class="col s12" *ngIf="draftDetail.concernType== '1'">
+                    <div class="sprate-box pt0">                     
+                        <form #p="ngForm" (ngSubmit)="p.valid">
+                            <div>
+                                <div class="cs-heading">
+                                    <h2 *ngIf="draftDetail.productConcernType==1">Pre-Fitment Claim</h2>
+                                    <h2 *ngIf="draftDetail.productConcernType==2">Post-Fitment Claim</h2>
+                                </div>
+                                <form name="form" (ngSubmit)="f.form.valid"  #f="ngForm" novalidate >
+                                    <!-- <div class="row">
+                                        <div class="col s6" *ngIf="user.data.userType=='2'">
+                                            <div class="from-fields">
+                                                <div class="control-field">
+                                                    
+                                                    <mat-form-field class="cs-input">
+                                                        <input type="text" matInput  name="networkEstablishment"  [(ngModel)]="draftDetail.networkEstablishment" readonly>
+                                                    </mat-form-field>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div class="row mt15" *ngIf="user.data.userType==2">
+                                        <div class="col s4">
+                                            <div class="details-info flat">
+                                                <div class="basic-details flat">
+                                                    <div class="profile-info">
+                                                        <ul>
+                                                            <li>
+                                                                <div class="cs-box">
+                                                                    <img src="assets/img/company.svg" class="fix-img">
+                                                                    <span>Comapny Name</span>
+                                                                    <p>{{draftDetail.networkEstablishment}}</p>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="row mt15"  >
+                                    <div  class="col s4 empty">
+                                        <div class="multi-all-select">
+                                            <label>Segment</label>
+                                            <ng-multiselect-dropdown
+                                            [placeholder]="'Select Segment'"
+                                            [data]="segmentList"
+                                            [(ngModel)]="data.segment"
+                                            name="segment"
+                                            #segment="ngModel"
+                                            [settings]="dropdownSettings1"
+                                            (onSelect)="productList(data.segment,data.category)"
+                                            >
+                                            
+                                        </ng-multiselect-dropdown>
+                                    </div>
+                                </div>
+                                <div class="col s4 empty">
+                                    <div class="multi-all-select">
+                                        <label>Category</label>
+                                        <ng-multiselect-dropdown
+                                        [placeholder]="'Select Category'"
+                                        [data]="categorylist"
+                                        [(ngModel)]="data.category"
+                                        name="category"
+                                        #category="ngModel"
+                                        [settings]="dropdownSettings2"
+                                        (onSelect)="productList(data.segment,data.category)"
+                                        >
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>     
+                            <div   class="col s4 empty">
+                                <div class="multi-all-select">
+                                    <label>Product Name</label>
+                                    <ng-multiselect-dropdown
+                                    [placeholder]="'Select Product'"
+                                    (onDeSelect)="onItemDeSelect($event,data.segment,data.category,data.product)"
+                                    [data]="product_list"
+                                    [(ngModel)]="data.product"
+                                    name="product"
+                                    #product="ngModel"
+                                    [settings]="dropdownSettings3"
+                                    (onSelect)="getCartProductList($event,data.segment,data.category,data.product)">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>  
+                    </div>
+                    <div  *ngIf="productlist && productlist.length > 0" class="col s12 padding0">
+                        <div class="heading-bg left-right-15">
+                            <h2>PRODUCT INFORMATION</h2>
+                        </div>
+                        
+                        
+                        <div class="cs-table left-right-15">
+                            <div class="table-head" [ngClass]="{ 'pr28' : productlist.length>6 }" >
+                                
+                                <table>
+                                    <tr>
+                                        
+                                        
+                                        <th class="w40">&nbsp;</th>
+                                        <th>Part Number</th>
+                                        <th class="w130">Product Name</th>
+                                        <th class="w130">Application No</th>
+                                        <th class="w100">Image</th>
+                                        <th class="w60 text-center">Qty<span>*</span></th>
+                                        <th class="w110">MFG Date.<span *ngIf='draftDetail.productConcernType==1'>*</span></th>
+                                        <th class="w120">Invoice No.<span *ngIf='draftDetail.productConcernType==1'>*</span></th>
+                                        <th class="w70 text-right">Rate</th>
+                                        <th class="w80 text-right">Amount</th>
+                                        <th class="w80">Action</th>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            
+                            <div class="table-head bdrt" [ngClass]="{ 'pr28' : productlist.length>6 }" >
+                                <table>
+                                    <tr>
+                                        <th class="w40"></th>
+                                        <th>
+                                            <div class="th-search-acmt">
+                                                <mat-form-field>
+                                                    <input type="text"  name="search" [(ngModel)]="productName.search" (input)="productSearchByNumber()" matInput [matAutocomplete]="auto1">
+                                                    <mat-autocomplete #auto1="matAutocomplete" >
+                                                        
+                                                    </mat-autocomplete>
+                                                    
+                                                </mat-form-field> 
+                                            </div>
+                                        </th>
+                                        <th class="w130">&nbsp; </th>
+                                        <th class="w130">&nbsp; </th>
+                                        <th class="w100">&nbsp;</th>
+                                        <th class="w60">&nbsp;</th>
+                                        <th class="w110">&nbsp;</th>
+                                        <th class="w120">&nbsp;</th>
+                                        <th class="w70">&nbsp;</th>
+                                        <th class="w80">&nbsp;</th>
+                                        <th class="w80">&nbsp;</th>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div class="table-container height-scroll">
+                                <div class="table-content shadow-none">
+                                    <table>
+                                        <tr *ngFor="let product of productlist;let index=index">
+                                            <td class="w40"><span *ngIf='product.qty'><mat-checkbox name="{{check+index}}" [(ngModel)]="product.datacheck"  (change)="select(product,index)" >&nbsp; </mat-checkbox></span></td>
+                                            <td >{{product.partNumber}}</td>
+                                            <td class="w130">{{product.productName}}</td>
+                                            <td class="w130">EF5678</td>
+                                            <td class="w100">
+                                              <a class="link-btn" *ngIf="!product.isImage">
+                                                  <label class="cs-file">
+                                                      Add Image
+                                                      <input type="file" (change)="insertImage($event,product.productName,index)" style="display: none;">
+                                                  </label>
+                                              </a>
+                                              <a *ngIf="product.isImage" class="link-btn" (click)="openImageDialog(index)"> View Image </a>
+                                          </td>
+                                            <td class="w60 text-center" >
+                                                <div class="td-input">
+                                                    <input type="number" (input)="calculateAmount(product.qty,index)"  (keyup.enter)="addProduct('checkIndividual')" name="qty" #qty="ngModel" [(ngModel)]="product.qty" [value]="product.qty" required min="1" >
+                                                </div>
+                                                <p *ngIf='isCart==true && product.datacheck==true && product.qty==""'>required</p>
+                                            </td>
+                                            <!--Pre-Fitment Field-->
+                                            <td class="w110" *ngIf='draftDetail.productConcernType==1'>
+                                                <div class="td-input" style="display: flex; align-items: center;">
+                                                    <input matInput [matDatepicker]="picker"   placeholder="Choose a date" name="{{date+index}}" [(ngModel)]="product.date"  #date="ngModel"   [max]="maxDateValue" required>
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                </div>
+                                                <p *ngIf='isCart&&!product.date&&product.datacheck'>required</p>
+                                            </td>
+                                            <td class="w120" *ngIf='draftDetail.productConcernType==1'> 
+                                                <div class="td-input">
+                                                    <input type="text"    (keyup.enter)="addProduct('checkIndividual')" name="{{invoice+index}}" #invoice="ngModel" [(ngModel)]="product.invoice" required>
+                                                </div>
+                                                <p *ngIf='isCart&&!product.invoice&&product.datacheck'>required</p>
+                                            </td>
+                                            
+                                            <!--Pre-Fitment Field-->
+                                            <!--Post-Fitment Field-->
+                                            <td class="w110" *ngIf='draftDetail.productConcernType==2'>
+                                                <div class="td-input" style="display: flex; align-items: center;">
+                                                    <input matInput [matDatepicker]="picker"   placeholder="Choose a date" name="{{date+index}}" [(ngModel)]="product.date"  #date="ngModel"   [max]="maxDateValue" required>
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                </div>
+                                            </td>
+                                            <td class="w120" *ngIf='draftDetail.productConcernType==2'> 
+                                                <div class="td-input">
+                                                    <input type="text"    (keyup.enter)="addProduct('checkIndividual')" name="{{invoice+index}}" #invoice="ngModel" [(ngModel)]="product.invoice" required>
+                                                </div>
+                                                
+                                            </td>
+                                            
+                                            <!--Post-Fitment Field-->
+                                            <td class="w70 text-right">&#8377; {{product.priceUnit}}</td>
+                                            <td class="w80 text-right">&#8377; {{product.amount}}</td>
+                                            <td class="w80">
+                                                <a *ngIf="product.qty!=''" class="action-cart" mat-button><i class="material-icons green-clr"(click)="addProduct('checkIndividual')">save</i></a>
+                                            </td>
+                                            
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="data-not-available" *ngIf="productlist.length==0">
+                                    <div class="outer">
+                                        <div class="iinear">
+                                            <div class="figure" matRipple>
+                                                <div class="header">
+                                                    <img src="assets/img/data-not-available-header.svg" alt="">
+                                                </div>
+                                                
+                                                <div class="description">
+                                                    <div class="cs-heading">
+                                                        <h2>No Product</h2>
+                                                    </div>
+                                                    <div class="img">
+                                                        <i class="material-icons">error_outline</i>
+                                                    </div>
+                                                    <div class="psc">
+                                                        <p>data not available</p>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="add" class="cs-btn mt20 text-right">
+                            <div class="in-btn">
+                                <button mat-raised-button color="accent" type="button"  (click)="addProduct('checkk')" >Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 padding0">
+                        <div class="heading-bg left-right-15 mt15">
+                            <h2>Product In Cart</h2>
+                        </div>
+                        <div class="row">
+                            <div class="cs-table left-right-15">
+                                <div class="table-head">
+                                    <table>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th class="w110">Total Item</th>
+                                            <th class="w100">Total QTY.</th>
+                                            <th class="w110 text-right">Amount</th>
+                                            <!-- <th class="w100 text-center">Action</th> -->
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="table-container">
+                                    <div class="table-content shadow-none">
+                                        <table>
+                                            <tr *ngFor="let order of tmp_array;let i=index">
+                                                <td><a mat-button class="link-btn" (click)="productDetail(order.category)" >{{order.category}}</a></td>
+                                                <td class="w110 text-center">{{order.totalItem}}</td>
+                                                <td class="w100">{{order.qty}}</td>
+                                                <td class="w110 text-right">{{order.amount}}</td>
+                                                <!-- <td class="w100 text-center">
+                                                    <a  *ngIf="order.status=='1' || draftDetail.concernStatus!=2 "  class="action-cart" mat-button><i class="material-icons red-clr"(click)="removeFromCart(i)">delete_sweep</i></a>
+                                                </td> -->
+                                                
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col s12">
+        <div class="cs-btn mt32 text-right">
+            <div class="in-btn">
+                <button   *ngIf="tmp_array.length!=0 && draftDetail.concernStatus!=2 &&draftDetail.concernStatus!=3" mat-raised-button color="accent"  type="button" (click)="onSubmit(1)" >Save As draft</button>
+                <button  *ngIf="tmp_array.length!=0 &&user.data.userType==3 && draftDetail.concernStatus!=3" mat-raised-button color="accent" type="button" (click)="onSubmit(2)">Submit</button>
+                <button  *ngIf="tmp_array.length!=0 &&user.data.userType==2 &&draftDetail.concernStatus!=3" mat-raised-button color="accent" type="button" (click)="onSubmit(3)">Forward To Distributor</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>

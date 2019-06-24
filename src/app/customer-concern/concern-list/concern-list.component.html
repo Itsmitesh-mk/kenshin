@@ -1,0 +1,190 @@
+<div class="main-container" >
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container pb15">
+    <div class="page-heading" style="min-width: auto;">
+      <img src="assets/img/concern.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Concern </h2>
+        <p>Total {{concernList.length}}</p>
+      </div>
+    </div>
+    <div class="tabs right-tab">
+      <ul>
+        <!-- <li  *ngIf='user.data.userType==1'><a  [ngClass]="{'active':concernActive==true}" (click)="concern_list('')">Concern</a></li> -->
+        <li *ngIf='user.data.userType==3'><a  [ngClass]="{'active':draftActive==true}" (click)="concern_list(1)">DRAFT</a></li>
+        <li *ngIf='user.data.userType==3'><a [ngClass]="{'active':underActive==true}" (click)="concern_list(2)">UNDER VERIFICATION</a></li>
+        <li  *ngIf='user.data.userType==3'><a [ngClass]="{'active':waitActive==true}"  (click)="concern_list(3)">WAITING FOR  APPROVAL</a></li>
+        <li  *ngIf='user.data.userType==3'><a  [ngClass]="{'active':concernNumber==true}" (click)="concern_list(4)">WAITING FOR CONCERN NO.</a></li>
+        <li *ngIf='user.data.userType==3'><a   [ngClass]="{'active':concernActive==true}" (click)="concern_list(5)">APPROVED</a></li>
+        <li *ngIf='user.data.userType==3'><a [ngClass]="{'active':rejectActive==true}"  (click)="concern_list(6)">REJECTED</a></li>
+        <li *ngIf='user.data.userType==2'><a [ngClass]="{'active':draftActive==true}"  (click)="concern_list(1)">DRAFT</a></li>
+        <li  *ngIf='user.data.userType==2'><a  [ngClass]="{'active':underActive==true}"  (click)="concern_list(2)">PENDING VERIFICATION</a></li>
+        <li  *ngIf='user.data.userType==2'><a [ngClass]="{'active':waitActive==true}" (click)="concern_list(3)">WAITING FOR APPROVAL</a></li>
+        <li  *ngIf='user.data.userType==2'><a [ngClass]="{'active':concernNumber==true}"  (click)="concern_list(4)">WAITING FOR CONCERN NO.</a></li>
+        <li *ngIf='user.data.userType==2'><a [ngClass]="{'active':concernActive==true}" (click)="concern_list(5)">APPROVED</a></li>
+        <li  *ngIf='user.data.userType==2'><a  [ngClass]="{'active':rejectActive==true}"  (click)="concern_list(6)">REJECTED</a></li>
+        <li  *ngIf='user.data.role==16'><a  [ngClass]="{'active':whPending==true}"  (click)="concern_list(7)">PENDING VERIFICATION</a></li>
+        <li  *ngIf='user.data.role==16'><a  [ngClass]="{'active':whVerified==true}"  (click)="concern_list(8)">WAREHOUSE VERIFIED</a></li>
+        <li  *ngIf='user.data.role==16'><a  [ngClass]="{'active':fmVerified==true}"  (click)="concern_list(9)">FINANCE VERIFIED</a></li>
+        <li  *ngIf='user.data.role==17'><a  [ngClass]="{'active':whVerified==true}"  (click)="concern_list(8)">PENDING VERIFICATION</a></li>
+        <li  *ngIf='user.data.role==17'><a  [ngClass]="{'active':fmVerified==true}"  (click)="concern_list(9)">FINANCE VERIFIED</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container-outer pt0">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12 padding0">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table>
+                  <tr >
+                    <th class="w100">Date</th>
+                    <th class="w170" *ngIf="status!=1">CreatedBy </th>
+                    <th *ngIf="user.data.userType!=3">Company Name</th>
+                    <th *ngIf="user.data.userType==1 || status==5">Concern Number</th>
+                    <th class="w140">Concern Type</th>
+                    <th class="w60 text-center">Total Item</th>
+                    <th class="w60 text-center">Total Qty</th>
+                    <th class="w80 text-right">Amount</th>
+                    <th class="w110" *ngIf="(status==5 || status==7||status==8 || status==9) && (user.data.userType==3 ||user.data.userType==2 || user.data.userType==1)">Status</th>
+                    <th class="w80" *ngIf="user.data.role==1">Status</th>
+                    <th class="w140" *ngIf="status!=5 &&status!=7&&status!=8 &&status!=9 &&status!=1 && user.data.userType==3">Assigned Sales</th>
+                    <th class="w120 text-center">Action</th>
+                    <!-- <th class="w130">&nbsp;</th> -->
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let concerns of tmp_concern">
+                    <td class="w100">{{concerns.createdOn|date:'d MMM y'}}</td>
+                    <td class="w170" *ngIf="status!=1">{{concerns.createdByName}}</td>
+                    <td *ngIf="user.data.userType!=3">{{concerns.networkEstablishment}}</td>
+                    <td *ngIf="status==5 || user.data.userType==1">
+                      <a mat-button class="link-btn" routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                        {{concerns.claimNo}}
+                      </a>
+                    </td>
+                    
+                    <td class="w140">{{concerns.concernTypeName}}<span *ngIf="concerns.productConcernType==1">/Pre-Fitment</span><span *ngIf="concerns.productConcernType==2">/Post-Fitment</span></td>
+                    <td class="w60 text-center"><span *ngIf='concerns.concernTypeName=="Product"'>{{concerns.productConcerns.length}}</span><span *ngIf='concerns.concernTypeName=="Other"'>1</span></td>
+                    <td class="w60 text-center">{{concerns.totalQty}}</td>
+                    <td class="w80 text-right" >&#x20B9; {{concerns.totalAmount}}</td>
+                    <!-- <td class="w150"></td> -->
+                    <td class="w110" *ngIf="(status==5||status==7||status==8 ||status==9)&&(user.data.userType==3 ||user.data.userType==2 ||user.data.userType==1)" >
+                     <span *ngIf="concerns.concernStatus==5">Approved</span>
+                     <span *ngIf="concerns.concernStatus==7">Document Updated</span>
+                     <span *ngIf="concerns.concernStatus==8">WareHouse Verified</span>
+                     <span *ngIf="concerns.concernStatus==9">Finace Verified</span>
+                    </td>
+                    <td class="w80" *ngIf="user.data.role==1" >
+                      <span *ngIf="concerns.concernStatus==5">Approved</span>
+                      <span *ngIf="concerns.concernStatus==7">Document Updated</span>
+                      <span *ngIf="concerns.concernStatus==8">WareHouse Verified</span>
+                      <span *ngIf="concerns.concernStatus==9">Finace Verified</span>
+                     </td>
+                    <td class="w140" *ngIf="status!=5 &&status!=7&&status!=8 &&status!=9 && status!=1 && user.data.userType==3" >
+                      <span *ngFor="let sales of user.data.distributerNetwork.networkSalesUsers">{{sales.salesUserName}}</span>
+                    </td>
+                    
+                    <td class="w120" >
+                      <div class="action-btns default-action" style="right: auto;"> 
+                        <!-- <a *ngIf='status==3' mat-button class="view" routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                          <i class="material-icons">remove_red_eye</i> View</a> -->
+                          
+                          <a *ngIf='status==1' mat-button class="view" routerLink="/draft-detail/{{concerns.concernId}}" routerLinkActive="active">
+                            <i class="material-icons">remove_red_eye</i> View</a>
+                            <a *ngIf='status==5 && user.data.userType==3' mat-button class="view" routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                              <i class="material-icons">remove_red_eye</i> View</a>
+                              <a *ngIf='status==2 && user.data.userType==3' mat-button class="view" routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                <i class="material-icons">remove_red_eye</i> View</a>
+                              <a *ngIf='status==3 && user.data.userType==3' mat-button class="view" routerLink="/draft-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                <i class="material-icons">remove_red_eye</i> View</a>
+                                <a *ngIf='status==4 && user.data.userType==3' mat-button class="view" routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                  <i class="material-icons">remove_red_eye</i> View</a>
+                                  <a *ngIf='status==6 && user.data.userType==3' mat-button class="view" routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                    <i class="material-icons">remove_red_eye</i> View</a>
+                              <a *ngIf='status==2 && user.data.userType==2' mat-button class="view" routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                <i class="material-icons">remove_red_eye</i> View</a>
+                                <a *ngIf='status==3 && user.data.userType==2' mat-button class="view" routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                  <i class="material-icons">remove_red_eye</i> View</a>
+                                <a *ngIf='status==4 && user.data.userType==2' mat-button class="view" routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                  <i class="material-icons">remove_red_eye</i> View</a>
+                                  <a *ngIf='(status==5||status==7||status==8||status==9) && user.data.userType==2' mat-button class="view" routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                    <i class="material-icons">remove_red_eye</i> View</a>
+                                    <a *ngIf='status==6 && user.data.userType==2' mat-button class="view" routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                      <i class="material-icons">remove_red_eye</i> View</a>
+                                      <a *ngIf='user.data.userType==1' mat-button class="view" routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                        <i class="material-icons">remove_red_eye</i> View</a>
+
+                                        <a *ngIf='status==1'(click)="delete_concern(concerns.concernId)" mat-button class="delete">
+                                          <i class="material-icons">delete</i>Delete </a>
+                              </div>    
+                              
+                              <!-- <a *ngIf='status==3' class="link-btn underline" mat-button routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                View</a>
+                                
+                                <a *ngIf='status==1' class="link-btn underline" mat-button  routerLink="/draft-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                  View</a>
+                                  
+                                  
+                                  <a *ngIf='status==2 && user.data.userType==3' class="link-btn underline" mat-button  routerLink="/draft-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                    View</a>
+                                    
+                                    
+                                    <a *ngIf='status==2 && user.data.userType==2' class="link-btn underline" mat-button routerLink="/concern-detail/{{concerns.concernId}}" routerLinkActive="active">
+                                      View</a> -->
+                                      
+                                    </td>
+                                    
+                                  </tr>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="div" class="data-not-available" >
+                      <div class="outer">
+                        <div class="iinear">
+                          <div class="figure" matRipple>
+                            <div class="header">
+                              <img src="assets/img/data-not-available-header.svg" alt="">
+                            </div>
+                            
+                            <div class="description">
+                              <!-- <div class="cs-heading">
+                                <h2>No Complain List</h2>
+                              </div> -->
+                              <div class="img">
+                                <i class="material-icons">error_outline</i>
+                              </div>
+                              <div class="psc">
+                                <p>data not available</p>
+                                <!-- <p>Tap on <a href="">ADD NEW</a> for Service Plan</p> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="fixed-multibtn-botm" *ngIf='((user.data.userType==3) ||  (user.data.userType==2))'>
+                    <ul>
+                      <li><a matTooltip="Add New" matRipple><i class="material-icons" routerLink="/add-concern" routerLinkActive="active" >add</i></a></li>
+                    </ul>
+                  </div>
+                  
+                </div>
+                
+                <div class="h50"></div>

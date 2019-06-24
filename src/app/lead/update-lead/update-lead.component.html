@@ -1,0 +1,236 @@
+<div class="edit-modal">
+  <form name="form" (ngSubmit)="f.form.valid && updateassign()"  #f="ngForm" novalidate>
+    <div *ngIf="loader"> 
+      <div class="cs-loader">
+        <img src="assets/img/loader.png" class="rotate"> 
+      </div>
+    </div>
+    <div  *ngIf="data.type=='address'" mat-dialog-content>
+      <p class="heading">Update Address</p>
+      <div class="from-fields">
+          <div class="row">
+              <div class="col s6 pl0">
+                <div class="control-field">
+                  <mat-form-field class="cs-input">
+                    <mat-select placeholder="State" name="state" [(ngModel)]="data.state" >
+                      <mat-option (click)="get_district()"  *ngFor="let state of statelist" value="{{state}}">{{state}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col s6 pr0">
+                <div class="control-field">
+                  <mat-form-field class="cs-input">
+                    <mat-select placeholder="District"   name="district" [(ngModel)]="data.district" >
+                      <mat-option (click)="get_city()"  *ngFor="let district of district1"  value="{{district.districtName}}">{{district.districtName}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s6 pl0">
+                <div class="control-field">
+                  <mat-form-field class="cs-input">
+                    <mat-select placeholder="City"  name="city" [(ngModel)]="data.city" >
+                      <mat-option   *ngFor="let city of cities"  (click)=" stateId=city.stateMasterId ;get_pincode()" value="{{city.cityName}}">{{city.cityName}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col s6 pr0">
+                <div class="control-field">
+                  <mat-form-field class="cs-input">
+                    <mat-select placeholder="Pin"  name="pin" [(ngModel)]="data.pin" >
+                      <mat-option *ngFor="let pin of areas" value="{{pin}}">{{pin}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="row mb10">
+              <div class="col s12 padding0">
+                <div class="control-field">
+                  <mat-form-field class="cs-input" >
+                    <textarea matInput placeholder="Address" name="street" [(ngModel)]="data.street" class="h90"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+    <div *ngIf="data.type=='assign'" mat-dialog-content>
+      <p class="heading">Update Sales</p>
+      <mat-form-field class="cs-input">
+        <mat-select placeholder="Select Sales" name="assignTo" [(ngModel)]="data.assignTo" >
+          <mat-option *ngFor="let sales of saleslist" value="{{sales.userId}}">{{sales.userName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div> 
+    
+    <div *ngIf="data.type=='changelead'" mat-dialog-content>
+      <p class="heading">Update Lead Type</p>
+      <mat-form-field class="cs-input">
+        <mat-select placeholder="Select Sales" name="leadType" [(ngModel)]="data.leadType" >
+          <mat-option *ngFor="let role of client1" [value]="role.roleId">{{role.roleName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    
+    <div *ngIf="data.type=='email'" mat-dialog-content style="overflow: hidden;">
+      <p class="heading">Update Email</p>
+      <div class="row from-fields">
+        <div class="col s6 control-field">
+          <mat-form-field class="cs-input">
+            <input matInput placeholder="Email-ID" name="email" value="email" [(ngModel)]="data.email" #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+          </mat-form-field>
+          <div class="alert alert-danger" *ngIf="!email.valid && email.touched">
+            Please Enter Valid Email!
+          </div>
+        </div>
+      </div>
+      
+      
+    </div>
+    
+    <div *ngIf="data.type=='mobile'" mat-dialog-content style="overflow: hidden;">
+      <p class="heading">Update Mobile</p>
+      <div class="row from-fields">
+        <div class="col s6 control-field">
+          <mat-form-field class="cs-input">
+            <input matInput type="text"  maxlength="10"  placeholder="Mobile" name="mobile"    [(ngModel)]="data.mobile" minlength="10" maxlength="10" min="0" #mobile="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mobile.invalid }" (keypress)="MobileNumber($event)" required>
+          </mat-form-field>
+        </div>
+      </div>
+      
+      <div class="alert alert-danger" *ngIf="!mobile.valid">
+        Mobile Must be 10 Digit!
+      </div>
+    </div>
+
+
+    <div *ngIf="data.type=='landline'" mat-dialog-content style="overflow: hidden;">
+        <p class="heading">Update landline</p>
+        <div class="row from-fields">
+          <div class="col s6 control-field">
+            <mat-form-field class="cs-input">
+              <input matInput type="text"  maxlength="10"  placeholder="Landline" name="landline"   value="landline" [(ngModel)]="data.landline" minlength="10" maxlength="13" min="0" #landline="ngModel" [ngClass]="{ 'is-invalid': f.submitted && landline.invalid }" (keypress)="MobileNumber($event)" required>
+            </mat-form-field>
+          </div>
+        </div>
+        
+        <div class="alert alert-danger" *ngIf="!landline.valid && landline.touched">
+          Please Enter Valid Landline!
+        </div>
+      </div>
+    
+    <div *ngIf="data.type=='gst'" mat-dialog-content style="overflow: hidden;">
+      <p class="heading">Update GST</p>
+      <div class="row from-fields">
+        <div class="col s6 control-field">
+          <mat-form-field class="cs-input">
+            <input matInput type="text"   placeholder="GST" name="gst"   value="gst" [(ngModel)]="data.gst" #gst="ngModel" [ngClass]="{ 'is-invalid': f.submitted && gst.invalid }"  required>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="alert alert-danger" *ngIf="!gst.valid && gst.touched">
+        Please Enter GST!
+      </div>
+    </div>
+    
+    
+    <div *ngIf="data.type=='contact'" mat-dialog-content>
+      <p class="heading">Update Contact</p>
+      <div class="from-fields">
+        <form #p="ngForm" (ngSubmit)="p.valid && addContactPerson(p)">
+          <div class="row">
+            <div class="col s4 pl0">
+              <div class="control-field">
+                <mat-form-field class="cs-input">
+                  <input matInput placeholder="Name" name="name" #name="ngModel" [(ngModel)]="contact_person.name" (keypress)="namecheck($event)" required>
+                </mat-form-field>
+
+                <mat-error *ngIf="p.submitted && name.invalid" class="invalid-feedback">
+                    <mat-error *ngIf="name.errors.required">Contact person is required</mat-error>
+                </mat-error>
+
+              </div>
+            </div>
+            <div class="col s4 ">
+              <div class="control-field">
+                <mat-form-field class="cs-input">
+                  <input matInput placeholder="Mobile No. 1" name="mobile1" #mobile1="ngModel" [(ngModel)]="contact_person.mobile1" minlength="10" maxlength="10" min="0" (keypress)="MobileNumber($event)" required>
+                </mat-form-field>
+
+                <mat-error *ngIf="p.submitted && mobile1.invalid" class="invalid-feedback">
+                    <mat-error *ngIf="mobile1.errors.required">Mobile No 1 is required</mat-error>
+                </mat-error>
+
+                <mat-error *ngIf="p.submitted && mobile1.invalid && mobile1.touched" class="invalid-feedback">
+                    <mat-error>Mobile No is invalid</mat-error>
+                </mat-error>
+
+              </div>
+            </div>
+            <div class="col s4 pr0">
+              <div class="control-field pr80">
+                <mat-form-field class="cs-input">
+                  <input matInput placeholder="Mobile No. 2"  name="mobile2" #mobile2="ngModel" [(ngModel)]="contact_person.mobile2" minlength="10" maxlength="10" min="0" (keypress)="MobileNumber($event)" >
+                </mat-form-field>
+
+                <mat-error *ngIf="p.submitted && mobile2.invalid && mobile2.touched" class="invalid-feedback">
+                    <mat-error>Mobile No is invalid</mat-error>
+                </mat-error>
+
+
+                <div class="plus-btn">
+                  <button  mat-raised-button color="accent">
+                    <i class="material-icons" >add</i>
+                  </button>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      
+      <div class="row mt15">
+        <div class="col s12 padding0">
+          <div class="cs-table left-right-20">
+            <div class="table-head">
+              <table>
+                <tr>
+                  <th>Name</th>
+                  <th class="w200">Mobile No. 1</th>
+                  <th class="w200 bdr0">Mobile No. 2</th>
+                  <th class="w130">&nbsp;</th>
+                </tr>
+              </table>
+            </div>
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let value of tmp_list;let index=index">
+                    <td>{{value.name}}</td>
+                    <td class="w200">{{value.mobile1}}</td>
+                    <td class="w200">{{value.mobile2}}</td>
+                    <td class="w130">
+                      <a mat-button class="del-btn" (click)="removeContact(index)">Delete</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-raised-button color="warn"  [mat-dialog-close]="false">Cancel</button>
+      <button mat-raised-button color="accent" >Save</button>
+    </div>
+  </form>
+</div>

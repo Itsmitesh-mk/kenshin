@@ -1,0 +1,190 @@
+<div class="main-container">
+    <div *ngIf="loader"> 
+        <div class="cs-loader">
+          <img src="assets/img/loader.png" class="rotate"> 
+        </div>
+      </div>
+    
+    <div class="middle-container pb15">
+        <div class="page-heading">
+            <img src="assets/img/task.svg" class="h-icon">
+            <div class="heading-text flex-heading">
+                <div class="content">
+                    <h2>Task List</h2>
+                    <p>Total Task 15</p>
+                </div>
+                <div class="item-filter" *ngIf="userRole!=1 && userRole!=10">
+                    <mat-form-field class="wp100">
+                        <mat-select  name="role" id="role" [(ngModel)]="filter.assignedToMe" #assignedToMe="ngModel" >
+                            <mat-option *ngIf="userRole!=1" [value]="true" (click)="filter.assignedToMe=true;filter.assignedByMe=false;filter.junoiourtask=false;taskList()">Assigned To Me</mat-option>
+                            <mat-option  [value]="false" (click)="filter.assignedToMe=false;filter.assignedByMe=true;filter.junoiourtask=false; taskList()">Assigned By Me</mat-option>
+                            <mat-option [value]="false" (click)="filter.assignedToMe=false;filter.assignedByMe=false;filter.junoiourtask=true; taskList()">Juniour's Task</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="left-auto">
+            <div *ngIf="filter.userName || filter.role || filter.taskPriority" class="filter-container mr15">
+                <div (click)="clearfilter()" class="filter-btn">
+                    <button mat-button >CLEAR FILTER</button>
+                </div>
+            </div>
+            <div class="tabs right-tab none-af">
+                <ul>
+                    <li><a class="pr40 inprocess" [ngClass]= "{'tab-active' : filter.status==1}" (click)="filter.status=1;check(filter.status)">InProcess<span  class="counter">{{inprocess}}</span></a></li>
+                    <li><a class="pr40 complete" [ngClass]= "{'tab-active' : filter.status==2}" (click)="filter.status=2;check(filter.status)">Completed <span  class="counter">{{completed}}</span></a></li>
+                    <li><a class="pr40 reopen" [ngClass]= "{'tab-active' : filter.status==3}" (click)="filter.status=3;check(filter.status)">Reopen <span  class="counter">{{reopen}}</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-outer pt0">
+        <div class="container" >
+            <div class="row">
+                <div class="col s12">
+                    <div class="cs-table left-right-20">
+                        <div class="sticky-head">
+                            <div class="table-head">
+                                <table  class="sno-border">
+                                    <tr>
+                                        <th class="w30">&nbsp;</th>
+                                        <th class="w110">Date</th>
+                                        <th class="w180" *ngIf="filter.assignedToMe==false">Name</th>
+                                        <th *ngIf="userType!=2" class="w180">Role</th>
+                                        <th>Company Name</th>
+                                        <th *ngIf="filter.assignedToMe==true" class="w220">Created By</th>
+                                        <th class="w140">Completed by</th>
+                                        <th class="w170">Critical</th>
+                                        <!-- <th class="w110">Status</th> -->
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div class="table-head bdrt">
+                                <table class="sno-border">
+                                    <tr>
+                                        <th class="w30">&nbsp;</th>
+                                        <th class="w110">&nbsp;</th>
+                                        <th class="w180"  *ngIf="filter.assignedToMe==false">
+                                            <div class="th-search">
+                                                <input type="text" (keyup)="taskList()" name="userName" #userName="ngModel" [(ngModel)]="filter.userName" placeholder="Search....">
+                                            </div>
+                                        </th>
+                                        <th *ngIf="userType!=2" class="w180">
+                                            <div class="th-search" >
+                                                <mat-select placeholder="Select role" id="role" name="status" [(ngModel)]="filter.role" #role="ngModel">
+                                                    <mat-option value="" (click)="taskList()">All</mat-option>
+                                                    <mat-option value="6" (click)="taskList()">National Maneger</mat-option>
+                                                    <mat-option value="7" (click)="taskList()">Reginal Maneger</mat-option>
+                                                    <mat-option value="8" (click)="taskList()">Area Maneger</mat-option>
+                                                    <mat-option value="10" (click)="taskList()">Territory Incharge</mat-option>
+                                                </mat-select>
+                                            </div>
+                                        </th>
+                                        <th >&nbsp;</th>
+                                        <th *ngIf="filter.assignedToMe==true" class="w220">&nbsp;</th>
+                                        <th class="w140">&nbsp;</th>
+                                        
+                                        <th class="w170">
+                                            <div class="th-search" >
+                                                <mat-select placeholder="Select Task Priority" id="taskPriority" name="taskPriority" [(ngModel)]="filter.taskPriority" #taskPriority="ngModel">
+                                                    <mat-option value="" (click)="taskList()">All</mat-option>
+                                                    <mat-option value="1" (click)="taskList()">Currently Critical</mat-option>
+                                                    <mat-option value="2" (click)="taskList()">Potentially Critical</mat-option>
+                                                    <mat-option value="3" (click)="taskList()">Necessary</mat-option>
+                                                    <mat-option value="4" (click)="taskList()">Recommended</mat-option>
+                                                </mat-select>
+                                            </div>
+                                        </th>
+                                        <!-- <th class="w110">
+                                            <div class="th-search" >
+                                                <mat-select placeholder="Select status" id="status" name="status" [(ngModel)]="filter.status" #status="ngModel">
+                                                    <mat-option value="" (click)="taskList()">All</mat-option>
+                                                    <mat-option value="1" (click)="taskList()">InProcess</mat-option>
+                                                    <mat-option value="2" (click)="taskList()">Completed</mat-option>
+                                                    <mat-option value="3" (click)="taskList()">Reopen</mat-option>
+                                                </mat-select>
+                                            </div>
+                                        </th> -->
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="table-container ">
+                            <div class="table-content">
+                                <table class="sno-border">
+                                    <tr *ngFor="let task of tasklist;let i=index">
+                                        <td class="w30 text-center">{{i+1}}</td>
+                                        <td class="w110">{{task.createdOn|date :'MMMM d, y'}} </td>
+                                        <td class="w180" *ngIf="filter.assignedToMe==false">
+                                            <a class="link-btn" *ngIf="filter.assignedToMe==false" (click)="goToDetail(task.taskId)">{{task.userName}} </a>
+                                        </td>
+                                        <td *ngIf="userType!=2" class="w180">
+                                            <span *ngIf="task.role==6">National Maneger</span>
+                                            <span *ngIf="task.role==7">Reginal Maneger</span>
+                                            <span *ngIf="task.role==8">Area Maneger</span>
+                                            <span *ngIf="task.role==10">Territory Incharge</span>
+                                        </td>
+                                        <td >
+                                            <span *ngIf="task.leadEstablishment!=''">{{task.leadEstablishment}}</span>
+                                        </td>
+                                        <td *ngIf="filter.assignedToMe==true" class="w220">{{task.createdByName}}</td>
+                                        <td class="w140">{{task.deadline|date :' MMMM d, y'}}</td>
+                                        <td class="w170">
+                                            <span *ngIf="task.taskPriority==1">Currently Critical</span>
+                                            <span *ngIf="task.taskPriority==2">Potentially Critical</span>
+                                            <span *ngIf="task.taskPriority==3">Necessary</span>
+                                            <span *ngIf="task.taskPriority==4">Recommended</span>
+                                            <div class="action-btns">
+                                                <a mat-button class="view" (click)="goToDetail(task.taskId)"><i class="material-icons"  >remove_red_eye</i> View</a>
+                                            </div>
+                                        </td>
+                                        <!-- <td class="w110 text-center yellow-clr">{{task.taskStatusName}}
+                                            <div class="action-btns">
+                                                <a mat-button class="view" (click)="goToDetail(task.taskId)"><i class="material-icons"  >remove_red_eye</i> View</a>
+                                            </div>
+                                        </td> -->
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div *ngIf="div" class="data-not-available" >
+                <div class="outer">
+                    <div class="iinear">
+                        <div class="figure" matRipple>
+                            <div class="header">
+                                <img src="assets/img/data-not-available-header.svg" alt="">
+                            </div>
+                            <div class="description">
+                                <div class="img">
+                                    <i class="material-icons">error_outline</i>
+                                </div>
+                                <div class="psc">
+                                    <p>data not available</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div *ngIf="userRole==1 || (userType==2 && userRole != 10)" class="fixed-multibtn-botm">
+        <ul>
+            <li><a  matTooltip="Add New" matRipple><i class="material-icons" routerLink="/add-task" routerLinkActive="active" >add</i></a></li>
+        </ul>
+    </div>
+    
+</div>
+
+
+<div class="h50"></div>

@@ -1,0 +1,537 @@
+
+<div class="main-container">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/concern-list" routerLinkActive="active" (click)="navigateList()"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{categorydetail.networkEstablishment}}<a style="font-size: 12px; color: #123dd6; margin-left: 10px; text-decoration: underline;"  class="name" routerLink="/distribution-detail/{{categorydetail.raisedByNetworkId}}" routerLinkActive="active">View Detail</a></h2>
+        <p>Distributor</p>
+      </div>
+    </div>
+  </div>
+  <div class="container-outer">
+    <div class="container" >
+        <div class="row">
+            <div class="col s12">
+              <div class="details-info">
+                <div class="basic-details">
+                  <div class="col s12 cs-figure padding0">
+                    <ul>
+                      <li>
+                        <div class="outer">
+                          <div class="inner">
+                            <span>Concern Date</span>
+                            <p> {{categorydetail.createdOn | date:'d, MMMM , y'}}</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="outer">
+                          <div class="inner">
+                            <span>Created by</span>
+                            <p>{{categorydetail.createdByName}}</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li *ngIf="categorydetail.claimNo">
+                        <div class="outer">
+                          <div class="inner">
+                            <span>Concern Number</span>
+                            <p>{{categorydetail.claimNo}}</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                          <div class="outer">
+                            <div class="inner">
+                              <span>Concern Type</span>
+                              <p>{{categorydetail.concernTypeName}}</p>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="outer">
+                            <div class="inner">
+                              <span>Status</span>
+                              <p *ngIf="categorydetail.concernStatus== '2'">UNDER VERIFICATION</p>
+                              <p *ngIf="categorydetail.concernStatus== '3'">WAITING FOR DISTRIBUTOR APPROVAL</p>
+                              <p *ngIf="categorydetail.concernStatus== '4'">Proceed For Approvel</p>
+                              <p *ngIf="categorydetail.concernStatus== '5'">Approved</p>
+                              <p *ngIf="categorydetail.concernStatus== '6'">Rejected</p>
+                              <p *ngIf="categorydetail.concernStatus== '7'">Transporter Deatail</p>
+                            </div>
+                          </div>
+                        </li> 
+                   
+                    </ul>
+
+                    <ul class="mt15">
+                        <li>
+                            <div class="outer">
+                              <div class="inner">
+                                <span>Total Item</span>
+                                <p>{{totalItem}}</p>
+                              </div>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="outer">
+                              <div class="inner">
+                                <span>Total Qty</span>
+                                <p>{{categorydetail.totalQty}}</p>
+                              </div>
+                            </div>
+                          </li>
+                          <li *ngIf="categorydetail.concernType==1">
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Product Type</span>
+                                  <p>{{categorydetail.productConcernTypeName}}</p>
+                                </div>
+                              </div>
+                            </li>
+                         
+                          <li>
+                            <div class="outer">
+                              <div class="inner">
+                                <span>Total Amount</span>
+                                <p>{{categorydetail.totalAmount}}</p>
+                              </div>
+                            </div>
+                          </li>
+                          <li *ngIf="user.data.userType==3">
+                            <div class="outer">
+                              <div class="inner">
+                                <span>Assigned Sales</span>
+                                <p><span *ngFor="let sales of user.data.distributerNetwork.networkSalesUsers">{{sales.salesUserName}}</span></p>
+                              </div>
+                            </div>
+                          </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      <div class="row">
+        <div class="col s12">
+          <!-- <div class="sprate-box mb15 pt0" *ngIf="categorydetail.concernType==1 && user.data.userType==2">
+              <div *ngIf="isStatus&&user.data.userType==2"  class="cs-heading">
+                  <h2>Status</h2>
+                </div>
+                <div class="row" *ngIf='user.data.userType==2'>
+                    <form  (ngSubmit)="d.form.valid && updateStatus()" #d="ngForm" novalidate>
+                      <div *ngIf="isStatus" class="from-fields col s6 pl0"> 
+                        <div class="control-field">
+                          <mat-form-field class="cs-input">
+                            <mat-select placeholder="Select Status" name="status" [(ngModel)]="categorydetail.status" #status="ngModel" [ngClass]="{'has-error' : status.invalid }" required>
+                              <mat-option  [value]=2>Approved</mat-option>
+                              <mat-option  [value]=3>Rejected</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-error *ngIf="d.submitted && status.invalid " class="invalid-feedback">
+                            <mat-error *ngIf="status.errors.required">status is required</mat-error>
+                          </mat-error>
+                        </div>
+                        
+                      </div>
+                      <div *ngIf="isStatus" class="col s6 from-fields pr0">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input">
+                            <input  placeholder="Nature Of Problem" matInput name="problem" #problem="ngModel" [(ngModel)]="categorydetail.problem"  [ngClass]="{'has-error' : problem.invalid }" required>
+                          </mat-form-field>
+                          <mat-error *ngIf="d.submitted && problem.invalid " class="invalid-feedback">
+                            <mat-error *ngIf="problem.errors.required">problem is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col s12 padding0">
+                          <div  *ngIf="isStatus" class="cs-btn fixedd mt32 text-right">
+                            <div class="in-btn">
+                              <button  mat-raised-button color="accent">Status</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+          </div> -->
+
+
+
+
+          
+          <!-- <a mat-button class="address-edit" matTooltip="EDIT" color="accent"><i class="material-icons">edit</i></a> -->
+          
+          <div class="sprate-box   padding0" *ngIf="categorydetail.concernType==1">
+            <div class="top-heading">
+              <h2>Item List</h2>
+            </div>
+            <div class="row">
+              <div class="cs-table">
+                <div class="table-head">
+                  <table> 
+                    <tr>
+                      <th class="padding0">
+                        <table>
+                          <tr>
+                            <th>Category</th>
+                            <th class="w110 text-center">Total Item</th>
+                            <th class="w110 text-center">Total QTY.</th>
+                            <th class="w130 text-right">Amount</th>
+                            <!-- <th class="w150">Action</th> -->
+                          </tr>
+                        </table>
+                      </th>
+                    </tr>
+                  </table>
+                </div>
+                
+                <div class="table-container">
+                  <div class="table-content none-shadow">
+                    <table>
+                      <tr  *ngFor="let concerns of tmp_array;let i=index" >
+                        <td class="padding0">
+                          <table>
+                            <tr>
+                              <td><a mat-button class="link-btn" (click)="Show_Item(concerns.category,i)" >{{concerns.category}}</a></td>
+                              <td class="w110 text-center">{{categorydetail.productConcerns.length}}</td>
+                              <td class="w110 text-center">{{concerns.qty}}</td>
+                              <td class="w130 text-right">&#x20B9; {{concerns.amount}}</td>
+                              <!-- <td class="w150"><a class="action-cart" mat-button><i class="material-icons red-clr"(click)="removeFromCart(i)">delete_forever</i></a></td> -->
+                            </tr>
+                          </table>
+                          <table class="multi-table"  *ngIf='isItem==true&&isIndex==i'>
+                            <tr>
+                              <!-- <td class="w40">&nbsp;</td> -->
+                              <td class="w100">Part No.</td>
+                              <td class="w60">Segment</td>
+                              <td class="w100">Invoice</td>
+                              <td class="w80">MFG Date</td>
+                              <td class="w60"> Claim Qty</td>
+                              <td class="w60">SAccept Qty</td>
+                              <td class="w60" >SReject Qty</td>
+                              <td *ngIf="categorydetail.concernStatus>6" class="w60">WhAccept Qty</td>
+                              <td *ngIf="categorydetail.concernStatus>6" class="w60" >WhReject Qty</td>
+                              <td class="w70 text-right">Rate</td>
+                              <td class="w80 text-right">Amount</td>
+                              <th class="w80">Image</th>
+                              <td>Sales Remark</td>
+                              <td>Dealer Remark</td>
+                              <td *ngIf="categorydetail.concernStatus>6" >Wholesaler Remark</td>
+                              <!-- <td class="w100">Status</td>
+                              <td>Nature Of Problem</td> -->
+                            </tr>
+                            <tr [hidden]="product.category != concerns.category" *ngFor="let product of tmp_detail; let i=index">
+                              <!-- <td><mat-checkbox  name="{{check+i}}" [(ngModel)]="product.datacheck" (change)="checkkk()" >&nbsp; </mat-checkbox></td> -->
+                              <td class="w100">{{product.partNumber}}</td>
+                              <td>{{product.segment}}</td>
+                              <td>{{product.invoice}}</td>
+                              <td>{{product.date|date:'d MMM y'}}</td>
+                              <td>{{product.qty}}</td>
+                              <td>
+                                <div class="td-input" *ngIf="categorydetail.concernStatus==2 && user.data.userType==2">
+                                    <input type="text" (input)="calculateAmount(product.acceptqty,i)"  name="acceptqty" #acceptqty="ngModel" [(ngModel)]="product.acceptqty" [value]="product.acceptqty" (keypress)="MobileNumber($event)" required >
+                                </div>
+                                <div *ngIf="categorydetail.concernStatus!=2">{{product.acceptqty}}</div>
+                                <div *ngIf="categorydetail.concernStatus==2 && user.data.userType==3">{{product.acceptqty}}</div>
+                               
+                               
+                                <!-- <p *ngIf='isCart==true && product.datacheck==true && product.qty==""'>required</p> -->
+                            </td>
+                            <td>{{product.rejectqty}}</td>
+                            <td *ngIf="categorydetail.concernStatus>6" > 
+                                <div class="td-input"  *ngIf="categorydetail.concernStatus==7 && user.data.role==16">
+                                    <input type="text" (input)="calculateAmountWH(product.whacceptqty,i)"  name="whacceptqty" #whacceptqty="ngModel" [(ngModel)]="product.whacceptqty" [value]="product.whacceptqty" (keypress)="MobileNumber($event)" required >
+                                </div>
+                                <div *ngIf="categorydetail.concernStatus>7">{{product.acceptqty}}</div>
+                            </td>
+                             <td *ngIf="categorydetail.concernStatus>6" >{{product.whrejectqty}}</td>
+                              <td class="text-right">&#x20B9; {{product.price}}</td>
+                              <td class="text-right">&#x20B9; {{product.amount}}</td>
+                              <td class="w80">
+                                <a *ngIf="product.isImage" class="link-btn" (click)="openImageDialog(i)"> View Image </a>
+                              </td>
+                          <td > 
+                            <div class="td-input" *ngIf="categorydetail.concernStatus==2 && user.data.userType==2">
+                                <textarea type="text"   name="{{salesremark+index}}" #salesremark="ngModel" [(ngModel)]="product.salesremark" required></textarea>
+                            </div>
+                            <div class="td-input" *ngIf="categorydetail.concernStatus!=2">
+                                <textarea type="text"   name="{{salesremark+index}}" #salesremark="ngModel" [(ngModel)]="product.salesremark" required readonly></textarea>
+                            </div>
+                            <div class="td-input" *ngIf="categorydetail.concernStatus==2 && user.data.userType==3">
+                              <textarea type="text"   name="{{salesremark+index}}" #salesremark="ngModel" [(ngModel)]="product.salesremark" required readonly></textarea>
+                          </div>
+                            <!-- <p *ngIf='isCart&&!product.invoice&&product.datacheck'>required</p> -->
+                        </td>
+                        <td> 
+                          <div class="td-input">
+                              <textarea type="text"   name="{{dealerremark+index}}" #dealerremark="ngModel" [(ngModel)]="product.dealerremark" required readonly></textarea>
+                          </div>
+                         
+                      </td>
+                      <td *ngIf="categorydetail.concernStatus>6" > 
+                        <div class="td-input"  *ngIf="categorydetail.concernStatus==7 && user.data.role==16">
+                            <textarea type="text"   name="{{whremark+index}}" #whremark="ngModel" [(ngModel)]="product.whremark" required ></textarea>
+                        </div>
+                        <div class="td-input"  *ngIf="categorydetail.concernStatus>7">
+                            <textarea type="text"   name="{{whremark+index}}" #whremark="ngModel" [(ngModel)]="product.whremark" required readonly></textarea>
+                        </div>
+                       
+                    </td>
+                              <!-- <td>{{product.statusName}}</td>
+                              <td>{{product.natureOfProblem}}</td> -->
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                
+              </div>
+              
+            </div>
+          </div>
+          <div class="row"  *ngIf="categorydetail.concernType==1">
+            <div class="col s12 padding0" >
+              <div class="cs-btn  mt15 text-right">
+                <div class="in-btn" >
+                  <ng-container *ngIf='user.data.userType==2'>
+                      <button  *ngIf="categorydetail.concernStatus==2"  mat-raised-button color="accent" type="button" (click)="submit(2)" >save</button>
+                  </ng-container>
+                  <button  *ngIf="user.data.userType==2 && isForward  && categorydetail.concernStatus==2" mat-raised-button color="accent" type="button" (click)="submit(3)" >Forward To Distributer</button>
+                  <button  *ngIf="user.data.userType==2 && user.data.salesUser.concernApprovalAccess==true && (isProceed||categorydetail.concernStatus==4) && categorydetail.concernStatus!=5 && categorydetail.concernStatus!=3 && categorydetail.concernStatus!=6" mat-raised-button color="accent" type="button" (click)="submit(5)" >Generate Concern</button>
+                  <!-- <button  *ngIf="user.data.userType==2 && user.data.salesUser.concernApprovalAccess==true && categorydetail.concernStatus==4" mat-raised-button color="accent" type="button" (click)="submit(5)" >Generate Concern</button> -->
+                  <button  *ngIf="user.data.userType==2 && user.data.salesUser.concernApprovalAccess==true && categorydetail.concernStatus==4" mat-raised-button color="accent" type="button" (click)="submit(6)" >Reject</button>
+                  <button  *ngIf="user.data.userType==2 && isProceed && user.data.salesUser.concernApprovalAccess==false  && categorydetail.concernStatus!=4 && categorydetail.concernStatus!=5 && categorydetail.concernStatus!=6 && categorydetail.concernStatus!=7 &&  categorydetail.concernStatus!=8 &&  categorydetail.concernStatus!=9" mat-raised-button color="accent" type="button" (click)="submit(4)" >Proceed for APPROVAL</button>
+                  <!-- <button  *ngIf="user.data.userType==2 && isProceed && user.data.salesUser.concernApprovalAccess==false && categorydetail.concernStatus==2" mat-raised-button color="accent" type="button" (click)="submit(4)" >Proceed for APPROVAL</button> -->
+                  <button  *ngIf="categorydetail.concernStatus==7 && user.data.role==16" mat-raised-button color="accent" type="button" (click)="submit(7)" >Save</button>
+                  <button  *ngIf="isWHForward && categorydetail.concernStatus==7 && user.data.role==16" mat-raised-button color="accent" type="button" (click)="submit(8)" >Forward To Finance</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+          
+          <div class="sprate-box mt15 padding0"  *ngIf="categorydetail.concernType==1&&categorydetail.concernStatus>4">
+            <div class="full-address">
+              <div class="top-heading">
+                <h2>Transporter Detail</h2>
+              </div>
+              <a  *ngIf="this.user.data.role==12 && categorydetail.concernStatus==5" mat-button class="address-edit" matTooltip="EDIT" color="accent" ><i class="material-icons" (click)="edit()">edit</i></a>
+              <div class="cs-table">
+                <div class="table-head">
+                  <table>
+                    <tr>
+                      <th>Transporter Name</th>
+                      <th class="w140">Mode of Transport</th>
+                      <th class="w140">No. of Boxes</th>
+                      <th class="w150">LR No.</th>
+                      <th class="w140">E-way bill No.</th>
+                      <th class="w140" *ngIf="isEdit==true">Upload Document</th>
+                      <th class="w140" *ngIf="categorydetail.transportDocument">Download Document</th>
+                      <th class="w100">&nbsp;</th>
+                    </tr>
+                  </table>
+                </div>
+                <form  (ngSubmit)="f.form.valid && updateTransport() || setFocus(f.form)" #f="ngForm" novalidate>
+                  <div class="table-container">
+                    <div class="table-content none-shadow">
+                      <table>
+                        <tr *ngIf='categorydetail.transporterName||isEdit'>
+                          <td><span *ngIf="isEdit==false">{{categorydetail.transporterName}}</span>
+                            
+                            <div class="td-input" *ngIf="isEdit==true">
+                              <input type="text" name="transporterName" #transporterName="ngModel" [(ngModel)]="categorydetail.transporterName" [ngClass]="{'has-error' : transporterName.invalid }" required>
+                              
+                              <mat-error *ngIf="f.submitted && transporterName.invalid " class="invalid-feedback">
+                                <mat-error *ngIf="transporterName.errors.required">required</mat-error>
+                              </mat-error>
+                            </div>
+                            
+                          </td>
+                          <td class="w140"><span *ngIf="isEdit==false">{{categorydetail.modeOfTransport}}</span>
+                            <div class="td-input" *ngIf="isEdit==true" >
+                              <input type="text" name="modeOfTransport" #modeOfTransport="ngModel" [(ngModel)]="categorydetail.modeOfTransport"  [ngClass]="{'has-error' : modeOfTransport.invalid }" required>
+                              <mat-error *ngIf="f.submitted && modeOfTransport.invalid " class="invalid-feedback">
+                                <mat-error *ngIf="modeOfTransport.errors.required">required</mat-error>
+                              </mat-error>
+                              
+                            </div>
+                          </td>
+                          <td class="w140"><span *ngIf="isEdit==false">{{categorydetail.numberOfBoxes}}</span>
+                            <div class="td-input"  *ngIf="isEdit==true">
+                              
+                              <input type="text" name="numberOfBoxes" #numberOfBoxes="ngModel" [(ngModel)]="categorydetail.numberOfBoxes" [ngClass]="{'has-error' : numberOfBoxes.invalid }" (keypress)="MobileNumber($event)"  required>
+                              
+                              <mat-error *ngIf="f.submitted && numberOfBoxes.invalid " class="invalid-feedback">
+                                <mat-error *ngIf="numberOfBoxes.errors.required">required</mat-error>
+                              </mat-error>
+                              
+                            </div>
+                          </td>
+                          <td class="w150"><span *ngIf="isEdit==false">{{categorydetail.lrNumber}}</span>
+                            <div class="td-input"  *ngIf="isEdit==true" >
+                              <input type="text"  name="lrNumber" #lrNumber="ngModel" [(ngModel)]="categorydetail.lrNumber" [ngClass]="{'has-error' : lrNumber.invalid }" required>
+                              <mat-error *ngIf="f.submitted && lrNumber.invalid " class="invalid-feedback">
+                                <mat-error *ngIf="lrNumber.errors.required">required</mat-error>
+                              </mat-error>
+                            </div>
+                          </td>
+                          <td class="w140"><span *ngIf="isEdit==false">{{categorydetail.eWayBillNumber}}</span>
+                            <div class="td-input" *ngIf="isEdit==true">
+                              <input type="text"  name="eWayBillNumber" #eWayBillNumber="ngModel" [(ngModel)]="categorydetail.eWayBillNumber" [ngClass]="{'has-error' : eWayBillNumber.invalid }" required>
+                              <mat-error *ngIf="f.submitted && eWayBillNumber.invalid " class="invalid-feedback">
+                                <mat-error *ngIf="eWayBillNumber.errors.required">required</mat-error>
+                              </mat-error>
+                            </div>
+                          </td>
+                          <td class="w140" *ngIf="isEdit==true">
+                            <label>
+                              <input (change)="insertDocument($event)" style="display: none;" type="file">
+                              <div class="outer">
+                                <div class="innear">
+                                  <i class="material-icons upload-ic">cloud_upload</i>
+                                  <p>Add Document</p>
+                                </div>
+                              </div>
+                            </label>
+                            <p *ngIf="selectedFile && selectedFile[0] && isEdit==true" >{{selectedFile[0].name}}</p>
+                      </td>
+                      <td class="w140"  *ngIf="categorydetail.transportDocument">
+                        <ul>
+                          <li><a matTooltip="Download Document" matRipple  href="{{dburl}}download/document/{{categorydetail.transportDocument.documentId}}"><i class="material-icons">cloud_download</i></a></li>
+                        </ul>
+                      </td>
+                          <td class="w100 text-center">
+                            <button  mat-raised-button color="accent"  *ngIf="isEdit==true"  >Update</button>
+                           
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div> 
+
+
+          <div class="sprate-box mt15 padding0" *ngIf="categorydetail.concernStatus>7">
+              <div class="full-address">
+                <div class="top-heading">
+                  <h2>Finance Detail</h2>
+                </div>
+                <form *ngIf="!(categorydetail.concernStatus==8 && user.data.role==16)" (ngSubmit)="d.form.valid && updateFinance()" #d="ngForm" novalidate>
+                <div class="from-fields padding15">
+                    <div class="row">
+                        <div class="col s6 pl0">
+                            <div class="control-field">
+                                <mat-form-field class="cs-input wp100  infix-bodr">
+                                    <input *ngIf="categorydetail.concernStatus==8" matInput placeholder="Credit Note" name="creditnote" #creditnote="ngModel" [(ngModel)]="finance.creditnote" [value]="finance.creditnote" (keypress)="MobileNumber($event)" required >
+                                    <input *ngIf="categorydetail.concernStatus>8" matInput placeholder="Credit Note" name="creditNote" #creditNote="ngModel" [(ngModel)]="categorydetail.creditNote" [value]="categorydetail.creditNote" (keypress)="MobileNumber($event)" required readonly>
+                                </mat-form-field>
+                               
+                                <mat-error *ngIf="d.submitted && creditnote.invalid && categorydetail.concernStatus==8 " class="invalid-feedback">
+                                    <mat-error *ngIf="creditnote.errors.required">required</mat-error>
+                                  </mat-error>
+                            </div>
+                        </div>
+                        <div class="col s6 pr0">
+                            <div class="control-field">
+                                <mat-form-field class="cs-input wp100  infix-bodr">
+                                    <textarea  *ngIf="categorydetail.concernStatus==8" class="h150" matInput placeholder="Finance Remark" name="fmremark" #fmremark="ngModel" [(ngModel)]="finance.fmremark" [value]="finance.fmremark" ></textarea>
+                                    <textarea *ngIf="categorydetail.concernStatus>8" class="h150" matInput placeholder="Finance Remark" name="fmRemarks" #fmRemarks="ngModel" [(ngModel)]="categorydetail.fmRemarks" [value]="categorydetail.fmRemarks" readonly></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="categorydetail.concernStatus==8">
+                        <div class="col s12 padding0">
+                            <div  class="cs-btn fixedd mt15 text-right">
+                              <div class="in-btn">
+                                <button mat-raised-button color="accent" >Save</button>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                </form>
+              </div>
+            </div> 
+
+          <div class="sprate-box pt0 mt15" *ngIf="categorydetail.concernType==2">
+            <div class="cs-heading">
+              <h2>Other Type Detail</h2>
+            </div>
+            <div class="row">
+              <div class="col s8 pl0">
+                <div class="from-fields">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input wp100 h-input infix-bodr8">
+                      <textarea matInput   name="concernDetails" #concernDetails="ngModel"  [(ngModel)]="categorydetail.concernDetails" readonly class="h200"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div class="col s4 pr0">
+                <div class="territory-info mt12">
+                  <div class="head">
+                    <h2>SalesRole</h2>
+                  </div>
+                  <div class="cs-checkbox">
+                    <div class="checkbox-outer auto-height-scroll">
+                      <section class="checkbox-inner  bodr0">
+                        <mat-checkbox *ngFor="let role of categorydetail.concernRoles"  class="check-list bg-none check-none check-none check-hover check-none" style="cursor: unset;">
+                          <div class="name-outer">
+                            <div class="outer">
+                              <div class="inner">
+                                <div class="name-inner">
+                                    <span *ngIf="role.role==6">N</span>
+                                    <span *ngIf="role.role==7">R</span>
+                                    <span *ngIf="role.role==8">A</span>
+                                    <span *ngIf="role.role==10">T</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="text-box">
+                            <h2><span *ngIf="role.role==6">National Manager</span><span *ngIf="role.role==7">Regional Manager</span><span *ngIf="role.role==8">Area Manager</span><span *ngIf="role.role==10">Territory Incharge</span></h2>
+                          </div>
+                        </mat-checkbox>
+                      
+                      </section>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="row">
+            <div class="col s12 padding0">
+                <div  class="cs-btn fixedd mt15 text-right">
+                  <div class="in-btn">
+                    <button *ngIf='user.data.role==1 && categorydetail.concernStatus>4' mat-raised-button color="warn" type="button" (click)="processed()" >Close</button>
+                  </div>
+                </div>
+              </div>
+        </div>
+        </div>  
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="h50"></div>
+

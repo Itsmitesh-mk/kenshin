@@ -1,0 +1,226 @@
+<form>
+  <div class="main-container">
+    <div *ngIf="loader"> 
+      <div class="cs-loader">
+        <img src="assets/img/loader.png" class="rotate"> 
+      </div>
+    </div>
+    <div class="middle-container">
+      <div class="page-heading">
+        <!-- <img src="assets/img/leads_icon.svg" class="h-icon"> -->
+        <div class="heading-text bc-space"><strong>CHECKIN DETAIL</strong> 
+          <p>{{checkin_detail.length}}</p> 
+          <h2>{{checkInUser}}</h2>
+          <div class="back-btn" >
+            <a mat-button routerLink="/checkin-list" routerLinkActive="active" ><i class="material-icons">arrow_right_alt</i></a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="left-auto" *ngIf="userId==checkin_id && !checkin_detail[0].remarkSecondary">
+        <div class="cs-btn text-right ">
+          <div class="in-btn">
+            <button mat-raised-button color="accent" (click)="openDialog('activityReamrk')">Add Remark</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-outer" >
+      <div class="container" >
+        
+        <div class="row" >
+          <div class="col s12">
+            <div class="sprate-box padding0 mb15" *ngFor="let checkindetail of checkin_detail;let i = index">
+              <div class="cs-heading" style="margin: 0px;">
+                <h2>{{i+1}}. Basic Information</h2>
+              </div>
+              <div class="ds-from-fields scroll scroll350">
+                <div class="row">
+                  <div class="col s12 padding0">
+                    <div class="details-info">
+                      <div class="basic-details">
+                        <div class="col s12 cs-figure padding0">
+                          <ul>
+                            <li>
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Created Date</span>
+                                  <p> {{checkindetail.createdOn | date:'d, MMMM , y'}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Type</span>
+                                  <p>{{checkindetail.activityModuleName}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Company Name</span>
+                                  <p  *ngIf="checkindetail.activityModule==1">{{checkindetail.establishment}}</p>
+                                  <p  *ngIf="checkindetail.referenceId==0">{{checkindetail.establishmentName}}</p>
+                                  <p *ngIf="checkindetail.activityModule!=1">{{checkindetail.leadEstablishment}} </p>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>CheckInTime</span>
+                                  <p>{{checkindetail.checkInTime|date:'d, MMMM , y, h:mm:ss a'}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>CheckOutTime</span>
+                                  <p>{{checkindetail.checkOutTime|date :'d, MMMM , y, h:mm:ss a'}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Check In Duration</span>
+                                  <p>{{checkindetail.checkinDuration}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Visit Objective </span>
+                                  <p>{{checkindetail.objectivesOfVisitName}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            <li *ngIf="checkindetail.objectivesOfVisitName=='Others'">
+                              <div class="outer">
+                                <div class="inner">
+                                  <span>Other Objective </span>
+                                  <p>{{checkindetail.otherObjective}}</p>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s4 pl0">
+                    <div class="sprate-box pt0">
+                      <div class="cs-heading">
+                        <h2>Basic Information</h2>
+                      </div>
+                      <div class="from-fields">
+                        <div class="row">
+                          <div class="col s12 padding0">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input">
+                                <input matInput placeholder="Location" name="location" value="{{checkindetail.location}}" readonly>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div class="col s12 padding0">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input">
+                                <textarea matInput placeholder="Remarks"  name="remarks" value="{{checkindetail.remarks}}" class="h100" [readonly]="true"></textarea>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col s8 pr0" *ngIf="checkindetail.isFollowUp==true">
+                    <div class="sprate-box padding0" >
+                      <div class="full-address">
+                        <div class="top-heading">
+                          <h2>Follow-ups</h2>
+                        </div>
+                        <div class="cs-table">
+                          <div class="table-head">
+                            <table>
+                              <tr>
+                                <th class="w100"> date</th>
+                                <th class="w170">Follow-up type</th>
+                                <th >Remarks</th>
+                                <th class="w100">Status</th>
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="table-container">
+                            <div class="table-content none-shadow">
+                              <table>
+                                <tr *ngFor="let check of checkindetail.activityFollowUps">
+                                  <td class="w100">{{check.followUpDate|date:'d MMM y'}}</td>
+                                  <td class="w170">
+                                    <span *ngIf="check.followUpType==1">Call</span>
+                                    <span *ngIf="check.followUpType==2">Meeting</span>
+                                    <span *ngIf="check.followUpType==3">Email</span>
+                                    <span *ngIf="check.followUpType==5">Other</span>
+                                  </td>
+                                  <td>{{check.remarks}}</td>
+                                  <td class="w100"><span *ngIf="check.isClosed==true">Closed</span><span *ngIf="check.isClosed==false">Open</span></td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col s8 pr0" *ngIf="checkindetail.isFollowUp==false && checkindetail.nextFollowUpType==5">
+                    <div class="sprate-box padding0" >
+                      <div class="full-address">
+                        <div class="top-heading">
+                          <h2>Follow-ups</h2>
+                        </div>
+                        <div class="row">
+                          <span>
+                            <strong>OTHER</strong>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="row mt15" *ngIf="checkindetail.remarkSecondary">
+                  <div class="col s12 padding0">
+                    <div class="details-info">
+                      <div class="basic-details none-shadow padding0">
+                        <div class="col s12 cs-figure padding0">
+                          <ul>
+                            <li style="border: 1px solid #B29D9D;">
+                              <p><strong>Remark:</strong><br>{{checkindetail.remarkSecondary}}</p>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div  class="fixed-multibtn-botm">
+  <ul>
+    <li ><a  matTooltip="Download Product Sheet" (click)="exportAsXLSX()" matRipple><i class="material-icons">cloud_download</i></a></li>
+  </ul>
+</div>
+
+<div class="h100"></div>

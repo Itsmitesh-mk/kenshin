@@ -1,0 +1,35 @@
+<div class="cs-loader" *ngIf="loader"> 
+    <img src="assets/img/loader.png" class="rotate">
+  </div>
+
+<div class="edit-modal">
+  <p class="heading">Update Scheme</p>
+  <div mat-dialog-content *ngIf="schemeData.field!='validFrom' && schemeData.field!='validTill'">
+    <div class="row from-fields">
+      <div class="col s12 control-field" >
+        <mat-form-field class="cs-input" >
+          <input [innerHTML]="schemeData.value" matInput placeholder="Vlaue" name="value" [(ngModel)]="schemeData.value" >
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div mat-dialog-content style="overflow: hidden;" *ngIf="schemeData.field=='validFrom' || schemeData.field=='validTill'">
+    <div class="row from-fields">
+      <div class="control-field">
+        <mat-form-field class="cs-input">
+          <input matInput [matDatepicker]="pickers" readonly placeholder="Scheme End Date" [min]='currentDate' name="value" [(ngModel)]="schemeData.value" >
+          <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+          <mat-datepicker #pickers></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  
+  <div mat-dialog-actions>
+    <button mat-raised-button color="warn"  [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button color="accent" [mat-dialog-close]="true" (click)="updateScheme()" >Save</button>
+  </div>
+</div>
+

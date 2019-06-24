@@ -1,0 +1,187 @@
+<div class="main-container">
+  <div class="cs-loader" *ngIf="loader"> 
+    <img src="assets/img/loader.png" class="rotate">
+  </div>
+  
+  
+  <div class="middle-container pb15">
+    
+    <div class="page-heading">
+      <img src="assets/img/travel.svg" class="h-icon">
+      
+      <div class="heading-text flex-heading">
+        <div class="content">
+          <h2>{{userRole==17?'Sales Promotion':'Travel List'}}</h2>
+        </div>
+        <div class="item-filter" *ngIf="userRole!=10 && userRole!=17">
+          <mat-form-field class="wp100">
+            <mat-select  name="travelPlanApprovel" #travelPlanApprovel="ngModel" [(ngModel)]="forApprovel">
+              <mat-option (click)="getTravelList(1,travelStatus)" [value]=1>My Travel Plan</mat-option>
+              <mat-option (click)="getTravelList(2,travelStatus)" [value]=2>Wating For Approvel</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    
+    <div class="left-auto">
+      <div  *ngIf="filterData.createdByName || filterData.designation || filterData.month || filterData.createdOn" class="filter-container">
+        <div (click)="clearfilter()" class="filter-btn">
+          <button mat-button >CLEAR FILTER</button>
+        </div>
+      </div>
+      <div class="tabs right-tab none-af">
+        <ul>
+          <li><a class="pending" [ngClass]="{'tab-active':travelStatus==2}" (click)="getTravelList(forApprovel,2)" >PENDING</a></li>
+          <li><a class="approved" [ngClass]="{'tab-active':travelStatus==5}" (click)="getTravelList(forApprovel,5)" >APPROVE</a></li>
+          <li><a class="reject" [ngClass]="{'tab-active':travelStatus==6}" (click)="getTravelList(forApprovel,6)" >REJECT</a></li>
+          <li class="draft" *ngIf="forApprovel==1 && userRole!=17"><a [ngClass]="{'tab-active':travelStatus==1}" (click)="getTravelList(forApprovel,1)" >DRAFT</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    
+  </div>
+  
+  
+  
+  <div class="container-outer pt0">
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th class="w200">Date</th>
+                    <th *ngIf="forApprovel==2">User Name</th>
+                    <th class="w170" *ngIf="forApprovel==2">Designation Name</th>
+                    <th class="w130">Travel Month</th>
+                    <th class="w100 text-center">Year</th>
+                    <th class="w130 text-right">Budget</th>
+                    <th class="w120">Status</th>
+                  </tr>
+                </table>
+              </div>
+              <div class="table-head bdrt">
+                <form>
+                  <table class="sno-border">
+                    <tr>
+                      <th class="w30">&nbsp;</th>
+                      <th class="w200">&nbsp;
+                        <!-- <div class="th-search padding0" >
+                          <mat-form-field class="wp100 toggle-date-picker">
+                            <input matInput (dateChange)="getTravelList(forApprovel,travelStatus)" name="createdOn" [(ngModel)]="filterData.createdOn" [matDatepicker]="picker" >
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker  #picker></mat-datepicker>
+                          </mat-form-field>
+                        </div> -->
+                      </th>
+                      <th *ngIf="forApprovel==2">
+                        <div class="th-search" >
+                          <input type="text" (input)="getTravelList(forApprovel,travelStatus)" name="createdByName" #createdByName="ngModel" [(ngModel)]="filterData.createdByName" placeholder="Search....">
+                          <a class="close-mat" matRipple  matTooltip="Clear"></a>
+                          
+                        </div>
+                      </th>
+                      <th  class="w170" *ngIf="forApprovel==2">&nbsp;
+                        <!-- <div class="th-search">
+                          <mat-select placeholder="Select designation" name="designation"  #designation="ngModel" [(ngModel)]="filter.designation">
+                            <mat-option *ngFor='let list of designationData' (click)="getTravelList(travelStatus)" [value]="list.designation">{{list.designationName}}</mat-option>
+                            
+                          </mat-select>
+                        </div> -->
+                      </th>
+                      <th class="w130">
+                        <div class="th-search">
+                          <mat-select placeholder="Select" name="month" #month="ngModel" [(ngModel)]="filterData.month" >
+                            <mat-option  value={{i+1}} (click)="getTravelList(forApprovel,travelStatus)" *ngFor="let month of monthArray;let i=index">{{month}}</mat-option>
+                          </mat-select>
+                          
+                        </div>
+                      </th>
+                      <th class="w100">&nbsp;</th>
+                      <th class="w130">&nbsp;</th>
+                      <th class="w120">&nbsp;</th>
+                    </tr>
+                  </table>
+                </form>
+              </div>
+            </div>
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let list of trvelPlanLIst;let i=index">
+                    <td class="w30">{{i+1}}</td>
+                    <td class="w200">{{list.createdOn|date :'EEEE, MMMM d, y'}}</td>
+                    <td *ngIf="forApprovel==2"><a class="link-btn" routerLink="/detail-travel/{{list.travelPlanID}}" routerLinkActive="active" mat-button>{{list.userName}}</a></td>
+                    <td class="w170" *ngIf="forApprovel==2">
+                      <span >{{list.designationName}}</span>
+                    </td>
+                    <td class="w130">
+                      <span *ngIf="list.month==1" >January</span>
+                      <span *ngIf="list.month==2">February</span>
+                      <span *ngIf="list.month==3">March</span>
+                      <span *ngIf="list.month==4">April</span>
+                      <span *ngIf="list.month==5">May</span>
+                      <span *ngIf="list.month==6">June</span>
+                      <span *ngIf="list.month==7">July</span>
+                      <span *ngIf="list.month==8">August</span>
+                      <span *ngIf="list.month==9">September</span>
+                      <span *ngIf="list.month==10">October</span>
+                      <span *ngIf="list.month==11">November</span>
+                      <span *ngIf="list.month==12">December</span>
+                    </td>
+                    <td class="w100 text-center">{{list.year}}</td>
+                    <td class="w130 text-right">&#x20B9; {{list.budget}}</td>
+                    <td [ngClass]="{'pending':list.status==2||list.status==3,'approved':list.status==5,'reject':list.status==4||list.status==6,'draft':list.status==1}" class="w120">
+                      <span *ngIf="list.status==2||list.status==3" >PENDING</span>
+                      <span *ngIf="list.status==5" >APPROVED</span>
+                      <span *ngIf="list.status==4||list.status==6">REJECT</span>
+                      <span *ngIf="list.status==1" >DRAFT</span>                          
+                      <div class="action-btns">
+                        <a mat-button class="view" (click)="detailPlan(list.travelPlanID)"><i class="material-icons">remove_red_eye</i> View</a>
+                      </div>
+                    </td>
+                    <!-- <button *ngIf="userRole!=1" mat-button class="delete" (click)="deletePlan(list.travelPlanID)"><i class="material-icons">delete_sweep</i> Delete</button> -->
+                  </tr>
+                  
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="data-not-available" *ngIf="div">
+        <div class="outer">
+          <div class="iinear">
+            <div class="figure" matRipple>
+              <div class="header">
+                <img src="assets/img/data-not-available-header.svg" alt="">
+              </div>
+              
+              <div class="description">
+                <!-- <div class="cs-heading">
+                  <h2>No Travel Plane</h2>
+                </div> -->
+                <div class="img">
+                  <i class="material-icons">error_outline</i>
+                </div>
+                <div class="psc">
+                  <p>data not available</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fixed-multibtn-botm">
+      <ul>
+        <li><a  matTooltip="Add New" routerLink="/add-travel" routerLinkActive="active" matRipple><i class="material-icons">add</i></a></li>
+      </ul>
+    </div>
+  </div>
+</div>

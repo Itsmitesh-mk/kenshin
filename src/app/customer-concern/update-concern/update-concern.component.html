@@ -1,0 +1,104 @@
+<div class="edit-modal">
+    <p class="heading">PRODUCT INFORMATION</p>
+    <div *ngIf="isView==false" class="modal-img">
+        <div class="modal-img-in ds-none" >
+                <img src="">
+                <a class="del-btn"><i class="material-icons">delete_sweep</i></a>
+        </div>
+    </div>
+    <div *ngIf="isView==true" class="modal-img">
+            <div class="modal-img-in ds-block" >
+                    <img *ngIf="isAlready" src="{{api+docId+'/'+'1'}}">
+                    <img *ngIf="!isAlready" src="{{urlData}}">
+                    <a class="del-btn"><i class="material-icons">delete_sweep</i></a>
+            </div>
+        </div>
+    <mat-dialog-content class="mat-typography pl15 pr15" style="overflow-x: hidden !important;">
+        <div class="col s12 padding0">
+            <div class="cs-table left-right-15">
+                <div class="table-head">
+                    <table>
+                        <tr>
+                            <th class="w100">Part Number</th>
+                            <th class="w90">Category</th>
+                            <th  class="w90">Segment</th>
+                            <th  class="w90">Product Name</th>
+                            <th class="w70">QTY</th>
+                            <th class="w140">MFG Date</th>
+                            <th class="w100">Invoice</th>
+                            <th class="w80 text-right">Rate</th>
+                            <th class="w100 text-right">Amount</th>
+                            <th class="w100 text-right">Image</th>
+                            <th class="w100">Action</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="table-container">
+                    <div class="table-content">
+                        <table>
+                            <tr *ngFor="let product of productList; let i=index" [ngClass]="{ 'distributer' : product.status==1}">
+                                <td class="w100">{{product.partNumber}}</td>
+                                <td class="w90">{{product.category}}</td>
+                                <td  class="w90">{{product.segment}}</td>
+                                <td class="w90">{{product.productName}}</td>
+                                <td class="w70">
+                                    <div class="td-input" >
+                                        <input type="number" (input)="calculateAmount(product.qty,i,product.productId)"  name="qty" #qty="ngModel" [(ngModel)]="product.qty">
+                                    </div>
+                                    <p *ngIf='!product.qty'>required</p>
+                                </td>
+                                <!-- Pre-Fitment Field -->
+                                <td class="w140" *ngIf='concern.product_type==1'>
+                                    <div class="td-input" style="display: flex; align-items: center;">
+                                        <input matInput [matDatepicker]="picker"  (dateInput)="calculateAmount(product.qty,i,product.productId)"  placeholder="Choose a date"  name="{{date+index}}" [(ngModel)]="product.date"  #date="ngModel"  [max]="maxDateValue"  required>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </div>
+                                    <p *ngIf='!product.date'>required</p>
+                                </td>
+                                <td class="w100" *ngIf='concern.product_type==1'> 
+                                    <div class="td-input">
+                                        <input type="text"    name="{{invoice+index}}" #invoice="ngModel" [(ngModel)]="product.invoice" (input)="calculateAmount(product.qty,i,product.productId)"  required>
+                                    </div>
+                                    <p *ngIf='!product.invoice'>required</p>
+                                </td>
+                                
+                                <!--Pre-Fitment Field-->
+                                <!--Post-Fitment Field-->
+                                <td class="w140" *ngIf='concern.product_type==2'>
+                                    <div class="td-input" style="display: flex; align-items: center;">
+                                        <input matInput [matDatepicker]="picker"  (dateInput)="calculateAmount(product.qty,i,product.productId)"  placeholder="Choose a date" name="{{date+index}}" [(ngModel)]="product.date"  #date="ngModel"  [max]="maxDateValue" required>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </div>
+                                </td>
+                                <td class="w100" *ngIf='concern.product_type==2'> 
+                                    <div class="td-input">
+                                        <input type="text"    (keyup.enter)="addCart(product,index)" (input)="calculateAmount(product.qty,i,product.productId)"  name="{{invoice+index}}" #invoice="ngModel" [(ngModel)]="product.invoice" required>
+                                    </div>
+                                    
+                                </td>
+                                
+                                
+                                <!--Post-Fitment Field -->
+                                <td class="w80 text-right">&#8377; {{product.priceUnit}}</td>
+                                <td class="w100 text-right">&#8377; {{product.amount}}</td>
+                                <td class="w100 text-right">   <a *ngIf="product.document!=null" class="link-btn" (click)="showImage(i)"> View Image </a></td>
+                                <td class="w100 text-center">
+                                    <div class="action-btns default-action" style="right: 0;"> 
+                                        <a  *ngIf="product.status=='1' || concernStatus!=2 " class="edit" mat-button  matTooltip="Save"><i class="material-icons green-clr" (click)="saveProduct(product,i)">save</i></a>
+                                        <a  *ngIf="product.status=='1'|| concernStatus!=2 " class="delete"  matTooltip="Delete" mat-button><i class="material-icons red-clr" (click)="remove(product.productId,i)">delete_sweep</i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <!-- <button mat-button  >Update</button> -->
+        <button mat-raised-button color="warn"  (click)=" saveUpdate()" >Close</button>
+    </mat-dialog-actions>
+</div>

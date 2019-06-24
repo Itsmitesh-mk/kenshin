@@ -1,0 +1,70 @@
+<div class="edit-modal">
+    <p class="heading">USER INFORMATION</p>
+    <mat-dialog-content class="mat-typography">
+        <div class="cs-table mt15 left-right-15">
+            <div class="table-head">
+                <table>
+                    <tr>
+                        <th class="w230">Name</th>
+                        <th class="w130">Role</th>
+                        <th>Status</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="table-container">
+                <div class="table-content">
+                    <!-- <table>
+                        <span >
+                            <tr >
+                                <td>{{list.announcementTo}}</td>
+                                <td  class="w130">{{list.rolename}}</td>
+                                <td  *ngIf="list.isRead==true"  class="w150">Read</td>
+                                <td *ngIf="list.isRead==false"class="w150">Unread</td>
+                            </tr>
+                            <tr *ngIf="list.isRead==false && status=='unread' ">
+                                <td>{{list.announcementTo}}</td>
+                                <td  class="w130">{{list.rolename}}</td>
+                                <td  *ngIf="list.isRead==true"  class="w150">Read</td>
+                                <td *ngIf="list.isRead==false"class="w150">Unread</td>
+                            </tr>
+                            
+                        </span>
+                    </table> -->
+                    <table *ngIf="status=='all' ">
+                        <tr *ngFor="let list of user">
+                            <td class="w230">{{list.announcementTo}}</td>
+                            <td  class="w130">{{list.rolename}}</td>
+                            <td  *ngIf="list.isRead==true" >Read</td>
+                            <td *ngIf="list.isRead==false">Unread</td>
+                        </tr>
+                    </table>
+                    <table *ngIf="status=='read' ">
+                        <ng-container *ngFor="let list of user">
+                            <tr *ngIf="list.isRead==true" >
+                                <td  class="w230">{{list.announcementTo}}</td>
+                                <td  class="w130">{{list.rolename}}</td>
+                                <td  *ngIf="list.isRead==true" >Read</td>
+                                <td *ngIf="list.isRead==false">Unread</td>
+                            </tr>
+                        </ng-container>
+                    </table>
+                    <table *ngIf="status=='unread' ">
+                        <ng-container *ngFor="let list of user">
+                            <tr *ngIf="list.isRead==false " >
+                                <td  class="w230">{{list.announcementTo}}</td>
+                                <td  class="w130">{{list.rolename}}</td>
+                                <td  *ngIf="list.isRead==true">Read</td>
+                                <td *ngIf="list.isRead==false">Unread</td>
+                            </tr>
+                        </ng-container>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button [mat-dialog-close]="false" mat-raised-button color="warn" >CLOSE</button>
+    </mat-dialog-actions>
+</div>
+

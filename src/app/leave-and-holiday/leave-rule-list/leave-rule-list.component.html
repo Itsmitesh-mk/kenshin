@@ -1,0 +1,146 @@
+<div class="main-container">
+
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+    <div class="middle-container pb15">
+      <div class="page-heading">
+        <img src="assets/img/holiday.svg" class="h-icon">
+        <div class="heading-text pr20">
+          <h2>Leaves & Holidays</h2>
+          <p>Add New Leave Rule & Holiday</p>
+        </div>
+      </div>
+      <div class="tabs left-auto">
+        <ul>
+          <li><a routerLink="/leave-rule-list" routerLinkActive="active">LEAVES RULES</a></li>
+          <li><a routerLink="/holiday-list" routerLinkActive="active">HOLIDAYS</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    
+    <div class="container-outer pt0">
+      <div class="container">
+          <div class="row">
+              <div class="cs-table left-right-20">
+                <div class="sticky-head">
+                  <div class="table-head">
+                    <table class="sno-border"> 
+                      <tr>
+                        <th class="w30">&nbsp;</th>
+                        <th class="w110">Date</th>
+                        <th class="w200">Subject</th>
+                        <th>Description</th>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <div class="table-container">
+                  <div class="table-content">
+                    <table class="sno-border">
+                      <tr *ngFor="let leave of leaves;let i=index">
+                          <td class="w30">{{i+1}}</td>
+                          <td class="w110">{{leave.createdOn | date: 'dd-MMM-yyyy'}}</td>
+                          <td class="w200"> <a class="link-btn" routerLink="/leave-rule-detail/{{leave.ruleId}}" routerLinkActive="active">{{leave.subject}}</a></td>
+                          <td><p [innerHTML]="leave.description"></p></td>
+
+                          <td>
+                              <div class="edit-menu">
+                                <button mat-icon-button [matMenuTriggerFor]="menu"> 
+                                  <i class="material-icons">more_vert</i>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                  <button *ngIf="this.role==1" mat-menu-item (click)="delete_leave(leave.ruleId)">
+                                    <span class="red-clr" >Delete</span>
+                                  </button>
+                                </mat-menu>
+                              </div>
+                          </td>
+                          
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  
+                </div>
+        </div>
+
+        <div class="row" style="display: none;">
+          <div class="col s12">
+            <div class="list-thumbnail"  >
+              <div class="cs-list" *ngFor="let leave of leaves;let i=index">
+                <div class="list-heading">
+                  <h2>{{leave.name}} Policy</h2>
+                  <div class="left-icon-menu">
+                    <ul>
+                      <li><span class="counter-digit">{{leave.noOfLeaves}}</span></li>
+                      <li>
+                        <div class="edit-menu">
+                          <button mat-icon-button [matMenuTriggerFor]="menu"> 
+                            <i class="material-icons">more_vert</i>
+                          </button>
+                          <mat-menu #menu="matMenu">
+                            <button *ngIf="this.role==1" mat-menu-item (click)="delete_leave(leave.ruleId)">
+                              <span class="red-clr" >Delete</span>
+                            </button>
+                            <!-- <button mat-menu-item disabled>
+                              <span>Check voicemail</span>
+                            </button>
+                            <button mat-menu-item>
+                              <span>Disable alerts</span>
+                            </button> -->
+                          </mat-menu>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <div class="text-box-outer">
+                  <div class="text-box-inner" [innerHTML]="leave.description"> 
+                  </div>
+
+                  <!-- <div class="text-right">
+                    <a class="link-btn" style="color: #0006b7; cursor: pointer;">View More</a>
+                  </div> -->
+                </div>
+              </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="div" class="data-not-available" >
+            <div class="outer">
+              <div class="iinear">
+                <div class="figure" matRipple>
+                  <div class="header">
+                    <img src="assets/img/data-not-available-header.svg" alt="">
+                  </div>
+                  
+                  <div class="description">
+                  
+                    <div class="img">
+                      <i class="material-icons">error_outline</i>
+                    </div>
+                    <div class="psc">
+                      <p>data not available</p>
+                   
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="userdata.role == 1 && userdata.superAdmin" class="fixed-multibtn-botm">
+          <ul>
+            <li><a  matTooltip="Add New" routerLink="/add-leave-rules/0" routerLinkActive="active" matRipple><i class="material-icons">add</i></a></li>
+          </ul>
+        </div>
+
+      </div>  
+    <div class="h50"></div>

@@ -1,0 +1,170 @@
+<div class="main-container">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/gift-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{giftdata.name}}</h2>
+        <p class="light">{{giftdata.description}}</p>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s8 pr10">
+          <div class="sprate-box pt0">
+            <div class="cs-heading">
+              <h2>Gift Detail</h2>
+              <a *ngIf="this.role==1" class="edit-icon" mat-button matTooltip="Edit Info" (click)="openDialog('requiredfield')"><i class="material-icons">create</i></a>
+            </div>
+            <div class="details-thumbnail">
+              <div class="row mb10">
+                <div class="col s4 pl0">
+                  <div class="detail-field">
+                    <span>Name</span>
+                    <p>{{giftdata.name}}</p>
+                  </div>
+                </div>
+                <!-- <div class="col s4 ">
+                  <div class="detail-field">
+                    <span>Quantity</span>
+                    <p>{{giftdata.quantity}}</p>
+                  </div>
+                </div> -->
+                <div class="col s4 pr0">
+                  <div class="detail-field">
+                    <span>Points</span>
+                    <p>{{giftdata.redeem}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 padding0">
+                  <div class="detail-field">
+                    <span>Description</span>
+                    <p>{{giftdata.description}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+          
+          
+          <div class="sprate-box pt0 mt15">
+            <div class="cs-heading">
+              <h2>Additonal Fields</h2>
+              <a *ngIf="this.role==1" class="edit-icon" mat-button matTooltip="Edit Info" (click)="openDialog('extrafield')"><i class="material-icons">create</i></a>
+            </div>
+            <div class="from-fields" >
+              <div *ngIf="giftdata.aditionalField1Label || giftdata.aditionalField2Label || giftdata.aditionalField3Label || giftdata.aditionalField4Label" class="details-thumbnail">
+                <div  class="row mb0">
+                  <div class="col s4 pl0">
+                    <p class="cs-lable">Labels</p>
+                  </div>
+                  <div class="col s8 pr0">
+                    <p class="cs-lable">Values</p>
+                  </div>
+                </div>
+
+
+                <div *ngIf="giftdata.aditionalField1Label" class="row">
+                  <div class="col s4 pl0">
+                    <div class="detail-field">
+                      <p>{{giftdata.aditionalField1Label}}</p>
+                    </div>
+                  </div>
+                  <div class="col s8 pr0">
+                    <div class="detail-field">
+                      <p>{{giftdata.aditionalField1Value}}</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- </div> -->
+                <div *ngIf="giftdata.aditionalField2Label" class="row">
+                  <div class="col s4 pl0">
+                    <div class="detail-field">
+                      <p>{{giftdata.aditionalField2Label}}</p>
+                    </div>
+                  </div>
+                  <div class="col s8 pr0">
+                    <div class="detail-field">
+                      <p>{{giftdata.aditionalField2Value}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="giftdata.aditionalField3Label" class="row">
+                  <div class="col s4 pl0">
+                    <div class="detail-field">
+                      <p>{{giftdata.aditionalField3Label}}</p>
+                    </div>
+                  </div>
+                  <div class="col s8 pr0">
+                    <div class="detail-field">
+                      <p>{{giftdata.aditionalField3Value}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="giftdata.aditionalField4Label" class="row">
+                  <div class="col s4 pl0">
+                    <div class="detail-field">
+                      <p>{{giftdata.aditionalField4Label}}</p>
+                    </div>
+                  </div>
+                  <div class="col s8 pr0">
+                    <div class="detail-field">
+                      <p>{{giftdata.aditionalField4Value}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+        
+        <div class="col s4">
+          <div class="sprate-box pt0">
+            <div class="cs-logs">
+              <div class="cs-heading">
+                <h2>GIFT IMAGES</h2>
+                <label *ngIf="this.role==1" >
+                  <input type="file" (change)="insertImage($event)" style="display: none;">
+                  Add Image
+                </label>
+              </div>
+              <div class="logs-outer padding0">
+                <div class="cs-image">
+                  <div class="vertical-img {{giftdata.documents?.length == 2 ? 'double-img' : (giftdata.documents?.length > 2 ? 'multiple-img' : '')}}">
+                    <ul>
+                      <li class="overlay-content" *ngFor="let giftImg of giftdata.documents;let i=index">
+                        <img src="{{api+giftImg.documentId+'/'+'1'}}">
+                        <div class="tittle">
+                          <p>{{ giftImg.documentName}}</p>
+                        </div>
+                        <a *ngIf="this.role==1" class="close" matRipple matTooltip="Delete" (click)="deleteimg(giftImg.documentId,giftImg.fileName)"><i class="material-icons">delete_sweep</i></a>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>    
+      </div>
+    </div>
+  </div>
+  
+  <div class="h50"></div>

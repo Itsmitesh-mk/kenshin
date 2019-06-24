@@ -1,0 +1,67 @@
+<div class="edit-modal">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div mat-dialog-content>
+  <p class="heading">Update Address</p>
+  <div class="from-fields">
+    <div class="row">
+      <div class="col s6">
+          <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select placeholder="State" name="state" [(ngModel)]="networkUserDetail.state" >
+                  <mat-option (click)="get_district()"  *ngFor="let state of statelist" value="{{state}}">{{state}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+      </div>
+      <div class="col s6">
+          <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select placeholder="District"   name="district" [(ngModel)]="networkUserDetail.district" >
+                  <mat-option (click)="get_city()"  *ngFor="let district of district1" value="{{district.districtName}}">{{district.districtName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+      </div>
+      <div class="col s6">
+          <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select placeholder="City"  name="city" [(ngModel)]="networkUserDetail.city" >
+                  <mat-option   *ngFor="let city of cities" (click)=" stateId=city.stateMasterId ;get_pincode()" value="{{city.cityName}}">{{city.cityName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+      </div>
+      <div class="col s6">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <mat-select placeholder="Pin"  name="pin" [(ngModel)]="networkUserDetail.pin" >
+                <mat-option *ngFor="let pin of areas" value="{{pin}}">{{pin}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+    </div>
+    
+    <div class="row mb15">
+      <div class="col s12">
+          <div class="control-field">
+              <mat-form-field class="cs-input" >
+                <textarea matInput placeholder="Address" name="street" [(ngModel)]="networkUserDetail.street" class="h100"></textarea>
+              </mat-form-field>
+            </div>
+      </div>
+      
+    </div>
+  </div>
+  </div>
+
+  <div mat-dialog-actions>
+  <button mat-raised-button color="warn" (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="accent" (click)="update_salesuser()">Save</button>
+  </div>
+
+  </div>

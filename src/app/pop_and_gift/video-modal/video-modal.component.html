@@ -1,0 +1,93 @@
+<div class="edit-modal" >
+  <p class="heading">Create E-version</p>
+  <div mat-dialog-content>
+    <div class="from-fields">
+      <div class="row mt15">
+        <div class="col s6">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr8">
+              <input matInput [(ngModel)]="data.name" name="title" placeholder="Title">
+            </mat-form-field>
+          </div>
+        </div>
+        
+        <div class="col s6">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr8">
+              <mat-select [(ngModel)]="data.mediaType" name="mediaType" placeholder="Select">
+                <mat-option [value]=1>Document</mat-option>
+                <mat-option [value]=2>Video Link</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="data.mediaType==2" class="row mb10">
+        <div class="col s12">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr8">
+              <input matInput [(ngModel)]="data.urlLink" name="videoLink" placeholder="Video Link">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col s12">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr">
+              <textarea matInput [(ngModel)]="data.description" name="Description" placeholder="Description" class="h100"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      
+
+      <div  *ngIf="data.mediaType==1"  class="row mt15">
+        <div class="col s12">
+          <div class="cs-file-multiple scroll">
+            <ul>
+              <li class="w110 pr10" *ngFor="let urlData of urls;let i=index">
+                <label>
+                  <img *ngIf="selectedFile[i].type=='image/jpeg'" src="{{urlData}}">
+                 <img  *ngIf="selectedFile[i].type=='application/pdf'" src="assets/img/pdf.png">
+                  <a (click)="deleteimg(i)" class="close"><i class="material-icons">delete_sweep</i></a>
+                </label>
+              </li>
+              <li class="w110 pr10">
+                <div class="cs-file wp100">
+                  <label>
+                    <input type="file" (change)="insertImage($event)" style="display:none;" multiple>
+                    <i class="material-icons add-file-icon" >add</i>
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="upload-excel mt5">
+        <label>
+          <input (change)="insertImage($event)" style="display: none;" type="file" multiple>
+          <div class="outer">
+            <div class="innear">
+              <i class="material-icons upload-ic">cloud_upload</i>
+              <p>Add Document</p>
+            </div>
+          </div>
+        </label>
+        <p *ngIf="selectedFile && selectedFile[0]">{{selectedFile[0].name}}</p>
+        <span class="file-format">PDF format attactment</span>
+      </div>
+       -->
+    </div>
+  </div>
+  
+  <div mat-dialog-actions>
+    <button mat-raised-button color="warn"  [mat-dialog-close]="false" class="mr15">Cancel</button>
+    <div >
+      <button mat-raised-button (click)="saveEversion()" [mat-dialog-close]="true" color="accent">Save</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,424 @@
+<div class="main-container">
+  
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  
+  
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/product-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{productdata.productName}}</h2>
+        <p class="light">{{productdata.category}}</p>
+      </div>
+    </div>
+    <div class="top-pagination m-right-data " *ngIf="role==1">
+      <div class="detail-field w200" style="background: #efefef;">
+        <h2>Go Live</h2><mat-slide-toggle class="right-toggle" [checked]="productdata.isLive"  (change)="productLive(productdata.productId,$event)" ></mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer">
+    <div class="container">
+      
+      
+      <div class="row">
+        
+        <div class="col s8 pr10">
+          <div class="sprate-box pt0">
+            <div class="cs-heading">
+              <h2>PRODUCT DETAIL</h2>
+            </div>
+            <div class="details-thumbnail">
+              <div class="row mb10">
+                <div *ngIf="productdata.segment" class="col s4 ">
+                  <div class="detail-field">
+                    <span>Segment</span>
+                    <p>{{productdata.segment}}</p>
+                  </div>
+                </div>
+                <div *ngIf="productdata.subSegment" class="col s4 ">
+                  <div class="detail-field">
+                    <span>Sub Segment</span>
+                    <p>{{productdata.subSegment}}</p>
+                  </div>
+                </div>
+                <div *ngIf="productdata.category" class="col s4 ">
+                  <div class="detail-field">
+                    <span>Category</span>
+                    <p>{{productdata.category}}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row mb10">
+                
+                <div *ngIf="productdata.productName" class="col s8 ">
+                  <div class="detail-field">
+                    <span>Product Name</span>
+                    <p>{{productdata.productName}}</p>
+                  </div>
+                </div>
+                
+                <div *ngIf="productdata.oem" class="col s4 ">
+                  <div class="detail-field">
+                    <span>OEM</span>
+                    <p>{{productdata.oem}}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row mb10">
+                
+                <div *ngIf="productdata.model" class="col s4">
+                  <div class="detail-field">
+                    <span>Model Description 1</span>
+                    <p>{{productdata.model}}</p>
+                  </div>
+                </div>
+                
+                <div *ngIf="productdata.model" class="col s4">
+                  <div class="detail-field">
+                    <span>Model Description 2</span>
+                    <p>{{productdata.model}}</p>
+                  </div>
+                </div>
+                
+                <div *ngIf="productdata.size" class="col s4 ">
+                  <div class="detail-field">
+                    <span>Size</span>
+                    <p>{{productdata.size}}</p>
+                  </div>
+                </div>
+                
+              </div>
+              
+              
+              <div *ngIf="productdata.materialType" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>Material Type</span>
+                  <p>{{productdata.materialType}}</p>
+                </div>
+              </div>
+              
+              
+              <div *ngIf="productdata.materialDescription1" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>Material Description 1</span>
+                  <p>{{productdata.materialDescription1}}</p>
+                </div>
+              </div>
+              
+              
+              <div *ngIf="productdata.materialDescription2" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>Material Description 2</span>
+                  <p>{{productdata.materialDescription2}}</p>
+                </div>
+              </div>
+              
+              
+              
+              <div *ngIf="productdata.materialDescription3" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>Material Description 3</span>
+                  <p>{{productdata.materialDescription3}}</p>
+                </div>
+              </div>
+              
+              
+              <div *ngIf="productdata.materialDescription4" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>Material Description 4</span>
+                  <p>{{productdata.materialDescription4}}</p>
+                </div>
+              </div>
+              
+              
+              <div *ngIf="productdata.partNumber" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>Part No</span>
+                  <p>{{productdata.partNumber}}</p>
+                </div>
+              </div>
+              
+              
+              <div *ngIf="productdata.partDescription" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>Part Description</span>
+                  <p>{{productdata.desc}}</p>
+                </div>
+              </div>
+              
+              
+              <div *ngIf="productdata.salesUnit" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>Sales Unit</span>
+                  <p>{{productdata.salesUnit}}</p>
+                </div>
+              </div>
+              
+              
+              <div *ngIf="productdata.priceUnit" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>Price Unit</span>
+                  <p>{{productdata.priceUnit}}</p>
+                </div>
+              </div>
+              
+              
+              <div *ngIf="productdata.mrp" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>MRP</span>
+                  <p>{{productdata.mrp}}</p>
+                </div>
+              </div>
+              
+              <div *ngIf="productdata.moq" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>MOQ</span>
+                  <p>{{productdata.moq}}</p>
+                </div>
+              </div>
+              
+              
+              <div *ngIf="productdata.gstPercentage" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>GST</span>
+                  <p>{{productdata.gstPercentage}}</p>
+                </div>
+              </div>
+              
+              
+              
+              <div *ngIf="productdata.hsnCode" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>HSN Code</span>
+                  <p>{{productdata.hsnCode}}</p>
+                </div>
+              </div>
+              
+              <div *ngIf="productdata.weightGross" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>Weight Gross</span>
+                  <p>{{productdata.weightGross}}</p>
+                </div>
+              </div>
+              
+              <div *ngIf="productdata.weightUOM" class="col s4 mb10">
+                <div class="detail-field">
+                  <span>Weight UOM</span>
+                  <p>{{productdata.weightUOM}}</p>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        
+        <div class="col s4">
+          <div class="sprate-box pt0">
+            <div class="cs-logs">
+              <div class="cs-heading">
+                <h2>PRODUCT IMAGES</h2>
+                <label *ngIf="this.role==1">
+                  <input type="file" (change)="insertImage($event)" style="display: none;">
+                  Add Image
+                </label>
+              </div>
+              <div class="logs-outer padding0">
+                <div class="cs-image">
+                  
+                  <div *ngIf="productdata.documents?.length == 0" class="not-data mt15 padding0">
+                    <div class="inner-data">
+                      <p>Image not available</p>
+                    </div>
+                  </div>
+                  
+                  <div *ngIf="productdata.documents?.length > 0" class="vertical-img {{productdata.documents.length == 2 ? 'double-img' : (productdata.documents.length > 2 ? 'multiple-img' : '')}}">
+                    <ul>
+                      <li class="overlay-content" *ngFor="let productImg of productdata.documents;let i=index">
+                        <img src="{{api+productImg.documentId+'/'+'2'}}">
+                        <div class="tittle">
+                          <p>{{ productImg.documentName}}</p>
+                        </div>
+                        <a *ngIf="this.role==1" class="close" matRipple matTooltip="Delete" (click)="deleteimg(productImg.documentId,productImg.fileName)"><i class="material-icons">delete_sweep</i></a>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="row  mt15">
+          
+          <div  class="col s6 ">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>Specification Information</h2>
+                <a *ngIf="this.role==1" class="edit-icon" mat-button matTooltip="Edit Info" (click)="openDialog('additonal')"><i class="material-icons">create</i></a>
+              </div>
+              <div  class="details-thumbnail" *ngIf="productdata.productSpecification1 || productdata.productSpecification2 || productdata.productSpecification3 || productdata.productSpecification4 || productdata.productSpecification5">
+                <div class="row mb10">
+                  <div *ngIf="productdata.productSpecification1" class="col s4 ">
+                    <div class="detail-field">
+                      <!-- <span>Specification 1</span> -->
+                      <p>{{productdata.productSpecification1}}</p>
+                    </div>
+                  </div>
+                  <div *ngIf="productdata.productSpecification2" class="col s4 ">
+                    <div class="detail-field">
+                      <!-- <span>Specification 2</span> -->
+                      <p>{{productdata.productSpecification2}}</p>
+                    </div>
+                  </div>
+                  <div *ngIf="productdata.productSpecification3" class="col s4 ">
+                    <div class="detail-field">
+                      <!-- <span>Specification 3</span> -->
+                      <p>{{productdata.productSpecification3}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb10">
+                  <div *ngIf="productdata.productSpecification4" class="col s4 ">
+                    <div class="detail-field">
+                      <!-- <span>Specification 4</span> -->
+                      <p>{{productdata.productSpecification4}}</p>
+                    </div>
+                  </div>
+                  <div *ngIf="productdata.productSpecification5" class="col s4">
+                    <div class="detail-field">
+                      <!-- <span>Specification 5</span> -->
+                      <p>{{productdata.productSpecification5}}</p>
+                    </div>
+                  </div>
+                  <div class="col s4 empty">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col s6 ">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>Additional Information</h2>
+                <a *ngIf="this.role==1" class="edit-icon" mat-button matTooltip="Edit Info"  (click)="openDialog('specification')"><i class="material-icons">create</i></a>
+              </div>
+              <div class="from-fields" >
+                <div class="details-thumbnail" *ngIf="productdata.aditionalField1Label || productdata.aditionalField2Label || productdata.aditionalField3Label || productdata.aditionalField4Label">
+                  <div class="row mb10">
+                    <div class="col s6">
+                      <p class="cs-label">Labels</p>
+                    </div>
+                    <div class="col s6">
+                      <p class="cs-label">Values</p>
+                    </div>
+                  </div>
+                  <div *ngIf="productdata.aditionalField1Label" class="row mb10">
+                    
+                    <div  class="col s6">
+                      <div class="detail-field">
+                        <!-- <span>Label 1</span> -->
+                        <p>{{productdata.aditionalField1Label}}</p>
+                      </div>
+                    </div>
+                    
+                    <div class="col s6">
+                      <div class="detail-field">
+                        <!-- <span>Value 1</span> -->
+                        <p>{{productdata.aditionalField1Value}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                  <div *ngIf="productdata.aditionalField2Label" class="row mb10" >
+                    <div  class="col s6">
+                      <div class="detail-field">
+                        <!-- <span>Label 2</span> -->
+                        <p>{{productdata.aditionalField2Label}}</p>
+                      </div>
+                    </div>
+                    <div class="col s6">
+                      <div class="detail-field">
+                        <!-- <span>Value 2</span> -->
+                        <p>{{productdata.aditionalField2Value}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="productdata.aditionalField3Label" class="row mb10">
+                    <div  class="col s6">
+                      <div class="detail-field">
+                        <!-- <span>Label 3</span> -->
+                        <p>{{productdata.aditionalField3Label}}</p>
+                      </div>
+                    </div>
+                    <div class="col s6">
+                      <div class="detail-field">
+                        <!-- <span>Value 3</span> -->
+                        <p>{{productdata.aditionalField3Value}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="productdata.aditionalField4Label" class="row mb10">
+                    <div  class="col s6">
+                      <div class="detail-field">
+                        <!-- <span>Label 4</span> -->
+                        <p>{{productdata.aditionalField4Label}}</p>
+                      </div>
+                    </div>
+                    <div class="col s6">
+                      <div class="detail-field">
+                        <!-- <span>Value 4</span> -->
+                        <p>{{productdata.aditionalField4Value}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div> 
+        
+        <div class="row  mt15">
+          
+          <div  class="col s6 ">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>Packing Information</h2>
+                <a *ngIf="this.role==1" class="edit-icon" mat-button matTooltip="Edit Info" (click)="openPackingDialog(productdata.productId,productdata.masterPacking,productdata.secondaryPacking)"><i class="material-icons">create</i></a>
+              </div>
+              <div  class="details-thumbnail">
+                <div class="row mb10">
+                  <div class="col s6 ">
+                    <div class="detail-field">
+                      <p>{{productdata.masterPacking}}</p>
+                    </div>
+                  </div>
+                  <div class="col s6 ">
+                    <div class="detail-field">
+                      <p>{{productdata.secondaryPacking}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="h50"></div>

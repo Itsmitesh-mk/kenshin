@@ -1,0 +1,93 @@
+<style>
+   .mat-dialog-content
+  {
+    overflow: inherit !important;
+  }
+</style>
+
+
+<div *ngIf="loader"> 
+  <div class="cs-loader">
+    <img src="assets/img/loader.png" class="rotate"> 
+  </div>
+</div>
+
+<div class="edit-modal">
+  
+  <form name="form" (ngSubmit)="f.form.valid && updateTerritoryData()"  #f="ngForm" novalidate>
+    
+    <div mat-dialog-content class="h300">
+      
+      <p class="heading">Update {{data.popupType}}</p>
+      
+      <div class="from-fields">
+        <div class="row">
+          <div class="col s6">
+            <div class="control-field">
+              <mat-form-field class="cs-input select-input">
+                
+                <mat-select placeholder="Select Segment" name="segment" [(ngModel)]="data.segment" #segment="ngModel" [ngClass]="{ 'is-invalid': f.submitted && segment.invalid }" multiple required>
+                  
+                  <mat-option (click)="getSegmentChangeHandler()" value="{{segment.text}}"  *ngFor='let segment of data.allSegmentList'>{{segment.text}}</mat-option>
+                  
+                </mat-select>
+                
+              </mat-form-field>
+              
+              <mat-error *ngIf="f.submitted && segment.invalid" class="invalid-feedback">
+                <mat-error *ngIf="segment.errors.required">Segment is required</mat-error>
+              </mat-error>
+            </div>
+            
+          </div>
+          
+          <div class="col s6">
+            <div class="control-field">
+              
+              <mat-form-field class="cs-input">
+                
+                <mat-select placeholder="Select Sales Role" name="selectRoleArr" [(ngModel)]="data.roleSelected" #selectRoleArr="ngModel">
+                  
+                  <mat-option disabled value="">Select an Option</mat-option>
+                  
+                  <span *ngFor='let list of data.userRolesArr'>
+                    
+                    <mat-option *ngIf="list.roleId != 6" (click)="getRoleWiseUserList(list.roleId, data.segment, 'onForm')" [value]="list.roleId">{{list.roleName}}</mat-option>
+                    
+                  </span>
+                  
+                </mat-select>
+                
+              </mat-form-field>
+              
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col s12">
+            <div class="control-field">
+              <div class="multi-all-select">
+                <label>Users</label>
+              <ng-multiselect-dropdown
+              [placeholder]="'Select Sales User'"
+              [data]="salesNetworkData"
+              [(ngModel)]="data.salesUsers"
+              name="salesUser"
+              #salesUser="ngModel"
+              [settings]="dropdownSettings">
+            </ng-multiselect-dropdown>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div mat-dialog-actions>
+    <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+    <button style="color: #fff;" mat-raised-button color="accent" >Save</button>
+  </div>
+  
+</form>
+</div>

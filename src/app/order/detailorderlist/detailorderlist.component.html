@@ -1,0 +1,53 @@
+
+<div class="cs-loader" *ngIf="loader"> 
+        <img src="assets/img/loader.png" class="rotate">
+      </div>
+    
+<div class="edit-modal">
+    <mat-dialog-content class="mat-typography pl15 pr15" style="overflow-x: hidden !important; position: relative;">
+        <p class="heading">PRODUCT INFORMATION</p>
+         <!-- <div class="top-search right-serach" style="top: 25px;">
+                  <input type="text" placeholder="SEARCH. . ." style="background: #f8f8f8;">
+                  <i class="material-icons">search</i>
+                </div> -->
+        <div class="col s12 padding0">
+            <div class="cs-table left-right-15">
+                <div class="table-head">
+                    <table>
+                        <tr>
+                            <th class="w120">Part Number</th>
+                            <th>Model</th>
+                            <th class="w130">OEM Code</th>
+                            <th class="w80 text-center">QTY</th>
+                            <th class="w110 text-right">Item Value</th>
+                            <th class="w120 text-right">Amount</th>
+                            <th class="w60">GST %</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="table-container pb0">
+                    <div class="table-content ">
+                        <table>
+                            <tr *ngFor="let product of productList;let index=index">
+                                <td class="w120" >{{product.partNumberCode}}</td>
+                                <td>{{product.model}}</td>
+                                <td class="w130">{{product.oem}}</td>
+                                <td class="w80 text-center">
+                                    {{product.quantity}}
+                                </td>
+                                <td class="w110 text-right">&#8377; {{product.price}}</td>
+                                <td class="w120 text-right">&#8377; {{product.quantity * product.price}}</td>
+                                <td class="w60">{{product.gstPercentage}} %</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button [mat-dialog-close]="false" color="warn">Close</button>
+    </mat-dialog-actions>
+</div>

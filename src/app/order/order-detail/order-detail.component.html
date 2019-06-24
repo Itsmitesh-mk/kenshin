@@ -1,0 +1,279 @@
+<div class="main-container" >
+    <div class="cs-loader" *ngIf="loader"> 
+        <img src="assets/img/loader.png" class="rotate">
+      </div>
+    
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/order-list/" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{network_data.establishment}}</h2>
+        <p class="light"></p>
+      </div>
+    </div>
+    
+    <div *ngIf="role==1 && order_status.dealerStatus==3" class="left-auto">
+      <div class="from-fields w250 pr6">
+        <div class="control-field">
+          <mat-form-field class="cs-input infix-bodr wp100">
+            <mat-select placeholder="Company Status" class="mat-bg" name="companyStatus" #companyStatus="ngModel" [(ngModel)]="order_status.companyStatus"   selected>
+              <mat-option value="" disabled>Select One</mat-option>
+              <mat-option (click)="updatecompanyStatus()" [value]="1">Pending</mat-option>
+              <mat-option (click)="updatecompanyStatus()" [value]="3">Reject</mat-option>
+              <mat-option (click)="updatecompanyStatus()" [value]="2">Approve</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      
+    </div>
+    
+    <div *ngIf="role==12 && order_status.dealerStatus==2" class="left-auto">
+      <div class="from-fields w250 pr6">
+        <div class="control-field">
+          <mat-form-field class="cs-input infix-bodr wp100">
+            <mat-select placeholder="Company Status" class="mat-bg" name="dealerStatus" #dealerStatus="ngModel" [(ngModel)]="order_status.dealerStatus"    selected>
+              <mat-option value="" disabled>Select One</mat-option>
+              <mat-option (click)="updatedealerStatus()" [value]="2">Pending</mat-option>
+              <mat-option (click)="updatedealerStatus()" [value]="3">Approve</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="details-info padding0">
+            <div class="basic-details">
+              <div class="profile-info">
+                <ul class="flex-start">
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/company.svg" class="fix-img">
+                      <span>Company Name</span>
+                      <p>{{network_data.establishment}}</p>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/code.svg" class="fix-img">
+                      <span>Dealer Code</span>
+                      <p>{{network_data.networkCode}}</p>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/applicant.svg" class="fix-img">
+                      <span>Contact Person</span>
+                      <p>{{network_data.userName}}</p>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/phone.svg" class="fix-img">
+                      <span>Mobile No</span>
+                      <p>{{network_data.mobile}}</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <mat-divider class="mt15 mb15"></mat-divider>
+              
+              <div class="col s12 cs-figure space-li padding0">
+                <h2>ORDER DETAIL</h2>
+                <ul>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Order Date</span>
+                        <p class="counter">{{order_data.modifiedOn | date :'EEEE, MMMM d, y'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Created By</span>
+                        <p class="counter">{{order_data.userName}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Order No</span>
+                        <p class="counter">{{order_data.orderNumber}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Total Qty</span>
+                        <p class="counter">{{order_data.quantity }}</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                </ul>
+              </div>
+              
+              <div class="col s12 mt15 cs-figure space-li padding0">
+                <ul>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>GST Amount</span>
+                        <p class="counter">{{order_data.gstAmount | currency: 'INR':true}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Total Amount</span>
+                        <p class="counter">{{order_data.amount | currency: 'INR':true}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Dealer Status</span>
+                        <p class="counter" *ngIf="order_status.dealerStatus==2">Pending</p>
+                        <p *ngIf="order_status.dealerStatus==3">Approve</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Company Status</span>
+                        <p *ngIf="order_status.companyStatus==1" class="status pending">Pending</p>
+                        <p *ngIf="order_status.companyStatus==2" class="status approved">Approve</p>
+                        <p *ngIf="order_status.companyStatus==3" class="status reject">Hold</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col s12">
+          <div class="sprate-box padding0 mt15">
+            <div class="full-address">
+              <div class="top-heading">
+                <h2>SHIPPING ADDRESS</h2>
+              </div>
+              <div class="ds-from-fields">
+                <div class="cs-row">
+                  <div class="static-info">
+                    <p>Shop/ Office No</p>
+                    <p>{{shipping.office}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>Mobile No</p>
+                    <p>{{shipping.mobile}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>Landline No</p>
+                    <p>{{shipping.landline}}</p>
+                    <p *ngIf="shipping.landline==''">---</p>
+
+                  </div>
+                  <div class="static-info">
+                    <p>Email</p>
+                    <p>{{shipping.email}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>Fax</p>
+                    <p>{{shipping.fax}}</p>
+                    <p *ngIf="shipping.fax==''">---</p>
+
+                  </div>
+                </div>
+                
+                <div class="cs-row">
+                  <div class="static-info">
+                    <p>State</p>
+                    <p>{{shipping.state}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>District</p>
+                    <p>{{shipping.district}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>City</p>
+                    <p>{{shipping.city}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>Pincode</p>
+                    <p>{{shipping.pin}}</p>
+                  </div>
+                </div>
+                <div class="cs-row">
+                  <div class="static-info">
+                    <p>Street</p>
+                    <p>{{shipping.street}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt15">
+        <div class="col s12">
+          <div class="heading-bg left-right-20 mb0">
+            <h2>PRODUCT INFORMATION</h2>
+          </div>
+          <div class="cs-table left-right-20">
+            <div class="table-head">
+              <table>
+                <tr>
+                  <th>Category</th>
+                  <th class="w150 text-center">Total Item</th>
+                  <th class="w150 text-center">QTY</th>
+                  <th class="w150 text-right">Amount</th>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor=" let order_detail_data of tmp_array">
+                    <td><a mat-button class="link-btn" (click)="productDetail(order_detail_data.category)" >{{order_detail_data.category}}</a></td>
+                    <td class="w150 text-center"><a mat-button class="link-btn" (click)="productDetail(order_detail_data.category)" >{{order_detail_data.item}}</a></td>
+                    <td class="w150  text-center">{{order_detail_data.quantity}}</td>
+                    <td class="w150  text-right"> &#x20B9; {{order_detail_data.amount}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+<div  class="fixed-multibtn-botm">
+  <ul>
+    <li ><a  matTooltip="Download Product Sheet" (click)="exportAsXLSX()" matRipple><i class="material-icons">cloud_download</i></a></li>
+  </ul>
+</div>
+<div class="h50"></div>
+

@@ -1,0 +1,130 @@
+<div class="main-container">
+  <div class="cs-loader" *ngIf="loader"> 
+    <img src="assets/img/loader.png" class="rotate">
+  </div>
+  
+  <div class="middle-container pb15">
+    <div class="page-heading">
+      <img src="assets/img/vendor.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Vendors</h2>
+        <p>Total Vendor <span *ngIf='vendorList'>{{vendorList.length}}</span><span *ngIf='!vendorList'>0</span></p>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer pt0">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table class="sno-border"> 
+                  <tr >
+                    <th class="w40">&nbsp;</th>
+                    <th class="w200">Comapny Name </th>  
+                    <th class="w150"> Vendor Code</th>  
+                    <th class="w170">Contact Person</th>  
+                    <th class="w100">Mobile No</th> 
+                    <th>Address</th>
+                    <th class="w100 text-center">QR Code Request</th>
+                    <th class="w100">Status</th>
+                  </tr>
+                </table>
+              </div>
+              <div class="table-head bdrt">
+                <table class="sno-border">
+                    <tr> <th class="w40">&nbsp;</th>
+                        <th class="w200" >
+                            <div class="th-search">
+                                <input type="text" (keyup)="vendor_list()" name="vendorName" #vendorName="ngModel" [(ngModel)]="filter.vendorName" placeholder="Search....">
+                            </div>
+                        </th>
+                        <th class="w150" >
+                          <div class="th-search">
+                              <input type="text" (keyup)="vendor_list()" name="vendorCode" #vendorCode="ngModel" [(ngModel)]="filter.vendorCode" placeholder="Search....">
+                          </div>
+                      </th>
+                        <th class="w170">
+                            
+                              <div class="th-search">
+                                <input type="text" (keyup)="vendor_list()" name="contactPersonName" #contactPersonName="ngModel" [(ngModel)]="filter.contactPersonName" placeholder="Search....">
+                            </div>
+                            
+                        </th>
+                       
+                        <th class="w100">
+                          <div class="th-search">
+                            <input type="text" (keyup)="vendor_list()" name="mobile" #mobile="ngModel" [(ngModel)]="filter.mobile" placeholder="Search....">
+                        </div>
+                        </th>
+                        <th >&nbsp;</th>
+                        <th class="w100 text-center" >&nbsp;</th>
+                        <th class="w100">
+                            <div class="th-search" >
+                                <mat-select placeholder="Select Task Priority" id="resultVendorStatus" name="resultVendorStatus" [(ngModel)]="filter.resultVendorStatus" #resultVendorStatus="ngModel">
+                                  <mat-option (click)="vendor_list()" value="2">All</mat-option> 
+                                  <mat-option (click)="vendor_list()" value="1">Active</mat-option>  
+                                  <mat-option (click)="vendor_list()" value="0">Inactive</mat-option>
+                                </mat-select>
+                            </div>
+                        </th>
+                       
+                    </tr>
+                </table>
+            </div>
+            </div>
+
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let vendor of vendorList;let i=index">
+                    <td class="w40">{{i+1}}</td>
+                    <td class="w200"><a class="link-btn" routerLink="/vendor-detail/{{vendor.vendorCode}}" routerLinkActive="active" mat-button>{{vendor.vendorName}}</a></td>  
+                    <td class="w150">#{{vendor.vendorCode}}</td>  
+                    <td class="w170">{{vendor.contactPersonName}}</td>  
+                    <td class="w100">{{vendor.mobile1}}</td> 
+                    <td>{{vendor.street}},{{vendor.city}},{{vendor.district}},{{vendor.vendorState}},{{vendor.pincode}}</td>
+                    <td class="w100 text-center"><a class="link-btn" mat-button>12</a></td>
+                    <td class="w100 inactive" *ngIf="vendor.vendorStatus==false">Inactive</td>
+                    <td class="w100 active" *ngIf="vendor.vendorStatus==true">Active</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <div *ngIf="div==true" class="data-not-available" >
+              <div class="outer">
+                  <div class="iinear">
+                      <div class="figure" matRipple>
+                          <div class="header">
+                              <img src="assets/img/data-not-available-header.svg" alt="">
+                          </div>
+                          <div class="description">
+                              <div class="img">
+                                  <i class="material-icons">error_outline</i>
+                              </div>
+                              <div class="psc">
+                                  <p>data not available</p>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fixed-multibtn-botm">
+    <ul>
+      <li><a  matTooltip="Add New" routerLink="/vendor-add" routerLinkActive="active" matRipple><i class="material-icons">add</i></a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="h50"></div>

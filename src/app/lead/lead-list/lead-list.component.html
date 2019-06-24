@@ -1,0 +1,232 @@
+<div class="main-container" >
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <!-- <div class="middle-container padding0">
+    <div class="master-heading h65">
+      <div class="vl-info">
+        <ul>
+          <li><p>Total Lead : <span *ngIf="leadlist">{{leadlist.length}}</span><span *ngIf="!leadlist">0</span></p></li>
+          <li *ngIf="userdata.role!=1" class="af-none">  
+            <div class="item-filter" >
+              <mat-form-field class="wp100">
+                <mat-select  name="role" id="role" [(ngModel)]="filter.assignedToMe" #assignedToMe="ngModel" >
+                  <mat-option *ngIf="userRole!=1" [value]="true" (click)="filter.assignedToMe=true;filter.createdbyme=false;leadList()">Assigned To Me</mat-option>
+                  <mat-option  [value]="false" (click)="filter.assignedToMe=false;filter.createdbyme=true; leadList()">Created By Me</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </li>
+          <li *ngIf="userdata.userType==1" class="af-none">
+            <div class="item-filter">
+              <mat-form-field class="wp100">
+                <mat-select  name="role" [(ngModel)]="datarole.role" (ngModelChange)="leadList()">
+                  <mat-option *ngFor="let role of client1" (click)="rejected='false'" [value]="role.roleId">{{role.roleName}}</mat-option>
+                  <mat-option [value]=0>Other</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+-->
+
+<div class="middle-container pb15">
+  <div class="page-heading">
+    <img src="assets/img/task.svg" class="h-icon">
+    <div class="heading-text flex-heading">
+      <div class="content">
+        <h2>Lead</h2>
+        <p>Total <span *ngIf="leadlist">{{leadlist.length}}</span><span *ngIf="!leadlist">0</span></p>
+      </div>
+      <div class="item-filter" *ngIf="userdata.role!=1">
+        <mat-form-field class="wp100">
+          <mat-select  name="role" id="role" [(ngModel)]="filter.assignedToMe" #assignedToMe="ngModel" >
+            <mat-option *ngIf="userRole!=1" [value]="true" (click)="filter.assignedToMe=true;filter.createdbyme=false;leadList()">Assigned To Me</mat-option>
+            <mat-option  [value]="false" (click)="filter.assignedToMe=false;filter.createdbyme=true; leadList()">Created By Me</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      
+      <div class="item-filter" *ngIf="userdata.userType==1">
+        <mat-form-field class="wp100">
+          <mat-select  name="role" [(ngModel)]="datarole.role" (ngModelChange)="leadList()">
+            <mat-option *ngFor="let role of client1" (click)="rejected='false'" [value]="role.roleId">{{role.roleName}}</mat-option>
+            <mat-option [value]=0>Other</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="left-auto dflex">
+    <div  class="filter-container ml15" *ngIf="filter.establishment || filter.mobile || filter.state">
+      <div (click)="clearfilter()" class="filter-btn">
+        <button mat-button >CLEAR FILTER</button>
+      </div>
+    </div>
+    
+    <div class="tabs right-tab none-af">
+      <ul *ngIf="datarole.role==12 && userdata.role==1">
+        <li><a class="pending"  [ngClass]= "{'tab-active' : filter.status==1}" (click)="filter.status=1;leadList()">PENDING</a></li>
+        <li><a class="assign" [ngClass]= "{'tab-active' : filter.status==2}" (click)="filter.status=2;leadList()">ASSIGNED</a></li>
+        <li><a class="reject" [ngClass]= "{'tab-active' : filter.status==4}" (click)="filter.status=4;leadList()">REJECTED</a></li>
+      </ul>
+    </div>
+  </div>
+  
+</div>
+<div class="container-outer pt0">
+  <div class="container" >
+    
+    <div class="row">
+      <div class="cs-table left-right-20">
+        <div class="sticky-head">
+          <div class="table-head">
+            <table class="sno-border"> 
+              <tr>
+                <th class="w30">&nbsp;</th>
+                <th class="w100" *ngIf="datarole.role!=0"> Date</th>
+                <th class="w130" *ngIf="datarole.role!=0">Created By</th>
+                <th class="w200">Lead Name</th>
+                <th class="w120">Mobile</th>
+                <th class="w150" *ngIf="datarole.role!=0 && datarole.role!=14 && datarole.role!=15">Contact Person</th>
+                <th class="w150"  *ngIf="datarole.role!=0 && filter.status==2">Assigned To</th>
+                <th class="w150" *ngIf="datarole.role==0">Email</th>
+                <th *ngIf="datarole.role!=0">Address</th>
+                <th *ngIf="datarole.role==0">Pincode</th>
+                <!-- <th class="w100" *ngIf="filter.createdbyme==true">Status</th> -->
+              </tr>
+            </table>
+          </div>
+          <div class="table-head bdrt">
+            <form>
+              <table class="sno-border">
+                <tr>
+                  <th class="w30">&nbsp;</th>
+                  <th  class="w100" *ngIf="datarole.role!=0">&nbsp;</th>
+                  <th class="w130" *ngIf="datarole.role!=0">&nbsp;</th> 
+                  <th class="w200">
+                    <div class="th-search">
+                      <input type="text" (keyup)="leadList()" name="establishment" #establishment="ngModel" [(ngModel)]="filter.establishment" placeholder="Search....">
+                    </div>
+                  </th>
+                  <th class="w120">
+                    <div class="th-search">
+                      <input type="text" (keyup)="leadList()" name="mobile" #mobile="ngModel" [(ngModel)]="filter.mobile" placeholder="Search....">
+                    </div>
+                  </th>
+                  <th class="w150" *ngIf="datarole.role!=0 && datarole.role!=14 && datarole.role!=15">&nbsp;</th>
+                  <th class="w150" *ngIf="datarole.role!=0 && filter.status==2">&nbsp;</th> 
+                  <th>
+                    <div class="th-search" *ngIf="datarole.role!=0">
+                      <mat-select placeholder="Select State" id="state" name="state" [(ngModel)]="filter.state" #state="ngModel">
+                        <mat-option value="" (click)="leadList()" >All</mat-option>
+                        <mat-option value="{{stat}}" (click)="leadList()" *ngFor='let stat of statelist'>{{stat}}</mat-option>
+                      </mat-select>
+                    </div>
+                  </th>
+                  <th *ngIf="role==1">
+                    <div class="th-search"  *ngIf="datarole.role!=0">
+                      <mat-select placeholder="Select State" id="state" name="state" [(ngModel)]="filter.state" #state="ngModel">
+                        <mat-option value="" (click)="leadList()" >All</mat-option>
+                        <mat-option value="{{stat}}" (click)="leadList()" *ngFor='let stat of statelist'>{{stat}}</mat-option>
+                      </mat-select>
+                    </div>
+                  </th>
+                  <!-- <th class="w100"> -->
+                    <!-- <div class="th-search" *ngIf="datarole.role==12">
+                      <mat-select placeholder="Select" id="status" name="status" [(ngModel)]="filter.status" #status="ngModel">
+                        <mat-option value="1" (click)="leadList()">Pending</mat-option>
+                        <mat-option value="2" (click)="leadList()">Assigned</mat-option>
+                        <mat-option value="4" (click)="leadList()">Rejected</mat-option>
+                      </mat-select>
+                    </div> -->
+                    <!-- </th> -->
+                    <!-- <th *ngIf="filter.createdbyme==true" class="w100">&nbsp;</th> -->
+                  </tr>
+                </table>
+              </form>
+            </div>
+          </div>
+          
+          
+          <div class="table-container">
+            <div class="table-content">
+              <table class="sno-border">
+                <tr *ngFor="let lead of leadlist; let i = index" [ngClass]="{'download':lead.isRead==true}">
+                  <td class="w30">{{i+1}}</td>
+                  <td class="w100" *ngIf="datarole.role!=0">{{lead.createdOn |date:'d MMM y'}}</td>
+                  <td class="w130" *ngIf="datarole.role!=0">{{lead.createdByName}}</td>
+                  <td class="w200"  ><a (click)="isLeadRead(lead.leadId)" class="link-btn" routerLink="/lead-detail/{{lead.leadId}}" routerLinkActive="active">{{lead.establishment}}</a></td>
+                  <td class="w120">{{lead.mobile}}</td>
+                  <td class="w150" *ngIf="datarole.role!=0 && datarole.role!=14 && datarole.role!=15"><span *ngIf="lead.leadContacts.length">{{lead.leadContacts[0].name}}</span></td>
+                  <td class="w150" *ngIf="datarole.role!=0 && filter.status==2">{{lead.salesUserName}}</td>
+                  <td class="w150" *ngIf="datarole.role==0"><span >{{lead.email}}</span></td>
+                  <td>
+                    <span *ngIf="datarole.role!=0">{{lead.street}},{{lead.district}},{{lead.state}},{{lead.pin}}</span>
+                    <span *ngIf="datarole.role==0">{{lead.pin}}</span>
+                    <div class="action-btns">
+                      <a mat-button class="view" *ngIf="filter.status!=2 && datarole.role==12 && userdata.role==1"  routerLink="/assigntask/{{lead.leadId}}" routerLinkActive="active"><i class="material-icons">assignment_turned_in</i>Assign Task </a>
+                      <a mat-button class="view" *ngIf="datarole.role==0" (click)="openEmail('changelead',lead.leadId)" routerLinkActive="active"><i class="material-icons">assignment_turned_in</i>Change Lead Type </a>
+                      <a mat-button class="view" *ngIf="lead.leadType!=12 && datarole.role!=0 " routerLinkActive="active"><i class="material-icons">assignment_turned_in</i>Convert To Distributor</a>
+                      <a mat-button class="view" *ngIf="datarole.role!=0" routerLink="/lead-detail/{{lead.leadId}}" routerLinkActive="active"><i class="material-icons">remove_red_eye</i>View</a>
+                      <!-- <button mat-button *ngIf="userdata.role==1 && userdata.superAdmin" (click)="delete_lead(lead.leadId)" class="delete"><i class="material-icons">delete_sweep</i> Delete</button> -->
+                    </div>
+                  </td>
+                  <!-- <td *ngIf="filter.createdbyme==true" [ngClass]="{'pending' : lead.status==1,'approved' : lead.status==3,'assign' : lead.status==2,'reject' : lead.status==4 } " class="w100">
+                    <span *ngIf="lead.status==1">Pending</span>
+                    <span *ngIf="lead.status==2">Assigned</span>
+                    <span *ngIf="lead.status==3">Converted</span>
+                    <span *ngIf="lead.status==4">Rejected</span>
+                    <div class="action-btns">
+                      <a mat-button class="view" *ngIf="filter.status!=2 && datarole.role==12"  routerLink="/assigntask/{{lead.leadId}}" routerLinkActive="active"><i class="material-icons">assignment_turned_in</i>Assign Task </a>
+                      
+                      <a mat-button class="view" *ngIf="datarole.role==0" (click)="openEmail('changelead',lead.leadId)" routerLinkActive="active"><i class="material-icons">assignment_turned_in</i>Change Lead Type </a>
+                      
+                      <button mat-button *ngIf="userdata.role==1 && userdata.superAdmin" (click)="delete_lead(lead.leadId)" class="delete"><i class="material-icons">delete_sweep</i> Delete</button>
+                    </div>
+                  </td> -->
+                </tr>
+              </table>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+    </div>
+    <div *ngIf="div" class="data-not-available" >
+      <div class="outer">
+        <div class="iinear">
+          <div class="figure" matRipple>
+            <div class="header">
+              <img src="assets/img/data-not-available-header.svg" alt="">
+            </div>
+            <div class="description">
+              
+              <div class="img">
+                <i class="material-icons">error_outline</i>
+              </div>
+              
+              <div class="cs-heading">
+                <h2>Data Not Available</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="fixed-multibtn-botm">
+    <ul>
+      <li><a  matTooltip="Add New" matRipple><i class="material-icons" routerLink="/add-lead" routerLinkActive="active" >add</i></a></li>
+    </ul>
+  </div>
+</div>
+<div class="h50"></div>

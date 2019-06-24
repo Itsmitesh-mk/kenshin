@@ -1,0 +1,83 @@
+<header>
+    <div class="logo">
+        <img src="assets/img/theme/kenshjn/logo.svg">
+        
+    </div>
+    
+    <div id="nav-icon2" (click)="toggleNav()" matRipple>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <div class="animation-content">
+        <h2>Welcome to the world opportunities.</h2>
+        <!-- <h2>Your journey to deliver quality products with smartest solutions start here!</h2> -->
+    </div>
+    
+    <!-- <div class="cs-type">
+        <mat-form-field class="sel-opt">
+            <select matNativeControl required>
+                <option value="volvo">Type</option>
+                <option value="saab">Saab</option>
+                <option value="mercedes">Mercedes</option>
+                <option value="audi">Audi</option>
+                <option value="distribution net">Distribution Net.</option>
+            </select>
+        </mat-form-field>
+    </div>
+    
+    <div class="top-search wp20">
+        <input type="text" placeholder="SEARCH. . .">
+        <i class="material-icons">search</i>
+    </div> -->
+    
+    <div class="right-data" >
+        <div class="outer">
+            <div class="inner">
+                <ul>
+                    <li>
+                        <a mat-button><img src="assets/img/notification.svg" class="h25" alt="">
+                            <span class="count">{{taskNotification.length}}</span>
+                        </a>
+                    </li>
+                    <li class="af-none">
+                        <div class="flex">
+                            <a *ngIf="userType!=3" class="profile" routerLink="/sale-user-detail/{{userId}}" routerLinkActive="active" ><img src="assets/img/user.svg" class="nav-icon h20"></a>
+                            <div style="width: max-content;">
+                                <p>{{this.userName}}</p>
+                                <span *ngIf="this.userRole==1 && !user.superAdmin">Admin</span>
+                                <span *ngIf="this.userRole==1 && user.superAdmin">Super Admin</span>
+                                <span *ngIf="this.userRole==2">Human Resource</span>
+                                <span *ngIf="this.userRole==3">Accounts</span>
+                                <span *ngIf="this.userRole==4">Marketing Co-ordinator</span>
+                                <span *ngIf="this.userRole==5">Business Head</span>
+                                <span *ngIf="this.userRole==6">National Manager</span>
+                                <span *ngIf="this.userRole==7">Regional Manager</span>
+                                <span *ngIf="this.userRole==8">Area Manager</span>
+                                <span *ngIf="this.userRole==9">Zonal Manger</span>
+                                <span *ngIf="this.userRole==10">Territory Incharge</span>
+                                <span *ngIf="this.userRole==11">Wholeseller</span>
+                                <span *ngIf="this.userRole==12">Distributer</span>
+                                <span *ngIf="this.userRole==13">Retailer</span>
+                                <span *ngIf="this.userRole==14">Engine Recondtioner</span>
+                                <span *ngIf="this.userRole==15">Mechanic</span>
+                            </div>
+                        </div>
+                        
+                        
+                    </li>
+                    <li><a class="logout" matRipple matTooltip="Logout">
+                        <div (click)="logout()">
+                            <i class="material-icons" >power_settings_new</i>
+                            logout
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+</header>

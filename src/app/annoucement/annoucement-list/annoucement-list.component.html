@@ -1,0 +1,166 @@
+<div class="main-container" >
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container pb15">
+    <div class="page-heading">
+      <img src="assets/img/announcement.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Announcement</h2>
+        <p>Total SMS Count : <span>{{totalSMSCount}}</span></p>
+      </div>
+    </div>
+    <div  *ngIf="filter.subject || filter.message" class="filter-container left-auto">
+      <div (click)="clearfilter()" class="filter-btn">
+        <button mat-button >CLEAR FILTER</button>
+      </div>
+    </div>
+    <!-- <div class="show-value left-auto">
+      <p>Lorem ipsum, dolor sit amet</p>
+    </div> -->
+  </div>
+  
+  
+  <div class="container-outer pt0">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th  class="w180">Subject</th>
+                    <th class="w250">Messege</th>
+                    <th *ngIf="userType==1" >Role</th>
+                    <th *ngIf="userType==1" class="w80 text-center">Read</th>
+                    <th *ngIf="userType==1" class="w90 text-center">Unread</th>
+                    <th *ngIf="userType==1" class="w120 text-center">Total Users</th>
+                    <!-- <th class="w100">Document</th> -->
+                    <th class="w110">Send By</th>
+                  </tr>
+                </table>
+              </div>
+              <div class="table-head bdrt">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th  class="w180">
+                      <div class="th-search-acmt" [ngClass]="{ 'clear-feilds' : removesubject == true}">
+                        <mat-form-field>
+                          <input type="text"  name="subject" [(ngModel)]="filter.subject" (ngModelChange)="subjectList()" matInput [matAutocomplete]="auto1">
+                          <mat-autocomplete #auto1="matAutocomplete" >
+                            <mat-option *ngFor="let subject of subjectlist" (click)="subjectFilter()" value="{{subject.subject}}">{{subject.subject}}</mat-option>
+                          </mat-autocomplete>
+                          <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removesubjectfilter()"><i class="material-icons">clear</i></a>
+                        </mat-form-field> 
+                      </div>
+                    </th>
+                    <th class="w250">
+                      <div class="th-search-acmt" [ngClass]="{ 'clear-feilds' : removemessage== true}">
+                        <mat-form-field>
+                          <input type="text"  name="message" [(ngModel)]="filter.message" (ngModelChange)="messageList()" matInput [matAutocomplete]="auto2">
+                          <mat-autocomplete #auto2="matAutocomplete" >
+                            <mat-option *ngFor="let message of messagelist" (click)="messageFilter()" value="{{message.message}}">{{message.message}}</mat-option>
+                          </mat-autocomplete>
+                          <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removemessagefilter()"><i class="material-icons">clear</i></a>
+                        </mat-form-field> 
+                      </div>
+                    </th>
+                    <th *ngIf="userType==1">&nbsp;</th>
+                    <th *ngIf="userType==1" class="w80 text-center">&nbsp;</th>
+                    <th *ngIf="userType==1" class="w90 text-center">&nbsp;</th>
+                    <th *ngIf="userType==1" class="w120 text-center">&nbsp;</th>
+                    
+                    <!-- <th *ngIf="userType==1" class="w100">&nbsp;</th> -->
+                    <th class="w110">&nbsp;</th>
+                    
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor='let announcement of announcementlist;let i=index ' [ngClass]="{'download' : announcement.documents && announcement.documents.length>0}">
+                    <td class="w30">{{i+1}}</td>
+                    <td class="w180">{{announcement.subject}}</td>
+                    <td class="w250 one-line"   (click)="readMassage(announcement.message,announcement.announcementId)"> <span [innerHTML]="announcement.message"></span> <a class="more-text">Read more</a></td>
+                    <td *ngIf="userType==1">  
+                      <div class="tags"> 
+                        <ul>
+                          <li *ngFor="let role of announcement.announcementToRoles | unique;let j=index"><span>{{role.rolename}}</span></li>
+                        </ul>
+                      </div>
+                      <!-- <div *ngFor="let role of announcement.announcementToRoles;let j=index"><span>{{role.userName}}--({{role.rolename}})</span></div> -->
+                    </td>
+                    
+                    
+                    
+                    
+                    <td *ngIf="userType==1" class="w80 text-center read pointer" matRipple (click)="announcement.readBy!='0' ? checkRead(announcement.announcementToRoles,'read') : ''">
+                      <!-- <a class="link-btn" (click)="checkRead(announcement.announcementToRoles,'read')">{{announcement.readBy}}</a> -->
+                      <a class="action-forward"  >{{announcement.readBy}} <i class="material-icons">arrow_forward_ios</i> </a>
+                    </td>
+                    
+                    <td *ngIf="userType==1" class="w90 text-center unread pointer" matRipple (click)="announcement.readPending!='0' ? checkRead(announcement.announcementToRoles,'unread') : ''">
+                      <a class="action-forward"  >{{announcement.readPending}}<i class="material-icons">arrow_forward_ios</i> </a>
+                    </td>
+                    
+                    <td *ngIf="userType==1" class="w120 text-center total pointer " matRipple (click)="announcement.sentTo!='0' ? checkRead(announcement.announcementToRoles,'all') : ''">
+                      <a class="action-forward"  >{{announcement.sentTo}}<i class="material-icons">arrow_forward_ios</i> </a>
+                    </td>
+                    
+                    <!-- <td class="w70 text-center green-clr">{{announcement.readBy}}</td>
+                      <td class="w80 text-center red-clr">{{announcement.readPending}}</td> -->
+                      <!-- <td class="w100 text-center blue-clr" >
+                        <a *ngIf="announcement.documents && announcement.documents[0]" class="link-btn underline" href="{{dburl}}download/document/{{announcement.documents[0].documentId}}">Download</a>
+                      </td> -->
+                      <td class="w110">{{announcement.actionsms}} {{announcement.actionemail}}
+                        <div class="action-btns">
+                          <a mat-button class="view" *ngIf="announcement.documents && announcement.documents[0]" href="{{dburl}}download/document/{{announcement.documents[0].documentId}}"><i class="material-icons">cloud_download</i></a>
+                          <button *ngIf="userRole==1" mat-button class="delete" (click)="deleteAnnouncement(announcement.announcementId)"><i class="material-icons">delete_sweep</i></button>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div *ngIf="div" class="data-not-available" >
+          <div class="outer">
+            <div class="iinear">
+              <div class="figure" matRipple>
+                <div class="header">
+                  <img src="assets/img/data-not-available-header.svg" alt="">
+                </div>
+                
+                <div class="description">
+                
+                  <div class="img">
+                    <i class="material-icons">error_outline</i>
+                  </div>
+                  <div class="psc">
+                    <p>data not available</p>
+                 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="user.data.role == 1 && user.data.superAdmin" class="fixed-multibtn-botm">
+      <ul>
+        <li><a  matTooltip="Add New" routerLink="/add-annoucement" routerLinkActive="active" matRipple><i class="material-icons">add</i></a></li>
+      </ul>
+    </div>
+  </div>

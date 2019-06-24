@@ -1,0 +1,213 @@
+<div class="main-container">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container pb15">
+    <div class="page-heading">
+      <img src="assets/img/gift.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>{{isTabActive==1?'Pop & Gift':'E-version'}}</h2>
+        <p>Total {{isTabActive==1?'Pop & Gift':'E-version'}} : {{isTabActive==1 ? gifts.length : eversionList.length}}</p>
+      </div>
+    </div>
+    
+    
+    <div class="left-auto">
+      <div class="filter-container" *ngIf="filter.gift">
+        <div (click)="clearfilter()" class="filter-btn">
+          <button mat-button >CLEAR FILTER</button>
+        </div>
+      </div>
+      <div class="tabs right-tab">
+        <ul>
+          <li (click)="isTabActive=1"><a [ngClass]="{'active': isTabActive==1}" >Pop & Gift</a></li>
+          <li (click)="isTabActive=2; eVersionList()"><a [ngClass]="{'active': isTabActive==2}" >E-Version</a></li>
+          <!-- <li (click)="isTabActive=3"><a [ngClass]="{'active': isTabActive==3}">E-Version</a></li> -->
+          <!-- <li (click)="downloadPriceList()"><a>Download Price List</a></li> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer pt0">
+    <div class="container" >
+      <div *ngIf="isTabActive==1" class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th class="w200">Gift Name</th>
+                    <th class="w200 text-center">Redeem Points</th>
+                    <th class="w200">Image</th>
+                    <th *ngIf="userType!=3">Description</th>
+                  </tr>
+                </table>
+              </div>
+              <div class="table-head bdrt">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th  class="w200">
+                      <div class="th-search-acmt" [ngClass]="{ 'clear-feilds' : removegift == true}">
+                        <mat-form-field>
+                          <input type="text"  name="gift" [(ngModel)]="filter.gift" (ngModelChange)="name_list()" matInput [matAutocomplete]="auto1">
+                          <mat-autocomplete #auto1="matAutocomplete" >
+                            <mat-option *ngFor="let gift of giftlist1" (click)="giftFilter()" value="{{gift.name}}">{{gift.name}}</mat-option>
+                          </mat-autocomplete>
+                          <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removegiftfilter()"><i class="material-icons">clear</i></a>
+                        </mat-form-field> 
+                      </div>
+                    </th>
+                    <th class="w200">&nbsp;</th>
+                    <th class="w200">&nbsp;</th>
+                    <th *ngIf="userType!=3">&nbsp;</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let gift of gifts;let i=index">
+                    <td class="w30">{{i+1}}</td>
+                    <td class="w200"><a class="link-btn" mat-button routerLink="/gift-deatil/{{gift.popId}}" routerLinkActive="active">{{gift.name}}</a></td>
+                    <td class="w200 text-center">{{gift.redeem}}</td>
+                    <td class="w200">
+                      <div class="tags">
+                        <ul>
+                          <li *ngFor="let doc of gift.documents;let j=index">
+                            <img src="{{api+doc.documentId+'/'+'1'}}" class="wp100 h70">
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                    <td *ngIf="userType!=3">{{gift.description}}
+                      <div class="action-btns">
+                        <button *ngIf="userRole==1" mat-button class="delete" (click)="deletePop(gift.popId)"><i class="material-icons">delete_sweep</i> Delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      
+      
+      <div *ngIf="isTabActive==2" class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th class="w170">Date</th>
+                    <th class="w250">Tittle</th>
+                    <th class="w180">Created By</th>
+                    <th class="w250">Description</th>
+                    <th>Link</th>
+                  </tr>
+                </table>
+              </div>
+              <!-- <div class="table-head bdrt">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th class="w110">&nbsp;</th>
+                    <th  class="w250">
+                      <div class="th-search-acmt">
+                        <mat-form-field>
+                          <input type="text" matInput [matAutocomplete]="auto1">
+                          <mat-autocomplete #auto1="matAutocomplete" >
+                            <mat-option  value="1">Tittle 1</mat-option>
+                            <mat-option  value="1">Tittle 1</mat-option>
+                          </mat-autocomplete>
+                          <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removegiftfilter()"><i class="material-icons">clear</i></a>
+                        </mat-form-field> 
+                      </div>
+                    </th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </table>
+              </div> -->
+            </div>
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let eVersion of eversionList;let i=index">
+                    <td class="w30">{{i+1}}</td>
+                    <td class="w170">{{eVersion.createdOn | date :'EEEE, MMMM d, y'}}</td>
+                    <td class="w250">
+                        <a *ngIf="eVersion.mediaType==1" class="link-btn" mat-button routerLink="/eversion-detail/{{eVersion.id}}" routerLinkActive="active">{{eVersion.name}}</a>
+                        <a *ngIf="eVersion.mediaType==2" >{{eVersion.name}}</a></td>
+                    <td class="w180">{{eVersion.createdByName}}</td>
+                    <td class="w250">{{eVersion.description}}</td>
+                    <td *ngIf="eVersion.mediaType==1">{{eVersion.files.length}}</td>
+                    <td  *ngIf="eVersion.mediaType==2"><a class="link-btn" target="blank" href="{{eVersion.urlLink}}" >{{eVersion.urlLink}}</a></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div *ngIf="div" class="data-not-available" >
+      <div class="outer">
+        <div class="iinear">
+          <div class="figure" matRipple>
+            <div class="header">
+              <img src="assets/img/data-not-available-header.svg" alt="">
+            </div>
+            
+            <div class="description">
+              
+              <div class="img">
+                <i class="material-icons">error_outline</i>
+              </div>
+              <div class="psc">
+                <p>data not available</p>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fixed-multibtn-botm" *ngIf="user.data.userType==1 && user.data.superAdmin && isTabActive == 1">
+    <ul>
+      <li><a  matTooltip="Add New" routerLink="/pop_and_gift" routerLinkActive="active" matRipple><i class="material-icons">add</i></a></li>
+    </ul>
+  </div>
+
+  
+  <div *ngIf="user.data.userType==1 && user.data.superAdmin && isTabActive == 2" class="fixed-multibtn-botm" style="right: 80px;">
+    <ul>
+      <li><a  matTooltip="Add New" (click)="openDialogone()" matRipple><i class="material-icons">add</i></a></li>
+    </ul>
+  </div>
+
+  <div  *ngIf="isTabActive == 2" class="fixed-multibtn-botm">
+    <ul>
+      <li><a  matTooltip="Download Price Sheet" matRipple (click)="downloadPriceList()"><i class="material-icons">cloud_download</i></a></li>
+    </ul>
+  </div>
+
+</div>

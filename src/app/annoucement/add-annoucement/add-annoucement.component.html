@@ -1,0 +1,209 @@
+<div class="main-container">
+  
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <img src="assets/img/announcement.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Announcement / Notice</h2>
+        <p>Create New Notice For all Users</p>
+      </div>
+    </div>
+  </div>
+  
+
+  <form name="form" (ngSubmit)="f.form.valid && data.message && (data.isSMSChecked || data.isEmailChecked) &&  salesNetworkSelectedData?.length > 0 && saveAnnouncementDetail()"  #f="ngForm" novalidate>
+    
+    <div class="container-outer">
+      <div class="container">
+        <div class="row">
+          <div class="col s12">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>ANNOUNCEMENT / NOTICE </h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <div class="row">
+                <div class="col s3 pl0">
+                  <div class="from-fields">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <mat-select color="accent" id="segment" placeholder="Select Segment" name="segment" [(ngModel)]="data.segment" #segment="ngModel" [ngClass]="{ 'is-invalid': f.submitted && segment.invalid }" multiple [required]="segmentRequired">
+
+                          <mat-option color="accent" (click)="getSegmentChangeHandler()" value="{{segment.text}}"  *ngFor='let segment of segmentlist'>{{segment.text}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-error *ngIf="f.submitted && segmentRequired" class="invalid-feedback">
+                        <mat-error *ngIf="segment.errors.required">Segment is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col s9 pr0">
+                    <div class="user-type">
+                        <div class="example-section">
+                          <ng-container *ngFor="let list of userRolesArr; let index = index">
+                            <mat-checkbox  *ngIf="list.userTypeId==1 || list.userTypeId==2 || (list.userTypeId==3 && list.roleId==12)" [(ngModel)]="list.checked" (change)="roleSelectedChange(list)" name="{{list.roleName}}{{index}}" [disabled]="list.userTypeId!=1 && !data.segment || data.segment?.length==0" class="example-margin" color="accent">{{list.roleName}}</mat-checkbox>
+                          </ng-container>
+                        </div>
+                      </div>
+                </div>
+
+              </div>
+              
+              <div class="row mt15">
+                <div *ngFor="let list of salesNetworkData" class="col s4 pl0">
+                  
+                  <div class="territory-info mb15">
+                    <div class="head" [ngClass]="{'active':active[list.roleId]==true}">
+
+                      <h2>{{list.roleName}}</h2>
+
+                       <span>
+                          <mat-checkbox class="fix-check" [(ngModel)]="list.selectAll" (change)="onSelectAllHandler(list.roleId, list.selectAll)" name="selectAll{{list.roleName}}">&nbsp;</mat-checkbox>
+                       </span>
+
+                      <i class="material-icons search-icon right20" (click)="toggleSearch(list.roleId,'open')"  matRipple>search</i>
+                    
+                      <input type="text" id="{{list.roleId}}" [(ngModel)]="list.searchData" name="{{list.roleName}}" placeholder="search..." class="fix-search">
+                      
+                      <i class="material-icons close-icon" (click)="list.searchData= '';toggleSearch(list.roleId,'close')" matRipple>clear</i>
+
+                    </div>
+
+
+                    <div *ngIf="!list.roleDataArr || list.roleDataArr.length==0" class="not-data">
+                      <div class="inner-data">
+                        <p>No Data</p>
+                      </div>
+                    </div>
+
+                    <div *ngIf="list.roleDataArr && list.roleDataArr.length>0" class="cs-checkbox">
+                      <div class="checkbox-outer">
+                        <section *ngFor="let row of list.roleDataArr | myfilter:{src: 'annoucmentFilter', search: list.searchData};let stateIndex=index;" class="checkbox-inner">
+
+                            <ng-container>
+                              <span>
+                                <mat-checkbox [(ngModel)]="row.checked"  value="{{row.userId}}" (change) = "saveNetworkData(row.userId, list.roleId, row.userName, row.checked)" name="{{list.roleId}}"  class="check-list content-ellipsis">{{row.userName}}/{{row.city}}</mat-checkbox>
+                              </span>
+                            </ng-container>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+              </div>
+              
+              <mat-error *ngIf="f.submitted && !salesNetworkSelectedData.length" class="invalid-feedback">
+                  <mat-error *ngIf="f.submitted && !salesNetworkSelectedData.length">Choose Sales Network!</mat-error>
+              </mat-error>
+              
+              <div class="row">
+                <div class="col s8 pl0">
+                  <div class="from-fields">
+                    <div class="col s12 pl0 control-field">
+                      <mat-form-field class="cs-input infix-bodr wp100 h-input">
+                        <input matInput [(ngModel)]="data.subject" placeholder="Subject" name="subject" #subject="ngModel" [ngClass]="{ 'is-invalid': f.submitted && subject.invalid }" required>
+                      </mat-form-field>
+                      <mat-error *ngIf="f.submitted && subject.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="subject.errors.required">Subject required</mat-error>
+                      </mat-error>
+                    </div>
+                    <div class="col s12 padding0 action-format">
+                        <div class="cs-heading margin0">
+                          <h2>ACTION</h2>
+                        </div>
+                        <div class="select-one padding10">
+                          <section class="check-list" >
+                            <mat-checkbox [(ngModel)]="data.isSMSChecked" name="smsChecked" [disabled]="urls && urls.length>0" class="select-check">SMS</mat-checkbox>
+                            <mat-checkbox [(ngModel)]="data.isEmailChecked" 
+                            name="emailChecked" class="select-check">EMAIL</mat-checkbox>
+                          </section>
+                          
+                          <mat-error *ngIf="f.submitted && !data.isSMSChecked && !data.isEmailChecked" class="invalid-feedback">
+                            <mat-error *ngIf="f.submitted && !data.isSMSChecked && !data.isEmailChecked">Choose atleast one Option!</mat-error>
+                          </mat-error>
+                          
+                        </div>
+                      </div>
+                    <div class="col s12 mt15 pl0 control-field" >
+                          <app-ngx-editor   [placeholder]="'Description'" [spellcheck]="true" name="description" name="description" [(ngModel)]="data.message"  #description="ngModel" [ngClass]="{ 'is-invalid': f.submitted && description.invalid,'toolbar-none':data.isSMSChecked!='' }" required></app-ngx-editor>
+                    </div>
+
+                    <mat-error class="invalid-feedback">
+                        <mat-error *ngIf="!data.message">Description Required!</mat-error>
+                    </mat-error>
+                  </div>
+                </div>
+
+
+                <div class="col s4">
+                    <div class="upload-excel mt5">
+                        <label>
+                          <input (change)="insertDocument($event)" style="display: none;" type="file">
+                          <div class="outer">
+                            <div class="innear">
+                              <i class="material-icons upload-ic">cloud_upload</i>
+                              <p>Add Document</p>
+                            </div>
+                          </div>
+                        </label>
+                        <p *ngIf="selectedFile && selectedFile[0]">{{selectedFile[0].name}}</p>
+                        <span class="file-format">PDF format attactment</span>
+                      </div>
+
+                  <!-- <div class="sprate-box">
+                    <div class="cs-logs">
+                      <div class="cs-heading">
+                        <label >
+                          <input type="file" (change)="insertDocument($event)" style="display: none;">
+                          Add Document
+                        </label>
+                      </div>
+                      <div class="logs-outer padding0">
+                        <div class="cs-image">
+                          <div class="cs-upload">
+                            <label>
+                              <input type="file" (change)="insertDocument($event)" style="display: none;">
+                              <span>
+                                <i class="material-icons">add</i>
+                                <p>Add Document</p>
+                              </span>
+                              
+                              <a class="close" *ngIf="urls.length > 0" matRipple matTooltip="Delete" (click)="deleteDocument(i)"><i class="material-icons">delete_sweep</i></a>
+                            </label>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div> -->
+                  
+                  </div>
+                </div>
+                
+                
+                
+              </div>
+            </div>
+            
+            <div class="col s12">
+              <div class="cs-btn fixedd mt32 text-right">
+                <div class="in-btn">
+                  <button type="submit" mat-raised-button disabled="{{button}}" color="accent">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </form>
+  </div>
+  
+  <div class="h50"></div>

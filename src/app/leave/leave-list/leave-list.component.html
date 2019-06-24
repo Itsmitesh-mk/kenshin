@@ -1,0 +1,366 @@
+<!-- <div class="main-container">
+  <div class="cs-loader" *ngIf="loader"> 
+    <img src="assets/img/loader.png" class="rotate">
+  </div>
+  
+  <div class="middle-container pb15" >
+    <div class="page-heading">
+      <img src="assets/img/leave.svg" class="h-icon">
+      <div class="heading-text" style="display: flex; align-items: center; flex-direction: row;">
+        <h2>Leave List</h2>
+        <div class="item-filter ml15" >
+          <div class="item-filter" >
+            <mat-form-field class="wp100">
+              <mat-select name="leaveType" [(ngModel)]="form.leaveType"  >
+                <mat-option value="" aria-placeholder="Select Lead Type" disabled>Select Lead Type</mat-option>
+                <mat-option  value="All Leave" (click)="getAllLeaves()">All Leave</mat-option>
+                <mat-option  value="Today Leave" (click)="MiddelDateLeaves();">Today Leave</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="left-auto">
+      <div  class="filter-container ml15">
+        <div (click)="clearfilter()" class="filter-btn">
+          <button mat-button >CLEAR FILTER</button>
+        </div>
+      </div>
+      <div class="tabs right-tab" *ngIf="form.leaveType !='Today Leave' " >
+        <ul >
+          <li><a [ngClass]="{'tab-active': leaveStatus==0}"  (click)="leaveStatus= 0; pendingTask()">PENDING</a></li>
+          <li><a [ngClass]="{'tab-active': leaveStatus==1}"  (click)="leaveStatus= 1; approvedTask()">Approved</a></li>
+          <li><a [ngClass]="{'tab-active': leaveStatus==2}" (click)="leaveStatus= 2; RejectTask()">Reject</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+  <div *ngFor="let a of rolelistsales1">
+    <p>{{a.roleName}}</p>
+    <p>{{a.roleCode}}</p>
+    
+  </div>
+  
+  <div class="container-outer pt0">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table> 
+                  <tr >
+                    <th class="w220" *ngIf="userRole == 1 ">Name </th>  
+                    <th class="w150" *ngIf="userRole == 1" > Designation</th>  
+                    <th class="w110" *ngIf="userRole == 1" >Mobile No</th>  
+                    <th class="w150">Type</th> 
+                    <th  class="w200">Date Form - To</th>
+                    <th class="w80 text-center">Days</th>
+                    <th class="w100" *ngIf="form.leaveType != 'Today Leave'" >Status</th>
+                  </tr>
+                </table>
+              </div>
+              <div class="table-head bdrt">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w220">
+                      <div class="th-search">
+                        <input placeholder="Select Name" type="text" name="name" #name="ngModel" [(ngModel)]="search.name" (keyup)="deginationFilter(leaveStatus)">
+                      </div>
+                    </th>
+                    <th class="w150">
+                      <div class="th-search">
+                        <mat-select name="designation" [(ngModel)]="search.designation" placeholder="--Select--">
+                          <mat-option value="Select Role"> Select Role</mat-option>
+                          <mat-option  value="{{d.designation}}"   (click)= "deginationFilter()" *ngFor="let d of designationData ">{{d.designationName}}</mat-option>
+                        </mat-select>
+                      </div>
+                    </th>
+                    <th class="w110" >
+                      &nbsp;
+                    </th>
+                    <th >
+                      <div class="th-search">
+                        <mat-select name="leaveType" [(ngModel)]="search.leaveType" placeholder="--Select--" >
+                          <mat-option value="select">Select </mat-option>
+                          <mat-option  value={{a.ruleId}} *ngFor="let a of newArrayList"   (click)= "deginationFilter()" >{{a.subject}}</mat-option>
+                        </mat-select>
+                      </div>
+                    </th>
+                    <th class="200">&nbsp;</th>
+                    <th class="w80">&nbsp;</th>
+                    <th class="w100" *ngIf="form.leaveType != 'Today Leave'">&nbsp;</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr>
+                    <td>
+                    </td>
+                    <td>
+                      <mat-select name="designation" [(ngModel)]="search.designation" placeholder="--Select--">
+                        <mat-option value="Select Role"> Select Role</mat-option>
+                        <mat-option  value="{{d.designation}}"   (click)= "deginationFilter()" *ngFor="let d of designationData ">{{d.designationName}}</mat-option>
+                      </mat-select>
+                    </td>
+                    <td></td>
+                    <td>
+                      <div class="item-filter ml15">
+                        <mat-select name="leaveType" [(ngModel)]="search.leaveType" placeholder="--Select--" >
+                          <mat-option value="select">Select </mat-option>
+                          <mat-option  value={{a.ruleId}} *ngFor="let a of newArrayList"   (click)= "deginationFilter()" >{{a.subject}}</mat-option>
+                        </mat-select>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr *ngFor="let a of allList;let i=index">
+                    <td class="w220" *ngIf="userRole == 1">{{a.userName}}  </td> 
+                    <td class="w150" *ngIf="userRole == 1">
+                      <span *ngIf="a.designation == 1">VicePresident</span>
+                      <span *ngIf="a.designation == 2">DeputyGeneralManager</span>
+                      <span *ngIf="a.designation == 3">GeneralManager</span>
+                      <span *ngIf="a.designation == 4">AssistantGeneralManager</span>
+                      <span *ngIf="a.designation == 5">SrManager</span>
+                      <span *ngIf="a.designation == 6">Manager</span>
+                      <span *ngIf="a.designation == 7">DeputyManager</span>
+                      <span *ngIf="a.designation == 8">SrExecutive</span>
+                      <span *ngIf="a.designation == 9">Executive</span>
+                      <span *ngIf="a.designation == 10">AssistantManager</span>
+                      <span *ngIf="a.designation == 11">Assistant</span>
+                      <span *ngIf="a.designation == 12">Trainee</span>
+                      <span *ngIf="a.designation == 13">Others</span>
+                    </td>
+                    <td class="w110" *ngIf="userRole == 1" >{{a.mobile}}</td>  
+                    <td ><a class="link-btn" routerLink="/leave-detail/{{a.leaveApplicationId}}"  routerLinkActive="active" >{{a.leaveTypeName}}</a></td>
+                    <td class="w200">{{a.startDate | date:'MMMM d, y'}} to {{a.endDate | date:'MMMM d, y'}}</td>
+                    <td class="w80 text-center">{{a.allLeave}}</td>
+                    <td *ngIf="form.leaveType != 'Today Leave'" class="w100" [ngClass]="{'pending':a.approvalStatus==0,'approved':a.approvalStatus==1,'reject':a.approvalStatus==2}">
+                      <span *ngIf="a.approvalStatus==0  &&  form.leaveType != 'Today Leave'">Pending</span>
+                      <span *ngIf="a.approvalStatus==1  &&  form.leaveType != 'Today Leave'">Approve</span>
+                      <span *ngIf="a.approvalStatus==2  &&  form.leaveType != 'Today Leave'">Reject</span>
+                      <div class="action-btns">
+                        <button mat-button (click)="deleteLeaveRequest(a.leaveApplicationId,i)" class="delete"><i class="material-icons">delete_sweep</i> Delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fixed-multibtn-botm">
+    <ul>
+      <li><a  matTooltip="Add New" routerLink="/add-leave" routerLinkActive="active" matRipple><i class="material-icons">add</i></a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="h50"></div> -->
+
+<div class="main-container" >
+  <div class="cs-loader" *ngIf="loader"> 
+    <img src="assets/img/loader.png" class="rotate">
+  </div>
+  
+  
+  <div class="middle-container pb15">
+    <div class="page-heading">
+      <img src="assets/img/payment_icon.svg" class="h-icon">
+      <div class="heading-text flex-heading">
+        <div class="content">
+          <h2>Leave</h2>
+          <p>Total Leave List{{leaveList.length}}</p>
+        </div>
+        
+        <div *ngIf="userRole!=10" class="item-filter" >
+          <mat-form-field class="wp100">
+            <mat-select   name="leave" #leave="ngModel" [(ngModel)]="leaveFilter.leave">
+              <mat-option (click)="getUserLeave(1,data.approvalStatus)" [value]=1>My Leave</mat-option>
+              <mat-option (click)="getUserLeave(2,data.approvalStatus)" [value]=2>My junior leave</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div *ngIf="leaveFilter.leave==2 && userRole!=10 " class="item-filter" >
+          <mat-form-field class="wp100">
+            <mat-select   name="startDate" #startDate="ngModel" [(ngModel)]="currentDate" >
+              <mat-option (click)="getTodayFilter(1)" [value]=1>All Leave</mat-option>
+              <mat-option (click)="getTodayFilter(2)" [value]=2>Today leave</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div  class="left-auto">
+      <div *ngIf="data.userName ||data.designation||data.startDate|| data.endDate" class="filter-container left-auto">
+        <div (click)="clearfilter()" class="filter-btn">
+          <button mat-button >CLEAR FILTER</button>
+        </div>
+      </div>
+      <div *ngIf="leaveFilter.leave==1" class="filter-container left-auto">
+        <div (click)="getRemainingLeave()" class="filter-btn">
+          <button mat-button >Remaining Leave</button>
+        </div>
+      </div>
+      <div class="tabs right-tab none-af">
+        <ul>
+          <li><a class="pending" [ngClass]="{'tab-active':data.approvalStatus==0}" (click)="getUserLeave(leaveFilter.leave,0)" >PENDING</a></li>
+          <li><a class="approved" [ngClass]="{'tab-active':data.approvalStatus==1}" (click)="getUserLeave(leaveFilter.leave,1)" >APPROVED</a></li>
+          <li><a class="reject" [ngClass]="{'tab-active':data.approvalStatus==2}" (click)="getUserLeave(leaveFilter.leave,2)" >REJECT</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="container-outer pt0">
+    <div class="row">
+      <div class="col s12">
+        <div class="cs-table left-right-20">
+          
+          <div class="sticky-head">
+            <div class="table-head">
+              <table class="sno-border">
+                <tr>
+                  <th  class="w30">&nbsp;</th>
+                  <th class="w160">Date</th>
+                  <th>User Name</th>
+                  <th class="w180">Designation</th>
+                  <th class="w180">Leave Type</th>
+                  <th class="w150">Date From</th>
+                  <th class="w150">Date To</th>
+                  <th class="w150 text-center">No of Day</th>
+                  <th class="w150">Status</th>
+                </tr>
+              </table>
+            </div>
+            <div class="table-head bdrt">
+              <table class="sno-border">
+                <tr>
+                  <th class="w30">&nbsp;</th>
+                  <th class="w160">
+                    &nbsp;
+                  </th>
+                  <th>
+                    <div class="th-search">
+                      <input placeholder="Select Name" type="text" name="userName" #userName="ngModel" [(ngModel)]="data.userName" (keyup)="getUserLeave(leaveFilter.leave,data.approvalStatus)">
+                    </div>
+                  </th>
+                  <th class="w180">
+                    <div class="th-search">
+                      <mat-select name="designation" [(ngModel)]="data.designation" placeholder="--Select--">
+                        <mat-option value="0" (click)= "getUserLeave(leaveFilter.leave,data.approvalStatus)">All Role</mat-option>
+                        <mat-option  value="{{d.designation}}"   (click)= "getUserLeave(leaveFilter.leave,data.approvalStatus)" *ngFor="let d of designationData ">{{d.designationName}}</mat-option>
+                      </mat-select>
+                    </div>
+                  </th>
+                  <th class="w180">&nbsp;</th>
+                  <th class="w150">
+                      <div class="th-search padding0" >
+                          <mat-form-field class="wp100 toggle-date-picker">
+                            <input matInput (dateChange)="getUserLeave(leaveFilter.leave,data.approvalStatus)" name="startDate" [(ngModel)]="data.startDate" [matDatepicker]="picker1" >
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker  #picker1></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                  </th>
+                  <th class="w150">
+                      <div class="th-search padding0" >
+                          <mat-form-field class="wp100 toggle-date-picker">
+                            <input matInput (dateChange)="getUserLeave(leaveFilter.leave,data.approvalStatus)" name="endDate" [(ngModel)]="data.endDate" [min]="data.startDate"[matDatepicker]="picker" >
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker  #picker></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                    </th>
+                  <th class="w150">&nbsp;</th>
+                  <th class="w150">&nbsp;</th>
+                </tr>
+              </table>
+            </div> 
+          </div>
+          
+          
+          <div class="table-container">
+            <div class="table-content">
+              <table class="sno-border">
+                <tr *ngFor="let leave of leaveList;let i=index">
+                  <td class="w30">{{i+1}}</td>
+                  <td class="w160"><a class="link-btn" mat-button>{{leave.applicationDate | date :'EEEE, MMMM d, y'}}</a></td>
+                  <td>{{leave.userName}}</td>
+                  <td>{{leave.leaveTypeName}}</td>
+                  <td class="w180">
+                    <span *ngIf="leave.designation == 1">VicePresident</span>
+                    <span *ngIf="leave.designation == 2">DeputyGeneralManager</span>
+                    <span *ngIf="leave.designation == 3">GeneralManager</span>
+                    <span *ngIf="leave.designation == 4">AssistantGeneralManager</span>
+                    <span *ngIf="leave.designation == 5">SrManager</span>
+                    <span *ngIf="leave.designation == 6">Manager</span>
+                    <span *ngIf="leave.designation == 7">DeputyManager</span>
+                    <span *ngIf="leave.designation == 8">SrExecutive</span>
+                    <span *ngIf="leave.designation == 9">Executive</span>
+                    <span *ngIf="leave.designation == 10">AssistantManager</span>
+                    <span *ngIf="leave.designation == 11">Assistant</span>
+                    <span *ngIf="leave.designation == 12">Trainee</span>
+                    <span *ngIf="leave.designation == 13">Others</span>
+                  </td>
+                  <td class="w150">{{leave.startDate|date:'MMMM d, y'}}</td>
+                  <td class="w150">{{leave.endDate|date:'MMMM d, y'}} </td>
+                  <td class="w150 text-center">{{leave.allLeave}}</td>
+                  <td  class="w150 txt-center" [ngClass]="{'pending':leave.approvalStatus==0,'approved':leave.approvalStatus==1,'reject':leave.approvalStatus==2}">
+                    <span *ngIf="leave.approvalStatus==0">Pending</span>
+                    <span *ngIf="leave.approvalStatus==1">Approve</span>
+                    <span *ngIf="leave.approvalStatus==2" >Reject</span>
+                    <div class="action-btns">
+                      <a mat-button class="view"  routerLink="/leave-detail/{{leave.leaveApplicationId}}" routerLinkActive="active"><i class="material-icons">assignment_turned_in</i>View</a>
+                      <button *ngIf="data.approvalStatus==0" mat-button (click)="deleteLeaveRequest(leave.leaveApplicationId,i)" class="delete"><i class="material-icons">delete_sweep</i> Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="data-not-available" *ngIf="div">
+    <div class="outer">
+      <div class="iinear">
+        <div class="figure" matRipple>
+          <div class="header">
+            <img src="assets/img/data-not-available-header.svg" alt="">
+          </div>
+          
+          <div class="description">
+            <div class="cs-heading">
+              <h2>No Leave of Any User</h2>
+            </div>
+            <div class="img">
+              <i class="material-icons">error_outline</i>
+            </div>
+            <div class="psc">
+              <p>data not available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fixed-multibtn-botm">
+    <ul>
+      <li><a  matTooltip="Add New" routerLink="/add-leave" routerLinkActive="active" matRipple><i class="material-icons">add</i></a></li>
+    </ul>
+  </div>
+</div>

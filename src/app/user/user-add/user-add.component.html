@@ -1,0 +1,685 @@
+<div class="main-container">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <img src="assets/img/profile.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>User</h2>
+        <p>Add New User</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-outer">
+    
+    <!-- <app-master-tab></app-master-tab> -->
+    <form #f="ngForm" (ngSubmit)="f.form.valid && onSubmit() " novalidate>
+      <div class="container" >
+        <div class="row">
+          <div class="col s12">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>USER TYPE</h2>
+                <span class="required">Indicates Required Fields ( <sup>*</sup> )</span>
+              </div>
+              
+              
+              <div class="row mb0">
+                
+                <div class="col s3 from-fields pl0">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input infix-bodr8">
+                      <mat-select placeholder="Role" name="role" id="role" [(ngModel)]="user_type.role"  #role="ngModel" [ngClass]="{ 'is-invalid': f.submitted && role.invalid }" required>
+                        <mat-option *ngFor='let role of rolelistsystem1' (click)="roles(role.userType);setplaceholder()" value="{{role.roleId}}">{{role.roleName}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-error *ngIf="f.submitted && role.invalid" class="invalid-feedback">
+                      <mat-error *ngIf="role.errors.required">Role is required</mat-error>
+                    </mat-error>
+                  </div>
+                </div>
+                
+                <div *ngIf="user_type.role" class="col s3 from-fields pl0">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input infix-bodr8">
+                      <mat-select placeholder="Designation" name="designation" id="designation" [(ngModel)]="user_type.designation"  #designation="ngModel" [ngClass]="{ 'is-invalid': f.submitted && designation.invalid }" required>
+                        <mat-option (click)="filterDesignaton(user_type.designation)" *ngFor='let list of desginationList' [value]="list.order">{{list.designationName}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-error *ngIf="f.submitted && designation.invalid" class="invalid-feedback">
+                      <mat-error *ngIf="designation.errors.required">Designation is required</mat-error>
+                    </mat-error>
+                  </div>
+                </div>
+                <div *ngIf="user_type.type==1">
+                <div class="col s3 from-fields pl0">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input infix-bodr8">
+                      <mat-select placeholder="Senior Designation" name="role" >
+                        <mat-option (click)="seniorUserList(role.order)" *ngFor='let role of seniorUserDesignation' value="{{role.order}}">{{role.designationName}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                
+                <div class="col s3 from-fields pl0">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input infix-bodr8">
+                      <mat-select placeholder="Select Senior User" name="leaveApprover" #leaveApprover="ngModel" [(ngModel)]="user_type.leaveApprover">
+                        <mat-option *ngFor='let user of userList' value="{{user.userId}}">{{user.userName}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col s12" *ngIf="user_type.type ==2">
+            <div class="sprate-box mt15 pt0">
+              <div class="cs-heading">
+                <h2>BASIC INFORMATION</h2>
+              </div>
+              <div class="from-fields">
+                <div class="row mb0">
+                  
+                  <div class="col s3 pl0">
+                    <div class="control-field" >
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="Name " name="username" [(ngModel)]="sales_data.username" #username="ngModel" id="username" [ngClass]="{ 'is-invalid': f.submitted && username.invalid }" required>
+                      </mat-form-field>
+                      <mat-error *ngIf="f.submitted && username.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="username.errors.required">Name is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  
+                  <div class="col s3 ">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput type="text"  maxlength="10" type=text  placeholder="Mobile No." name="mobile" [(ngModel)]="sales_data.mobile" minlength="10" maxlength="10" min="0" #mobile="ngModel" id="mobile" [ngClass]="{ 'is-invalid': f.submitted && mobile.invalid }" (keypress)="MobileNumber($event)" required>
+                      </mat-form-field>
+                      
+                      <mat-error *ngIf="f.submitted && mobile.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="mobile.errors.required || mobile.errors.invalid">Mobile is invalid</mat-error>
+                        <mat-error *ngIf="mobile.errors.minlength || mobile.errors.maxlength">Mobile must be 10 Digit</mat-error>
+                      </mat-error>
+                      
+                    </div>
+                  </div>
+                  
+                  <div class="col s3 pr0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="Email-ID" name="email" [(ngModel)]="sales_data.email" id="email" #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+                      </mat-form-field>
+                      <div class="alert alert-danger" *ngIf="!email.valid && email.touched">
+                        Please Enter Valid Email....
+                      </div>
+                      <mat-error *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="email.errors.required">Email is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  
+                  <div class="col s3 pr0">
+                    
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <input matInput placeholder="Yearly Target Amount" name="target" [(ngModel)]="sales_data.target" id="target" #target="ngModel"  (keypress)="MobileNumber($event)"  maxlength="10" [ngClass]="{ 'is-invalid': target.invalid }">
+                      </mat-form-field>
+                      
+                      <mat-error *ngIf="target.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="target.errors.required">Target is required</mat-error>
+                        <mat-error *ngIf="target.errors.maxlength">Maximum target length is 10 Digit !</mat-error>
+                      </mat-error>
+                      
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="sprate-box mt15 pt0">
+              <div class="cs-heading">
+                <h2>ADDRESS INFORMATION</h2>
+              </div>
+              <div class="from-fields">
+                
+                <div class="row mb0">
+                  <div class="col s6 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8" >
+                        <textarea matInput placeholder="Street" name="street" id="street" [(ngModel)]="sales_data.street" class="h110" #street="ngModel" ></textarea>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  
+                  <div class="col s6 pr0">
+                    <div class="row mb0">
+                      <div class="col s6 " >
+                        <div class="control-field">
+                          <div class="control-field col-4" [ngClass]="{'has-error' : state.invalid } " >
+                            <mat-form-field class=" cs-input infix-bodr8 select-input">
+                              <input matInput placeholder="State" [matAutocomplete]="state" (input)="state_array_filter(sales_data.state)" name="state" id="state" #state="ngModel" [(ngModel)]="sales_data.state" required>
+                              <mat-autocomplete #state="matAutocomplete">
+                                <mat-option (click)="get_district()" *ngFor='let state of tmpstateList' value="{{state}}">
+                                  <small>{{state}}</small>
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                          <mat-error *ngIf="f.submitted && state.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="state.errors.required">State is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      <div class="col s6 pr0">
+                        <div class="control-field">
+                          <div class="control-field col-4" [ngClass]="{'has-error' : district.invalid } " >
+                            <mat-form-field class="example-full-width cs-input infix-bodr8 select-input">
+                              <input matInput placeholder="District" [matAutocomplete]="district" (input)="district_array_filter(sales_data.district)" name="district" id="district" #district="ngModel" [(ngModel)]="sales_data.district" required>
+                              <mat-autocomplete #district="matAutocomplete">
+                                <mat-option  (click)="get_city()"  *ngFor='let district of district1' value="{{district.districtName}}">
+                                  <small>{{district.districtName}}</small>
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                          <mat-error *ngIf="f.submitted && district.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="district.errors.required"> District is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      <div class="col s6 ">
+                        <div class="control-field">
+                          
+                          <div class="control-field col-4" [ngClass]="{'has-error' : city.invalid } " >
+                            <mat-form-field class=" cs-input  infix-bodr8 select-input">
+                              <input matInput placeholder="City" [matAutocomplete]="city" (input)="city_array_filter(sales_data.city)" name="city" id="city" #city="ngModel" [(ngModel)]="sales_data.city" required>
+                              <mat-autocomplete #city="matAutocomplete">
+                                <mat-option  (click)=" get_pincode(city.stateMasterId)" *ngFor='let city of cities' value="{{city.cityName}}">
+                                  <small>{{city.cityName}}</small>
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                          <mat-error *ngIf="f.submitted && city.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="city.errors.required"> City is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      <div class="col s6 pr0" >
+                        <div class="control-field">
+                          <div class="control-field col-4" [ngClass]="{'has-error' : pin.invalid } " >
+                            <mat-form-field class=" cs-input infix-bodr8 select-input">
+                              <input matInput placeholder="pin" [matAutocomplete]="pin" (keypress)="MobileNumber($event)" (input)="pin_array_filter(sales_data.pin)" minlength="6" maxlength="6"  name="pin"  id="pin" #pin="ngModel" [(ngModel)]="sales_data.pin" required>
+                              <mat-autocomplete #pin="matAutocomplete">
+                                <mat-option  *ngFor='let pin of areas' value="{{pin}}">
+                                  <small>{{pin}}</small>
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                          <mat-error *ngIf="f.submitted && pin.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="pin.errors.required"> Pincode is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="sprate-box mt15 pt0">
+              <div class="cs-heading">
+                <h2>OFFICIAL ADDRESS INFORMATION</h2>
+              </div>
+              
+              <div class="from-fields">
+                <div class="row mb0">
+                  <div class="col s6 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8" >
+                        <textarea matInput placeholder="Street" name="streetOffice" id="streetOffice" [(ngModel)]="sales_data.streetOffice" class="h175" #streetOffice="ngModel" ></textarea>
+                      </mat-form-field>
+                      <mat-error *ngIf="f.submitted && streetOffice.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="streetOffice.errors.required"> Street is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  
+                  <div class="col s6 pr0">
+                    <div class="row mb0">
+                      <div class="col s6" >
+                        <div class="control-field">
+                          <div class="control-field col-4" [ngClass]="{'has-error' : statef.invalid } " >
+                            <mat-form-field class=" cs-input infix-bodr8 select-input">
+                              <input matInput placeholder="State" [matAutocomplete]="statef" (input)="state_array_filter(sales_data.statef)" name="statef" id="statef" #statef="ngModel" [(ngModel)]="sales_data.statef" required>
+                              <mat-autocomplete #statef="matAutocomplete">
+                                <mat-option (click)="get_districtOffice()" *ngFor='let statef of tmpstateList' value="{{statef}}">
+                                  <small>{{statef}}</small>
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                          <mat-error *ngIf="f.submitted && statef.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="statef.errors.required">State is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      <div class="col s6 pr0"> 
+                        <div class="control-field">
+                          <div class="control-field col-4" [ngClass]="{'has-error' : districtOffice.invalid } " >
+                            <mat-form-field class="cs-input infix-bodr8 select-input">
+                              <input matInput placeholder="District" [matAutocomplete]="districtOffice" (input)="officedistrict_array_filter(sales_data.districtOffice)" name="districtOffice" id="districtOffice"  #districtOffice="ngModel" [(ngModel)]="sales_data.districtOffice" required>
+                              <mat-autocomplete #districtOffice="matAutocomplete">
+                                <mat-option  (click)="get_cityOffice()"  *ngFor='let districtf of districtOffice1' value="{{districtf.districtName}}">
+                                  <small>{{districtf.districtName}}</small>
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                          <mat-error *ngIf="f.submitted && districtOffice.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="districtOffice.errors.required"> District is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      <div class="col s6">
+                        <div class="control-field">
+                          <div class="control-field col-4" [ngClass]="{'has-error' : cityOffice.invalid } " >
+                            <mat-form-field class="cs-input infix-bodr8 select-input">
+                              <input matInput placeholder="City" [matAutocomplete]="cityOffice" (input)="officecity_array_filter(sales_data.cityOffice)" name="cityOffice" id="cityOffice" #cityOffice="ngModel" [(ngModel)]="sales_data.cityOffice" required>
+                              <mat-autocomplete #cityOffice="matAutocomplete">
+                                <mat-option  (click)=" get_pincodeOffice(cityf.stateMasterId)" *ngFor='let cityf of citiesOffice' value="{{cityf.cityName}}">
+                                  <small>{{cityf.cityName}}</small>
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                          <mat-error *ngIf="f.submitted && cityOffice.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="cityOffice.errors.required"> City is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      <div class="col s6 pr0" >
+                        <div class="control-field">
+                          <div class="control-field col-4" [ngClass]="{'has-error' : pinOffice.invalid } " >
+                            <mat-form-field class=" cs-input infix-bodr8 select-input">
+                              <input matInput placeholder="Pin" minlength="6" maxlength="6"   [matAutocomplete]="pinOffice" (input)="officepin_array_filter(sales_data.pinOffice)" (keypress)="MobileNumber($event)" name="pinOffice" id="pinOffice" #pinOffice="ngModel" [(ngModel)]="sales_data.pinOffice" required>
+                              <mat-autocomplete #pinOffice="matAutocomplete">
+                                <mat-option  *ngFor='let pinf of areasOffice' value="{{pinf}}">
+                                  <small>{{pinf}}</small>
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                          <mat-error *ngIf="f.submitted && pinOffice.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="pinOffice.errors.required"> Pincode is required</mat-error>
+                          </mat-error>
+                        </div>
+                      </div>
+                      <div class="col s6">
+                        <div class="control-field" >
+                          <mat-form-field class="cs-input infix-bodr8">
+                            <input matInput placeholder="Landline" name="landline"  id="landline" [(ngModel)]="sales_data.landline" #landline="ngModel"  minlength="10" maxlength="13" min="0" (keypress)="MobileNumber($event)">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="sprate-box mt15 pt0">
+              <div *ngIf="user_type.type == 2" class="cs-heading">
+                <h2>CONCERN APPROVAL RIGHTS</h2>
+              </div>
+              <div *ngIf="user_type.type == 2" class="from-fields">
+                <div class="row mb0">
+                  <div class="control-field col s4 pl0">
+                    <mat-form-field class="cs-input infix-bodr8">
+                      <mat-select [(ngModel)]="sales_data.concernApprovalAccess" name="concernApprovalAccess" placeholder="Select Approval Right">
+                        <mat-option [value]="true">Yes</mat-option>
+                        <mat-option [value]="false">No</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <!-- <mat-error *ngIf="f.submitted && role.invalid" class="invalid-feedback">
+                      <mat-error *ngIf="role.errors.required">Role is required</mat-error>
+                    </mat-error> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="sprate-box mt15 pt0">
+              <div *ngIf="(this.user_type.role > 7) && (this.user_type.role < 11 )" class="cs-heading">
+                <h2>ASSIGN INFORMATION</h2>
+              </div>
+              <div  class="row mt15 mb0">
+                <div class="col s4 pl0">
+                  <div class="territory-info">
+                    <div class="head" >
+                      <h2>SEGMENT</h2>
+                    </div>
+                    <div class="cs-checkbox ">
+                      <div class="checkbox-outer">
+                        <section class="checkbox-inner" *ngFor='let segment of segmentlist' aria-required="true">
+                          <mat-checkbox class="check-list" [(ngModel)]="segment.checked" name="{{segment.text}}" (change)="getSegmentRelatedData()">{{segment.text}}</mat-checkbox>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div *ngIf="(this.user_type.role < 9) && (this.user_type.role > 5 )" class="col s4">
+                  
+                  <div class="territory-info">
+                    
+                    <div class="head" [ngClass]="{'active':active.junior==true}">
+                      <h2><span *ngIf="this.user_type.role==6" >Select RSM</span>
+                        <span *ngIf="this.user_type.role==7" >Select ASM</span>
+                        <span *ngIf="this.user_type.role==8" >Select T. I.</span></h2>
+                        <!-- <mat-checkbox class="fix-check">&nbsp;</mat-checkbox> -->
+                        <i class="material-icons search-icon" (click)="toggleterritory('junior','open')"    matRipple>search</i>
+                        <input type="text" [(ngModel)]="sales_data.juniorSearch" name="juniorSearch"  placeholder="search..." class="fix-search">
+                        <i class="material-icons close-icon"  (click)="sales_data.juniorSearch='';toggleterritory('junior','close')" matRipple>clear</i>
+                      </div>
+                      
+                      <div *ngIf="juniorList.length == 0" class="not-data">
+                        <div class="inner-data">
+                          <p>No Data</p>
+                        </div>
+                      </div>
+                      
+                      
+                      <div *ngIf="juniorList.length > 0" class="cs-checkbox">
+                        <div class="checkbox-outer">
+                          <section class="checkbox-inner">
+                            <mat-checkbox  *ngFor="let list of juniorList  | myfilter:{src: 'junior', search: sales_data.juniorSearch}; let i=index;" class="check-list" (change)="onUserAssignedHandler(list.userId, list.checked)" value="{{list.userId}}" [(ngModel)]="list.checked"  name="{{list.userId}}" >{{list.userName}}</mat-checkbox>
+                          </section>
+                        </div>
+                      </div>
+                      
+                      
+                    </div>
+                  </div>
+                  <div *ngIf="(this.user_type.role >= 6) && (this.user_type.role < 11 )" class="col s4">
+                    <div class="territory-info">
+                      <div class="head" [ngClass]="{'active':active.territory==true}">
+                        <h2>TERRITORIES INFO</h2>
+                        <i class="material-icons search-icon right15" (click)="toggleterritory('territory','open')"  matRipple>search</i>
+                        <input type="text" [(ngModel)]="sales_data.territorySearch"  name="territorySearch" placeholder="search..." class="fix-search">
+                        <i class="material-icons close-icon" (click)="sales_data.territorySearch='';toggleterritory('territory','close')" matRipple>clear</i>
+                      </div>
+                      
+                      <div *ngIf="territoryList.length == 0" class="not-data">
+                        <div class="inner-data">
+                          <p>No Data</p>
+                        </div>
+                      </div>
+                      
+                      <div *ngIf="territoryList.length > 0" class="cs-checkbox">
+                        
+                        <div class="checkbox-outer">
+                          <section class="checkbox-inner">
+                            <ng-container  *ngFor="let territory of territoryList | myfilter:{src: 'territory', search: sales_data.territorySearch};let i=index;"> 
+                              
+                              <mat-checkbox class="check-list"  (change)="getTerritoryNetwork(territory.territoryID,territory.check)" value="{{territory.territoryName}}"  [(ngModel)]="territory.check"  [disabled]="territory.disabled" name="{{territory.territoryName}}" >{{territory.territoryName}} </mat-checkbox>
+                              
+                            </ng-container>
+                          </section>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div *ngIf="(this.user_type.role >= 7) && (this.user_type.role < 11 )" class="col s4 pr0">
+                    
+                    <div class="territory-info">
+                      <div class="head" [ngClass]="{'active':active.network==true}">
+                        <h2>Distribution Network</h2>
+                        <!-- <mat-checkbox class="fix-check">&nbsp;</mat-checkbox> -->
+                        <i class="material-icons search-icon right15" (click)="toggleterritory('network','open')"  matRipple>search</i>
+                        <input type="text"[(ngModel)]="sales_data.networkSearch" name="networkSearch"  placeholder="search..." class="fix-search">
+                        <i class="material-icons close-icon" (click)="sales_data.networkSearch='';toggleterritory('network','close')" matRipple>clear</i>
+                      </div>
+                      
+                      <div *ngIf="networkIdsdata.length == 0" class="not-data">
+                        <div class="inner-data">
+                          <p>No Data</p>
+                        </div>
+                      </div>
+                      
+                      <div *ngIf="networkIdsdata.length > 0" class="cs-checkbox">
+                        <div class="checkbox-outer">
+                          <section class="checkbox-inner">
+                            <mat-checkbox  *ngFor="let network of networkIdsdata | myfilter:{src: 'networkSearch', search: sales_data.networkSearch}; let i=index;" class="check-list" [disabled]="network.disabled" value="{{network.networkId}}" [(ngModel)]="network.checked"  name="{{network.establishment}}">{{network.establishment}}</mat-checkbox>
+                          </section>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            
+            <div class="col s12" *ngIf="user_type.type == '1'">
+              <div class="sprate-box mt15 pt0">
+                <div class="cs-heading">
+                  <h2>BASIC INFORMATION</h2>
+                </div>
+                <div class="from-fields">
+                  <div class="row mb0">
+                    <div class="col s4 pl0">
+                      <div class="control-field" >
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="Name" name="username" id="username" [(ngModel)]="system_data.username"  #username="ngModel" [ngClass]="{ 'is-invalid': f.submitted && username.invalid }" required>
+                        </mat-form-field>
+                        <mat-error *ngIf="f.submitted && username.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="username.errors.required">Name is required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                    <div class="col s4 ">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput type="text"  maxlength="10" type=text  placeholder="Mobile No." name="mobile" id="mobile" [(ngModel)]="system_data.mobile" (keypress)="MobileNumber($event)" minlength="10" maxlength="10" min="0" #mobile="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mobile.invalid }" required >
+                        </mat-form-field>
+                        
+                        <mat-error *ngIf="f.submitted && mobile.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="mobile.errors.required || mobile.errors.invalid">Mobile is invalid</mat-error>
+                          <mat-error *ngIf="mobile.errors.minlength || mobile.errors.maxlength">Mobile must be 10 Digit</mat-error>
+                        </mat-error>
+                        
+                      </div>
+                    </div>
+                    
+                    <div class="col s4 pr0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8" [ngClass]="{ 'has-error' : f.submitted }">
+                          <input matInput placeholder="Email-ID" name="email" id="email" [(ngModel)]="system_data.email"  #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="!email.valid && email.touched">
+                          Please Enter Valid Email-ID.....
+                        </div>
+                        <mat-error *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="email.errors.required || email.errors.invalid">Email is required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="sprate-box mt15 pt0">
+                <div class="cs-heading">
+                  <h2>ADDRESS INFORMATION</h2>
+                </div>
+                <div class="from-fields">
+                  
+                  <div class="row mb0">
+                    <div class="col s6 pl0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8" >
+                          <textarea matInput placeholder="Street" name="street" [(ngModel)]="system_data.street" class="h110" #street="ngModel" ></textarea>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="col s6 pr0">
+                      <div class="row mb0">
+                        <div class="col s6 " >
+                          <div class="control-field">
+                            <div class="control-field col-4" [ngClass]="{'has-error' : state.invalid } " >
+                              <mat-form-field class="cs-input infix-bodr8 select-input">
+                                <input matInput placeholder="State" [matAutocomplete]="state" (input)="state_array_filter(system_data.state)" name="state" id="state" #state="ngModel" [(ngModel)]="system_data.state" required>
+                                <mat-autocomplete #state="matAutocomplete">
+                                  <mat-option (click)="get_district()" *ngFor='let state of tmpstateList' value="{{state}}">
+                                    <small>{{state}}</small>
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                            </div>
+                            <mat-error *ngIf="f.submitted && state.invalid" class="invalid-feedback">
+                              <mat-error *ngIf="state.invalid">State is required</mat-error>
+                            </mat-error>
+                          </div>
+                        </div>
+                        <div class="col s6 pr0">
+                          <div class="control-field">
+                            <div class="control-field col-4" [ngClass]="{'has-error' : district.invalid } " >
+                              <mat-form-field class="cs-input infix-bodr8 select-input">
+                                <input matInput placeholder="district" [matAutocomplete]="district" (input)="district_array_filter(system_data.district)" name="district" id="district" #district="ngModel" [(ngModel)]="system_data.district" required>
+                                <mat-autocomplete #district="matAutocomplete">
+                                  <mat-option  (click)="get_city()"  *ngFor='let district of district1' value="{{district.districtName}}">
+                                    <small>{{district.districtName}}</small>
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                            </div>
+                            <mat-error *ngIf="f.submitted && district.invalid" class="invalid-feedback">
+                              <mat-error *ngIf="district.errors.required"> District is required</mat-error>
+                            </mat-error>
+                          </div>
+                        </div>
+                        <div class="col s6">
+                          <div class="control-field">
+                            
+                            <div class="control-field col-4" [ngClass]="{'has-error' : city.invalid } " >
+                              <mat-form-field class="cs-input infix-bodr8 select-input">
+                                <input matInput placeholder="City" [matAutocomplete]="city" (input)="city_array_filter(system_data.city)" name="city" id="city" #city="ngModel" [(ngModel)]="system_data.city" required>
+                                <mat-autocomplete #city="matAutocomplete">
+                                  <mat-option  (click)=" get_pincode(city.stateMasterId)" *ngFor='let city of cities' value="{{city.cityName}}">
+                                    <small>{{city.cityName}}</small>
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                            </div>
+                            <mat-error *ngIf="f.submitted && city.invalid" class="invalid-feedback">
+                              <mat-error *ngIf="city.errors.required"> City is required</mat-error>
+                            </mat-error>
+                          </div>
+                        </div>
+                        <div class="col s6 pr0">
+                          <div class="control-field">
+                            <div class="control-field col-4" [ngClass]="{'has-error' : pin.invalid } " >
+                              <mat-form-field class="cs-input infix-bodr8 select-input">
+                                <input matInput type="text" (keypress)="MobileNumber($event)" placeholder="pin" [matAutocomplete]="pin" (input)="pin_array_filter(system_data.pin)"  (keypress)="MobileNumber($event)" maxlength="6" minlength="6"  name="pin" id="pin" #pin="ngModel" [(ngModel)]="system_data.pin" required>
+                                <mat-autocomplete #pin="matAutocomplete">
+                                  <mat-option  *ngFor='let pin of areas' value="{{pin}}">
+                                    <small>{{pin}}</small>
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                            </div>
+                            <mat-error *ngIf="f.submitted && pin.invalid" class="invalid-feedback">
+                              <mat-error *ngIf="pin.errors.required"> Pincode is required</mat-error>
+                            </mat-error>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <p class="key-message" *ngIf="f.submitted && user_type.type==1 && !isModuleSelected">Atleast One Module Right Required!</p> 
+            
+            <div *ngIf="user_type.type == 1" class="row">
+              <div class="col s12">
+                <div class="sprate-box mt15 pt0">
+                  <div class="cs-heading">
+                    <h2>Modules Rights</h2>
+                  </div>
+                  
+                  <div *ngIf="user_type.type ==1" class="col s12">
+                    <div class="collaps flat-collaps mt15">
+                      <div class="collaps-area">
+                        <mat-accordion>
+                          <mat-expansion-panel  [expanded]="step === index" (opened)="setStep(0)">
+                            <mat-expansion-panel-header class="outer-panel mb10">
+                              <mat-panel-title>
+                                Module Name
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="cs-rights">
+                              <div class="all-selct" *ngFor="let list of moduleData; let index = index">
+                                <mat-checkbox [(ngModel)]="list.view" name="list.view">{{list.moduleName}}</mat-checkbox>
+                              </div>
+                            </div>
+                            
+                            <div *ngIf="user_type.type ==1" class="col s12">
+                              <div class="collaps flat-collaps mt10">
+                                <div class="collaps-area">
+                                  <mat-accordion>
+                                    <mat-expansion-panel  >
+                                      <mat-expansion-panel-header class="outer-panel mb10">
+                                        <mat-panel-title>
+                                          <mat-checkbox (change)="selectAllHandler($event)">Master</mat-checkbox>
+                                        </mat-panel-title>
+                                      </mat-expansion-panel-header>
+                                      <div class="cs-rights">
+                                        <div class="all-selct" *ngFor="let list of masterArray; let i = index">
+                                          <mat-checkbox [(ngModel)]="list.view" name="list.view{{i}}">{{list.moduleName}}</mat-checkbox>
+                                        </div>
+                                      </div>
+                                    </mat-expansion-panel>
+                                  </mat-accordion>
+                                </div>
+                              </div>
+                            </div>
+                          </mat-expansion-panel>
+                        </mat-accordion>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            
+            <div *ngIf="user_type.role" class="col s12">
+              <div class="cs-btn fixedd mt32 text-right">
+                <div class="in-btn">
+                  <button mat-raised-button color="accent" (click)="setFocus(f.form)" >Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="h50"></div>

@@ -1,0 +1,58 @@
+
+
+
+  <div class="edit-modal">
+      <div class="cs-loader" *ngIf="loader"> 
+          <img src="assets/img/loader.png" class="rotate">
+        </div>
+
+        <mat-dialog-content class="mat-typography pl15 pr15" style="overflow: inherit !important;">
+            <p class="heading">EDIT DISTRIBUTOR</p>
+
+            <div class="row">
+                <div class="col s6 pl0">
+                  <div class="multi-all-select">
+                    <label>Territory </label>
+                    <ng-multiselect-dropdown
+                    [placeholder]="'Select Territory'"
+                    [data]="territoryLIst"
+                    [(ngModel)]="schemedetail.territory"
+                    name="territory"
+                    #territory="ngModel"
+                    selected-model="selectedTerritory.territoryID"
+                    [settings]="dropdownSettings1"
+                    (onSelect)="getDistribotorList(schemedetail.territory)"
+                    (onSelectAll)="getDistribotorList($event)"
+                    (onDeSelect)="getDistribotorList(schemedetail.territory)"
+                    (onDeSelectAll)="getSelectedDistribotorList($event)"
+                    >
+                  </ng-multiselect-dropdown>
+                </div>
+              </div>
+              <div class="col s6 pl0">
+                <div class="multi-all-select">
+                  <label>Distributor</label>
+                  <ng-multiselect-dropdown
+                  [placeholder]="'Select Distributor'"
+                  [data]="distributorList"
+                  [(ngModel)]="schemedetail.distributor"
+                  name="distributor"
+                  #distributor="ngModel"
+                  [settings]="dropdownSettings2"
+                  (onSelect)="selectedDistributor(schemedetail.distributor)"
+                  (onSelectAll)="selectedDistributor($event)"
+                  (onDeSelect)="selectedDistributor(schemedetail.distributor)"
+                  (onDeSelectAll)="selectedDistributor($event)"
+                  >
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </div>
+        </mat-dialog-content>
+
+        <mat-dialog-actions align="end">
+            <button mat-raised-button color="warn"  [mat-dialog-close]="false">Cancel</button>
+            <button mat-raised-button color="accent"  [mat-dialog-close]="true" (click)="saveDistributor()" >Save</button>
+          </mat-dialog-actions>
+  </div>
+

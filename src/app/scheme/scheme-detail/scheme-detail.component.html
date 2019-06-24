@@ -1,0 +1,214 @@
+<div class="main-container">
+    <div class="cs-loader" *ngIf="loader"> 
+        <img src="assets/img/loader.png" class="rotate">
+      </div>
+    
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/scheme-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>Scheme {{schemeDetail.title}}  <a class="edit-heading" color="accent" matTooltip="EDIT"  (click)="openEditDialog('title',schemeDetail.title)"><i class="material-icons">create</i></a></h2>
+        
+        <p class="light">{{totalProduct.length}}</p>
+      </div>
+    </div>
+    <div class="multi-btn">
+      <ul>
+      </ul>
+    </div>
+  </div>
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="details-info">
+            <div class="basic-details">
+              <a mat-button class="figure-edit" matTooltip="Edit" color="accent" (click)="openEditDateDialog('date')"><i class="material-icons">edit</i></a>
+              <div class="profile-info">
+                <ul>
+                  <li class="col s4">
+                    <div class="cs-box">
+                      <img  src="assets/img/scheme-detail.svg" class="fix-img">
+                      <span>SCHEME TYPE</span>
+                      <p *ngIf="schemeDetail.schemeType==0">SELECTED</p>
+                      <p *ngIf="schemeDetail.schemeType==1">GENRIC</p>
+                      
+                    </div>
+                  </li>
+                  <li class="col s4">
+                    <div class="cs-box">
+                      <img  src="assets/img/calendar.svg" class="fix-img">
+                      <span>CREATED DATE</span>
+                      <p class="link-clr">{{schemeDetail.createdOn| date:'EEEE, MMMM d, y'}}</p>
+                      
+                    </div>
+                  </li>
+                  <li  class="col s4">
+                    <div class="cs-box">
+                      <img src="assets/img/calendar.svg" class="fix-img">
+                      <span>VALID FROM</span>
+                      <p>{{schemeDetail.validFrom| date:'EEEE, MMMM d, y'}}</p>
+                      <!-- <a class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog('validFrom',schemeDetail.validFrom)"><i class="material-icons">create</i></a> -->
+                    </div>
+                  </li>
+                  <li  class="col s4">
+                    <div class="cs-box">
+                      <img src="assets/img/calendar.svg" class="fix-img">
+                      <span>VALID TILL</span>
+                      <p>{{schemeDetail.validTill| date:'EEEE, MMMM d, y'}}</p>
+                      <!-- <a class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog('validTill',schemeDetail.validTill)"><i class="material-icons">create</i></a> -->
+                    </div>
+                  </li>
+                  
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb15" *ngIf="schemeDetail.schemeDistributors.length!=0 && schemeDetail.schemeType==0">
+        
+        <div class="col s12">
+          <div class="sprate-box pt0 ">
+            <div class="full-address">
+              <div class="cs-heading">
+                <h2>DISTRIBUTOR INFORMATION</h2>
+                <a mat-button class="edit-icon" matTooltip="Add" color="accent" (click)="addDistributor(distributoList)"><i class="material-icons">add</i></a>  
+              </div>
+              <div class="cs-table left-right-15">
+                  <div class="table-head">
+                    <table>
+                      <tr>
+                        <th class="w150">Distributor Name</th>
+                        
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="table-container">
+                    <div class="table-content none-shadow">
+                      <table>
+                        <tr *ngFor="let name of distributoList">
+                          <td class="w150">{{name.establishment}}
+                            
+                            <div class="action-btns">
+                              <button mat-button class="delete" (click)="removeDistributor(name.networkId,schemeDetail.schemeCode)"><i class="material-icons">delete_sweep</i> Delete</button>
+                            </div>
+                          </td>
+                          
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  <!-- <div class="row">
+                    <div class="col s4 pl0">
+                      <div class="multi-all-select">
+                        <label>Territory</label>
+                        <ng-multiselect-dropdown
+                        [placeholder]="'Select Territory'"
+                        
+                        
+                        [settings]="dropdownSettings1"
+                        (onSelect)="getDistribotorList(schemedetail.territory)"
+                        (onSelectAll)="getDistribotorList($event)"
+                        (onDeSelect)="getDistribotorList(schemedetail.territory)"
+                        (onDeSelectAll)="getSelectedDistribotorList($event)"
+                        
+                        >
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="col s4 pl0">
+                    <div class="multi-all-select">
+                      <label>Distributor</label>
+                      <ng-multiselect-dropdown
+                      [placeholder]="'Select Distributor'"
+                      
+                      
+                      [settings]="dropdownSettings2"
+                      (onSelect)="selectedDistributor($event)"
+                      (onSelectAll)="selectedDistributor($event)"
+                      (onDeSelect)="selectedDistributor(schemeDistributors.schemeDistributors)"
+                      (onDeSelectAll)="selectedDistributor($event)"
+                      >
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="row mb15" *ngIf="totalProduct.length!=0">
+    <div class="col s12">
+      <div class="sprate-box pt0 ">
+        <div class="cs-heading">
+          <h2>PRODUCT SCHEME DETAIL</h2>
+        </div>
+        <div class="cs-table left-right-15">
+          <div class="table-head">
+            <table>
+              <tr>
+                <th class="w150">Part Number</th>
+                <th >Description</th>
+                <th class="w140 text-center">Action</th>
+              </tr>
+            </table>
+          </div>
+          <div class="table-container">
+            <div class="table-content none-shadow">
+              <table>
+                <tr *ngFor="let scheme of schemeDetail.schemeProductDetails">
+                  <td class="w150">{{scheme.partNumberCode}}</td>
+                  <td [innerHTML]="scheme.offerDescription">{{scheme.offerDescription}}
+                    
+                  </td>
+                  <td class="w140">
+                    <div class="action-btns default-action">
+                      <button mat-button class="delete" (click)="removeScheme(scheme.partNumberCode)"><i class="material-icons">delete_sweep</i> Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col s6" >
+      <div  class="sprate-box pt0">
+        <div class="cs-heading">
+          <h2>TERM & CONDITION</h2>
+          <a class="edit-icon" color="accent" mat-button matRipple matTooltip="EDIT" (click)="openEditDialog('tc',schemeDetail.tc)"><i class="material-icons">create</i></a>
+        </div>
+        <div class="cs-pragraph">
+          <p  [innerHTML]="schemeDetail.tc">{{schemeDetail.tc}}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col s6">
+      <div  class="sprate-box pt0">
+        <div class="cs-heading">
+          <h2>DESCRIPTION</h2>
+          <a class="edit-icon" color="accent" mat-button matRipple matTooltip="EDIT" (click)="openEditDialog('schemeDescription',schemeDetail.schemeDescription)"><i class="material-icons">create</i></a>
+        </div>
+        <div class="cs-pragraph">
+          <p  [innerHTML]="schemeDetail.schemeDescription">{{schemeDetail.schemeDescription}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<div class="h50"></div>
+

@@ -1,0 +1,552 @@
+
+<div class="main-container">
+  
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        
+        <div  class="back-btn">
+          <a *ngIf="!isDetailPincodeBtnClicked"  mat-button routerLink="/territory-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+          
+          <a *ngIf="isDetailPincodeBtnClicked" mat-button (click)="isDetailPincodeBtnClicked = false"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        
+        <h2 *ngIf="territoryId != '0'">{{existingTerritoryArr.territoryName}}</h2>
+        <!--  <p *ngIf="territoryId != '0'" class="light">{{existingTerritoryArr.pinCodesCount}} Pincode</p> -->
+        
+        <h2 *ngIf="territoryId == '0'">Postal / Territory Master</h2>
+        <p *ngIf="territoryId == '0'">{{territoryId != '0' ? 'Update Territory Pincodes' : 'Create New Territory'}}</p>
+        
+      </div>
+    </div>
+    
+    <div class="left-auto">
+      <div class="cs-btn text-right">
+        <div class="in-btn">
+          <a mat-raised-button color="accent" *ngIf="territoryId != '0' && !isDetailPincodeBtnClicked" (click)="emptyFinalPincodeArr()">Add Pincodes</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div *ngIf="territoryId != '0' && !isDetailPincodeBtnClicked" class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="details-info">
+            <div class="basic-details pb0" >
+              <a mat-button class="hov-action" matTooltip="EDIT" color="accent" (click)="openDialog()"><i class="material-icons">edit</i></a>
+              <div class="profile-info">
+                <ul>
+                  <li class="col s3">
+                    <div class="cs-box">
+                      <img src="assets/img/map-location.svg" class="fix-img">
+                      <span>Name</span>
+                      <p>{{existingTerritoryArr.territoryName}}</p>
+                    </div>
+                  </li>
+                  <li  class="col s8">
+                    <div class="cs-box">
+                      <img src="assets/img/segment.svg" class="fix-img h20">
+                      <span>Segment</span>
+                      <!-- <p>0129 625874</p> -->
+                      <ul class="segment-code">
+                        <li >
+                          <span *ngFor="let val of existingTerritoryArr.segments">{{val}}
+                            <!-- <a><i class="material-icons">delete_sweep</i></a> -->
+                          </span>
+                        </li>
+                      </ul>
+                      
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <mat-divider class="mt15 mb15"></mat-divider>
+              <div class="col s12 padding0">
+                <div class="add-field user-heading mb5">
+                  <div class="heading">
+                    <h2 class="grey-clr">Assign Users</h2>
+                  </div>
+                </div>
+                <div class="cs-figure field-figure">
+                  <ul>
+                    <li *ngFor="let list of existingTerritoryArr.salesUsers">
+                      <div class="outer">
+                        <div class="inner">
+                          <p>{{list.userName}}</p>
+                          <span *ngIf="list.role == '10'">Territory Incharge</span>
+                          <span *ngIf="list.role == '8'">ASM</span>
+                          <span *ngIf="list.role == '7'">RSM</span>
+                        </div>
+                        <!-- <a class="del-btn" matRipple ><i class="material-icons">delete_sweep</i></a> -->
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col {{isCityClicked ? 's8' : 's12'}}">
+          <div class="sprate-box padding0">
+            <div class="full-address">
+              <div class="top-heading">
+                <h2>Pincode Description</h2>
+                <!-- <div class="top-search wp30 ml20 right-serach">
+                  <input type="text" [(ngModel)]="data.detailDescriptionSearch" placeholder="SEARCH. . .">
+                  <i class="material-icons">search</i>
+                </div> -->
+              </div>
+              
+              <div class="state-table">
+                
+                <table *ngFor="let list of existingTerritoryArr.states">
+                  
+                  <tr>
+                    <td>
+                      <table>
+                        <tr>
+                          <td>
+                            {{list.stateName}}
+                            <a (click) = "territoryStateDelete(list.stateName)" class="del-btn">Delete</a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  
+                  <tr>
+                    
+                    <td>
+                      <table>
+                        
+                        <tr *ngFor="let districtList of list.distrcits">
+                          
+                          <td class="w250">
+                            {{districtList.districtName}}
+                          </td>
+                          
+                          <td class="pb0">
+                            <ul class="area-code">
+                              <li (click)="detailCityClickHandler(cityList.stateMasterId)" class="{{cityList.checked ? 'active' : ''}}" *ngFor="let cityList of districtList.cities" >
+                                <a>{{cityList.cityName}} <i class="material-icons">keyboard_arrow_right</i></a>
+                              </li>
+                            </ul>
+                          </td>
+                          
+                        </tr>
+                        
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div class="col s4 right-sticky {{isCityClicked ? '' : 'ds-none'}}">
+          <div class="territory-info">
+            
+            <div class="head" [ngClass]="{'active':active.districts==true}" style="padding: 13px 15px;">
+              <h2>{{clickedCityDetail.stateName}} / {{clickedCityDetail.districtName}}</h2>
+              <!--  <i class="material-icons search-icon" (click)="toggleterritory('districts','open')"  matRipple style="right: 15px;">search</i> -->
+              <!--   <input type="text" placeholder="search..." class="fix-search"> -->
+              <!--    <i class="material-icons close-icon" (click)="toggleterritory('districts','close')" matRipple>clear</i> -->
+            </div>
+            
+            <div class="cs-checkbox">
+              <div class="checkbox-outer auto-height-scroll">
+                <p class="head-cs">{{clickedCityDetail.cityName}}</p>
+                <section class="checkbox-inner">
+                  <div class="cs-table">
+                    <div class="table-head sticky-small">
+                      <table class="sno-border">
+                        <tr>
+                          <th class="w30">&nbsp;</th>
+                          <th>Pincode</th>
+                          <!-- <th class="w50">&nbsp;</th> -->
+                        </tr>
+                      </table>
+                    </div>
+                    
+                    <div class="table-container">
+                      <div class="table-content">
+                        <table class="sno-border">
+                          <tr *ngFor="let val of clickedCityDetail.pincodeArr; let pincodeIndex = index">
+                            <td class="w30">{{pincodeIndex + 1}}</td>
+                            <td>{{val}}</td>
+                            <!-- <td class="w50" matRipple><a class="pointer"><i class="material-icons red-clr">delete_sweep</i></a></td> -->
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <!-- Add Pincode HTML Start -->
+  
+  <div *ngIf="territoryId == '0' || isDetailPincodeBtnClicked" class="container-outer">
+    <!-- <app-master-tab></app-master-tab> -->
+    
+    <!-- <div class="container tab-container" > -->
+      <div class="row">
+        <form name="form" #f="ngForm" novalidate>
+          <div class="col s12">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>{{isDetailPincodeBtnClicked ? 'UPDATE TERRITORY PINCODES' : 'CREATE TERRITORY'}}</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>          
+              
+              <div [hidden]="isDetailPincodeBtnClicked" class="from-fields">
+                <div class="row mt5">
+                  <div class="col s4 pl0">
+                    <div class="control-field" [ngClass]="{ 'has-error': !territory_form.name && f.submitted }">
+                      <mat-form-field class="cs-input infix-bodr8 ">
+                        <input matInput [(ngModel)]="data.territory" placeholder="Territory Name" name="territory" #territory="ngModel" id="territoryName" [ngClass]="{ 'is-invalid':  territory.invalid }" [required]="!isDetailPincodeBtnClicked">
+                      </mat-form-field>
+                      
+                      
+                      <mat-error *ngIf="!isDetailPincodeBtnClicked && territory.invalid && territory.errors.required" class="invalid-feedback">*Territory Required!</mat-error>
+                      
+                    </div>
+                    
+                  </div>
+                  
+                  <div class="col s4">
+                    <div class="control-field">
+                      <div class="multi-all-select">
+                        <label >Select Segment</label>
+                        <ng-multiselect-dropdown
+                        [placeholder]="'Select Segment'"
+                        [data]="segmentlist"
+                        [(ngModel)]="data.segment"
+                        name="segment"
+                        #selectRoleArr="ngModel"
+                        [settings]="segmentDropdownSettings"
+                        (onSelect)="getSegmentChangeHandler()"
+                        (onDeSelect)="getSegmentChangeHandler()"
+                        (onDeSelectAll)="getSegmentChangeHandler()"
+                        (onSelectAll)="getSegmentChangeHandler()">
+                      </ng-multiselect-dropdown>
+                    </div>
+                    
+                    <mat-error *ngIf="!isDetailPincodeBtnClicked && (!data.segment || data.segment.length == 0)" class="invalid-feedback">
+                      Segment is required</mat-error>
+                      
+                      <!-- <mat-form-field class="cs-input infix-bodr8 ">
+                        
+                        <mat-select placeholder="Select Segment" name="segment" [(ngModel)]="data.segment" #segment="ngModel" id="segmentName" [ngClass]="{ 'is-invalid': f.submitted && segment.invalid }" multiple [required]="!isDetailPincodeBtnClicked">
+                          <mat-option (click)="getSegmentChangeHandler()" value="{{segment.text}}"  *ngFor='let segment of segmentlist'>{{segment.text}}</mat-option>
+                        </mat-select>
+                      </mat-form-field> -->
+                      
+                    </div>
+                  </div>
+                  
+                  <div class="col s4 pr0">
+                    <div class="control-field">
+                      <!-- <mat-form-field *ngIf="data.segment && data.segment.length > 0" class="cs-input infix-bodr8"> -->
+                        <div class="multi-all-select">
+                          <label >Select Sales Role</label>
+                          <ng-multiselect-dropdown
+                          [placeholder]="'Select Sales Role'"
+                          [data]="userRolesArr"
+                          [(ngModel)]="data.roleSelected"
+                          name="selectRoleArr"
+                          #selectRoleArr="ngModel"
+                          [settings]="rolesDropdownSettings"
+                          (onSelect)="onItemSelect($event)"
+                          (onDeSelect)="onItemDeselect($event)"
+                          (onDeSelectAll)="onItemDeselectAll($event)"
+                          (onSelectAll)="onSelectAll($event)">
+                        </ng-multiselect-dropdown>
+                      </div>
+                      
+                      
+                      <!-- <mat-select placeholder="Select Sales Role" name="selectRoleArr" [(ngModel)]="data.roleSelected" #selectRoleArr="ngModel">
+                        <mat-option disabled value="">Select an Option</mat-option>
+                        <span *ngFor='let list of userRolesArr'>
+                          <mat-option *ngIf="list.roleId != 6" (click)="getRoleWiseUserList(list.roleId)" [value]="list.roleId">{{list.roleName}}</mat-option>
+                        </span>
+                      </mat-select> -->
+                      <!-- </mat-form-field> -->
+                    </div>
+                  </div>
+                  
+                  
+                </div>
+                
+                
+                
+                <div *ngIf="data.segment  && data.segment.length > 0" class="row mt10">
+                  
+                  <div class="col s4 pl0 ">
+                    <div class="multi-all-select">
+                      <label >Sales User</label>
+                      <ng-multiselect-dropdown
+                      [placeholder]="'Select Sales User'"
+                      [data]="salesNetworkData"
+                      [(ngModel)]="data.salesUsers"
+                      name="salesUser"
+                      #salesUser="ngModel"
+                      [settings]="dropdownSettings">
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            
+            
+            <div class="row mt15">
+              
+              <div class="col s4 pl0">
+                <div class="territory-info">
+                  
+                  <div class="head" [ngClass]="{'active':active.state==true}">
+                    <h2>STATE</h2>
+                    
+                    <!-- <mat-checkbox class="fix-check"  (change)="selectall('st',$event)">&nbsp;</mat-checkbox> -->
+                    
+                    <i class="material-icons search-icon right20" (click)="toggleterritory('state','open')"  matRipple>search</i>
+                    
+                    <input type="text" id="state" [(ngModel)]="data.stateSearch" name="stateSearch" placeholder="search..." class="fix-search">
+                    
+                    <i class="material-icons close-icon" (click)="data.stateSearch='';toggleterritory('state','close')" matRipple>clear</i>
+                    
+                  </div>
+                  
+                  <div class="cs-checkbox">
+                    <div class="checkbox-outer">
+                      <section class="checkbox-inner">
+                        
+                        <ng-container *ngFor="let list of masterArr | myfilter:{src: 'territoryState', search: data.stateSearch};let stateIndex=index;"> 
+                          
+                          <mat-checkbox class="check-list" (change)="getDistrictList(list.stateName, list.checked, false)"
+                          [(ngModel)] = "list.checked" name="{{list.stateName}}a">{{list.stateName}}</mat-checkbox>
+                          
+                        </ng-container>
+                      </section>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col s4">
+                <div class="territory-info">
+                  
+                  <div class="head" [ngClass]="{'active':active.districts==true}">
+                    <h2>DISTRICTS</h2>
+                    
+                    <!-- <mat-checkbox class="fix-check"  (change)="selectall('dst',$event)">&nbsp;</mat-checkbox> -->
+                    <i class="material-icons search-icon right20" (click)="toggleterritory('districts','open')"  matRipple>search</i>
+                    
+                    <input type="text" id="districts" [(ngModel)]="data.districtSearch" name="districtSearch" placeholder="search..." class="fix-search">
+                    
+                    <i class="material-icons close-icon" (click)="data.districtSearch='';toggleterritory('districts','close')" matRipple>clear</i>
+                    
+                  </div>
+                  
+                  <div *ngIf="!isAnyStateSelected" class="not-data">
+                    <div class="inner-data">
+                      <p>No Data</p>
+                    </div>
+                  </div>
+                  
+                  <div *ngIf="isAnyStateSelected" class="cs-checkbox">
+                    <div class="checkbox-outer">
+                      <section class="checkbox-inner">
+                        <ng-container *ngFor= "let list of masterArr; let stateIndex=index">
+                          <span *ngIf="list.checked">
+                            <span [hidden]="data.districtSearch">
+                              <mat-checkbox [(ngModel)]="list.allChecked" (change)="masterActionHandler('state', list.stateName, null, null, null, list.allChecked, null)" class="check-list bg-list text-center" name="{{list.stateName}}" style="background:#eee;color: #111;">{{list.stateName}}</mat-checkbox>
+                            </span>
+                            <mat-checkbox *ngFor= "let districtRow of list.districtData | myfilter:{src: 'territoryDistrict', search: data.districtSearch}; let districtIndex=index"  [(ngModel)]="districtRow.checked" (change)="getCityList(list.stateName,districtRow.districtName,districtRow.checked, false, 'single')" class="check-list" name="{{districtRow.districtName}}bb">{{districtRow.districtName}} {{data.districtSearch ? '('+list.stateName+')' : ''}}</mat-checkbox>              
+                          </span>                                      
+                        </ng-container>
+                        
+                      </section>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div> 
+              
+              
+              <div class="col s4 pr0">
+                <div class="territory-info">
+                  
+                  <div class="head" [ngClass]="{'active':active.pincode==true}">
+                    <h2>AREA PINCODES</h2>
+                    <span *ngIf="showSelectAll">
+                      <mat-checkbox class="fix-check" [(ngModel)]="data.pincodeSelectAll" (change)="getAllPincodeHandler(data.pincodeSelectAll)" name="pincodeSelectAll">&nbsp;</mat-checkbox>
+                    </span>
+                    <i class="material-icons search-icon right60"  (click)="toggleterritory('pincode','open')"  matRipple>search</i>
+                    <input type="text" id="pincode" [(ngModel)]="data.citySearch" name="citySearch" placeholder="City Search..." class="fix-search">
+                    <i class="material-icons close-icon" (click)="data.citySearch='';toggleterritory('pincode','close')" matRipple>clear</i>
+                  </div>
+                  
+                  <div  *ngIf="!isAnyDistrictSelected" class="not-data">
+                    <div class="inner-data">
+                      <p>No Data</p>
+                    </div>
+                  </div>
+                  
+                  <div  *ngIf="isAnyDistrictSelected"  class="cs-checkbox">
+                    <div class="checkbox-outer">
+                      <section class="checkbox-inner">
+                        <ng-container *ngFor="let list of masterArr;let stateIndex=index;">
+                          
+                          <span *ngIf="list.checked">
+                            
+                            <ng-container *ngFor="let districtRow of list.districtData;let districtIndex=index;">
+                              
+                              <span *ngIf="districtRow.checked">
+                                
+                                <ng-container *ngFor="let cityRow of districtRow.cities  | myfilter:{src: 'territoryCity', search: data.citySearch}; let cityIndex=index;">
+                                  
+                                  <div [hidden]="!data.citySearch && data.pincodeSearch" style="position: relative;">
+                                    
+                                    <mat-checkbox [(ngModel)]="cityRow.checked" class="check-list bg-list text-center" (change)="masterActionHandler('city', list.stateName, districtRow.districtName, cityRow.cityName, null, cityRow.checked, cityRow.stateMasterId)" name="{{cityRow.cityName}}" style="background:#eee;color: #111;">{{cityRow.cityName}} ({{ districtRow.districtName}})</mat-checkbox> 
+                                    
+                                    <!-- <a class="drop-icon" (click)="drop_me = ( drop_me == cityIndex ) ? '-1': cityIndex ">&nbsp;</a> -->
+                                  </div>
+                                  
+                                  <ng-container *ngFor="let pincodeRow of cityRow.pincodeArr | myfilter:{src: 'territoryPincode', cityArr: cityRow, search: data.pincodeSearch}; let pincodeIndex=index" #pincodeExist>
+                                    
+                                    <mat-checkbox  class="check-list" [(ngModel)]="pincodeRow.checked"  name="{{pincodeRow.pincode}}" (change)="masterActionHandler('pincode', list.stateName, districtRow.districtName, cityRow.cityName, pincodeRow.pincode, pincodeRow.checked, null)">{{pincodeRow.pincode}} {{(!data.citySearch && data.pincodeSearch ? ' - ' + cityRow.cityName + ' (' + districtRow.districtName+ ')' : '')}}</mat-checkbox>
+                                    
+                                  </ng-container>
+                                  
+                                </ng-container>
+                                
+                              </span>
+                              
+                            </ng-container>
+                            
+                          </span>
+                          
+                        </ng-container>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+            </div>
+            
+            
+            <mat-error *ngIf="data.pincodeEmpty"  class="invalid-feedback">
+              *Atleast one Pincode Required!</mat-error>
+              
+            </div>
+            
+            <div class="row">
+              <div class="col s12">
+                <div  class="cs-btn text-right mt15">
+                  <div class="in-btn">
+                    <button (click)="onFinalPinCodesHandler()" type="button" mat-raised-button color="accent" >Add to Pincode List</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div *ngIf="(territoryId == '0' || (territoryId != '0' && isDetailPincodeBtnClicked)) && finalPincodesDetailArr.length > 0"  class="sprate-box pt0 mt15">
+              <div class="cs-heading">
+                <h2 class="pr40">Selected Pincodes 
+                  <span class="counter-number" style="text-align:right">{{finalPincodesDetailArr.length}}</span>
+                </h2> 
+                <div class="top-search ml50">
+                  <input type="text" placeholder="SEARCH. . ." [(ngModel)]="data.selectedPincodeSearch" name="selectedPincodeSearch" >
+                  <i class="material-icons">search</i>
+                </div>
+                <div class="action-menu">
+                  <button class="action-menu-btn" mat-button [matMenuTriggerFor]="menu"><i class="material-icons">more_vert</i></button>
+                  <mat-menu class="action-dropdown" #menu="matMenu">
+                    <button disabled mat-menu-item class="alert-btn red-clr" style="border-bottom: 1px solid #ccc;">Delete Statewise</button>
+                    <button mat-menu-item (click)="deleteSelectedPincode(stateName, '')" *ngFor='let stateName of distinctSelectedState'>{{stateName}}</button>
+                  </mat-menu>
+                </div>
+              </div>
+              
+              <div class="cs-table left-right-15 mt15">
+                <div class="table-head ">
+                  <table>
+                    <tr>
+                      <th>State Name</th>
+                      <th>District Name</th>
+                      <th>City</th>
+                      <th>Pincode</th>
+                    </tr>
+                  </table>
+                </div>
+                <div class="table-container height-scroll">
+                  <div class="table-content shadow-none">
+                    <table>
+                      <tr *ngFor="let list of finalPincodesDetailArr | myfilter:{src: 'selectedPincodes', search: data.selectedPincodeSearch};">
+                        <td>{{list.stateName}}</td>
+                        <td>{{list.districtName}}</td>
+                        <td>{{list.cityName}}</td>
+                        <td>
+                          <div class="action-btns">
+                            <!-- <a mat-button class="view" (click)="detailPlan(list.travelPlanID)"><i class="material-icons">remove_red_eye</i> View</a> -->
+                            <button type="button" mat-button class="delete" (click)="deleteSelectedPincode('Pincode', list)"><i class="material-icons">delete_sweep</i> Delete</button>
+                          </div>
+                          <span> {{list.pincode}}</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+        </form>
+        
+        <div *ngIf="finalPincodesDetailArr.length > 0" class="col s12">
+          <div class="cs-btn fixedd mt32 text-right">
+            <div *ngIf="territoryId != '0'" class="in-btn mr15">
+              <button type="button" (click)="isDetailPincodeBtnClicked = false" type="submit" mat-raised-button color="warn">Cancel</button>
+            </div>
+            <div class="in-btn">
+              <button type="button" (click)="save_territory()" type="submit" mat-raised-button color="accent">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- </div> -->
+    </div>
+    
+    
+  </div>
+  
+  <div class="h50"></div>
+  
+  <!-- Add Pincode HTML END -->
+  

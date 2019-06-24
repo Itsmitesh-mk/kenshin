@@ -1,0 +1,162 @@
+<div class="main-container">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container pb15">
+    <div class="page-heading">
+      <img src="assets/img/gift.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Pop/Gifts Orders</h2>
+        <p>Total <span>{{popOrderData.length}}</span></p>
+      </div>
+    </div>
+
+    <!-- <div  *ngIf="filter.gift" class="filter-container left-auto">
+      <div (click)="clearfilter()" class="filter-btn">
+        <button mat-button >CLEAR FILTER</button>
+      </div>
+    </div> -->
+    
+    
+    <div *ngIf="loginData.data.userType==3" class="left-auto">
+      <div class="wallet-details w300 mb0 mt0">
+        <p>Total Wallet Points</p>
+        <span style="font-size: 16px; font-weight: 700;">{{walletBalance}}</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer pt0">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th class="w110">Date</th>
+                    <th *ngIf="loginData.data.role==1 && loginData.data.superAdmin" class="w110">Company</th>
+                    <th class="padding0">
+                      <table>
+                        <tr>
+                          <th>Pop & Gift</th>
+                          <th class="w100">Qty</th>
+                          <th class="w130">Qty Per Points</th>
+                        </tr>
+                      </table>
+                    </th>
+                    <th class="w170">Total Redeem</th>
+                    <th class="w130">Status</th>
+                    <th class="w130">Action</th>
+                  </tr>
+                </table>
+              </div>
+              <div class="table-head bdrt">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th  class="w110">&nbsp;</th>
+                    <th *ngIf="loginData.data.role==1 && loginData.data.superAdmin" class="w110">&nbsp;</th>
+                    <th class="padding0">
+                      <table>
+                        <tr>
+                          <th>
+                            <div class="th-search-acmt">
+
+                              <mat-form-field class="wp100">
+                               <input type="text"  name="name" [(ngModel)]="filter.name" (ngModelChange)="giftNameSearchList()" matInput [matAutocomplete]="auto4">
+
+                                    <mat-autocomplete #auto4="matAutocomplete" >
+                                      <mat-option *ngFor='let list of giftSearchData'  (click)="productFilter()" value="{{list.name}}">{{list.name}}</mat-option>
+                                    </mat-autocomplete>
+
+                                    <a *ngIf="showClearIcon" class="close-mat" matRipple  matTooltip="Clear" (click)=" removeNameFilter()"><i class="material-icons">clear</i></a>
+                             
+                              </mat-form-field>
+                            </div>
+                          </th>
+                          <th class="w100">&nbsp;</th>
+                          <th class="w130">&nbsp;</th>
+                        </tr>
+                      </table>
+                    </th>
+                    <th class="w170">&nbsp;</th>
+                    <th class="w130">&nbsp;</th>
+                    <th class="w130">&nbsp;</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let list of popOrderData; let index = index;">
+
+                    <td class="w30">{{index+1}}</td>
+
+                    <td class="w110">{{list.createdOn | date: 'dd-MMM-yyyy'}}</td>
+
+                    <td *ngIf="loginData.data.role==1 && loginData.data.superAdmin" class="w110">{{list.establishment}}</td>
+
+                    <td class="padding0">
+                      <table class="inner-table">
+                        <tr *ngFor="let row of list.orderedItems">
+                          <td>
+                            <a class="link-btn" mat-button routerLinkActive="active">{{row.name}}</a>
+                          </td>
+                          <td class="w100">{{row.quantity}}</td>
+                          <td class="w130">{{row.redeemPointsPerUnit}}</td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td class="w170">{{list.totalPointsRedeemed}}</td>
+                    <td class="w130">Pending
+                    </td>
+                    <td class="w130">
+                        <a *ngIf="loginData.data.role==1 && loginData.data.superAdmin" class="link-btn" mat-button (click)="openDialog()">Change Status</a>
+                        <a *ngIf="loginData.data.userType==3" class="link-btn cancel" mat-button (click)="cancelOrderHandler(list.popOrderId)">Cancel Order</a>
+                      </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div *ngIf="div" class="data-not-available" >
+      <div class="outer">
+        <div class="iinear">
+          <div class="figure" matRipple>
+            <div class="header">
+              <img src="assets/img/data-not-available-header.svg" alt="">
+            </div>
+            
+            <div class="description">
+              
+              <div class="img">
+                <i class="material-icons">error_outline</i>
+              </div>
+              <div class="psc">
+                <p>data not available</p>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+  <div class="fixed-multibtn-botm">
+    <ul>
+      <li><a  matTooltip="Add New" routerLink="/pop-and-gift-distributor-add" routerLinkActive="active" matRipple><i class="material-icons">add</i></a></li>
+    </ul>
+  </div>
+</div>

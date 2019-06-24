@@ -1,0 +1,552 @@
+<div class="cs-loader" *ngIf="loader"> 
+  <img src="assets/img/loader.png" class="rotate">
+</div>
+
+<div class="main-container">
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/expense-list" routerLinkActive="active" ><i   class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{expenseDetailList.userName}}</h2>
+      </div>
+      
+      <div class="cs-value">
+        <h2>Total</h2>
+        <p class="light">{{expenseDetailList.actualExpenseAmount |currency: 'INR':true }}</p>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s8">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="col s12 cs-figure">
+                <ul>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Expense Type</span>
+                        <p *ngIf="expenseDetailList.expenseType==1">Local Conveyance</p>
+                        <p *ngIf="expenseDetailList.expenseType==2">Outstation Travel</p>
+                        <p *ngIf="expenseDetailList.expenseType==3">Sales Promotion</p>
+                        <p *ngIf="expenseDetailList.expenseType==4">Misc Exp</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Purpose Of Visit</span>
+                        <p>{{expenseDetailList.purposeOfVisit}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Date</span>
+                        <p>{{expenseDetailList.createdOn |date:'EEEE, MMMM d, y'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>E.C. No</span>
+                        <p>{{expenseDetailList.ecNumber}}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                
+                
+                <ul class="mt15">
+                  <li *ngIf="expenseDetailList.status==5" class="approved">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Satus</span>
+                        <p>Approve</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li *ngIf="expenseDetailList.status==2 || expenseDetailList.status==3" class="pending">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Satus</span>
+                        <p>{{expenseDetailList.status==2?'Pending':'Forward For Approval'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li *ngIf="expenseDetailList.status==4 || expenseDetailList.status==6" class="reject">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Satus</span>
+                        <p>Reject</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li *ngIf="expenseDetailList.status==1" class="draft">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Satus</span>
+                        <p>Draft</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Department</span>
+                        <p>{{expenseDetailList.department}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li *ngIf="expenseDetailList.createdBy!=userId && (expenseDetailList.status==2|| expenseDetailList.status==3)">
+                    <div class="outer">
+                      <div class="inner">
+                        <div class="from-fields">
+                          <div *ngIf="expenseDetailList.status==2" class="dflex">
+                            <div class="control-field wp100">
+                              <mat-form-field class="cs-input infix-bodr">
+                                <mat-select placeholder="Select Status" name="status" #status="ngModel" [(ngModel)]="data.status" >
+                                  <mat-option  value=3>Forward For Approval</mat-option>
+                                  <mat-option  value=4>Reject</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                            <div *ngIf="data.status==3" class="control-field wp100 ml10">
+                              <mat-form-field class="cs-input infix-bodr">
+                                <mat-select  placeholder="Select Status" name="expenseSanctionedBy" #expenseSanctionedBy="ngModel" [(ngModel)]="data.expenseSanctionedBy" >
+                                  <mat-option *ngFor="let user of financeUserList" value="{{user.userId}}">{{user.userName}}</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                            <div *ngIf="data.status==4" class="control-field wp100 ml10">
+                              <mat-form-field class="cs-input infix-bodr">
+                                <input matInput placeholder="Remark" name="expenseSanctionRejectedBy" #expenseSanctionRejectedBy="ngModel" [(ngModel)]="data.expenseSanctionRejectedBy">
+                              </mat-form-field>
+                            </div>
+                            
+                            <div *ngIf="data.status" class="cs-btn ml10">
+                              <div class="in-btn">
+                                <button mat-raised-button color="accent" (click)="statusUpdate()" style="color: #fff;">Go</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div *ngIf="expenseDetailList.status==3 && userRole==17" class="dflex">
+                            <div class="control-field wp100">
+                              <mat-form-field class="cs-input infix-bodr">
+                                <mat-select placeholder="Select Status" name="status" #status="ngModel" [(ngModel)]="data.status" >
+                                  <mat-option value=5>Approve</mat-option>
+                                  <mat-option value=6>Reject</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                            
+                            <div *ngIf="data.status==6" class="control-field wp100 ml10">
+                              <mat-form-field class="cs-input infix-bodr">
+                                <input matInput placeholder="Remark" name="expenseApprovedRejectionRemarks" #expenseApprovedRejectionRemarks="ngModel" [(ngModel)]="data.expenseApprovedRejectionRemarks">
+                              </mat-form-field>
+                            </div>
+                            
+                            <div *ngIf="data.status" class="cs-btn ml10">
+                              <div class="in-btn">
+                                <button mat-raised-button color="accent" (click)="changeStatus()" style="color: #fff;">Go</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              
+              
+            </div>
+          </div>
+        </div>
+        
+        
+        <div class="col s4">
+          <div class="sprate-box pt0">
+            <div class="cs-logs">
+              <div class="cs-heading">
+                <h2>Expense Bill</h2>
+              </div>
+              <div class="logs-outer padding0">
+                <div class="cs-image">
+                  
+                  <div *ngIf="expenseDetailList.documents?.length == 0" class="not-data mt15 padding0">
+                    <div class="inner-data">
+                      <p>Image not available</p>
+                    </div>
+                  </div>
+                  <div *ngIf="expenseDetailList.documents?.length > 0" class="vertical-img {{expenseDetailList.documents.length == 2 ? 'double-img' : (expenseDetailList.documents.length > 2 ? 'multiple-img' : '')}}"class="vertical-img">
+                    <ul>
+                      <li *ngFor="let expenseImage of expenseDetailList.documents;let i=index" class="overlay-content" >
+                        <img src="{{api+expenseImage.documentId+'/'+'2'}}">
+                        <a class="close dowload" matRipple matTooltip="Download Bill" href="{{api+expenseImage.documentId+'/'+'2'}}" ><i class="material-icons">cloud_download</i></a>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+        
+        <div *ngIf="localConveyances.length!=0" class="row">
+          <div class="sprate-box pt0">
+            <div class="cs-heading">
+              <h2>Local Conveyances</h2>
+            </div>
+          </div>
+          <div class="cs-table left-right-20">
+            <div class="table-head">
+              <table> 
+                <tr>
+                  <th class="w200">Date Of Visit</th>
+                  <th class="w110">From</th>
+                  <th class="w110">To</th>
+                  <th class="w150">Type Of mode</th>
+                  <th class="w150">Modal Of Travel</th>
+                  <th class="w130">KMs Covered</th>
+                  <th class="w110 text-right">Amount</th>
+                  <th class="w130">Other Expense</th>
+                  <th>Remark</th>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let expense of localConveyances">
+                    <td class="w200"> {{expense.visitDate |date:'EEEE, MMMM d, y'}}</td>
+                    <td class="w110">{{expense.from}}</td>
+                    <td class="w110">{{expense.to}}</td>
+                    <td  class="w150">
+                      <span *ngIf="expense.modeType==1"> SELF</span>
+                      <span *ngIf="expense.modeType==1"> PUBLIC TRANSPORT</span>
+                    </td>
+                    <td  class="w150">
+                      <span *ngIf="expense.mode==10">AUTO</span>
+                      <span *ngIf="expense.mode==1">BUS</span>
+                      <span *ngIf="expense.mode==6">AC TEXI</span>
+                      <span *ngIf="expense.mode==7">NON-AC TEXI</span>
+                      <span *ngIf="expense.mode==5">METRO</span>
+                      <span *ngIf="expense.mode==9">CAR</span>
+                      <span *ngIf="expense.mode==8">BIKE</span>
+                    </td>
+                    <td class="w130">{{expense.distanceKMS}} KMs</td>
+                    <td class="w110 text-right">{{expense.otherExpense|currency: 'INR':true}}</td>
+                    <td class="w130"> {{expense.otherExpense|currency: 'INR':true}}</td>
+                    <td> {{expense.remarks}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        <div  *ngIf="salesPromotionExpense.length !=0" class="row">
+          <div class="cs-table left-right-20">
+            <div class="heading-bg mb0">
+              <h2>Sales Permoton Expenses</h2>
+            </div>
+            <div class="table-head">
+              <table> 
+                <tr>
+                  <th class="w180">Date</th>
+                  <th>Activity Type</th>
+                  <th class="w100">Place of Activity</th>
+                  <th class="w100">No Of Attendees</th>
+                  <th class="w110 text-right">Rental Exp.</th>
+                  <th class="w100 text-right">Food Exp.</th>
+                  <th class="w110 text-right">Av-Aids Exp.</th>
+                  <th class="w80 text-right">Gift Exp.</th>
+                  <th class="w110 text-right">Misc Exp.</th>
+                  <th>Remark</th>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor=" let promation of salesPromotionExpense">
+                    <td class="w180"> {{promation.date |date:'EEEE, MMMM d, y'}}</td>
+                    <td *ngIf="promation.salesActivityType==1">Mechanic get together</td>
+                    <td *ngIf="promation.salesActivityType==2"> Retailer get together</td>
+                    <td *ngIf="promation.salesActivityType==3">van Campaign</td>
+                    <td *ngIf="promation.salesActivityType==4">Stall Campaign</td>
+                    <td *ngIf="promation.salesActivityType==5">Exhibition Participation</td>
+                    <td *ngIf="promation.salesActivityType==6">Signboard</td>
+                    <td *ngIf="promation.salesActivityType==7">Wall/Shop Painting</td>
+                    <td *ngIf="promation.salesActivityType==8">GiveAways</td>
+                    <td *ngIf="promation.salesActivityType==9">Printing Of Lesafelts,banners, posters etc.</td>
+                    <td class="w100">{{promation.placeOfActivity}}</td>
+                    <td class="w100">{{promation.noOfAttendees}}</td>
+                    <td class="w110 text-right">{{promation.rentalExpenses|currency: 'INR':true}}</td>
+                    <td class="w100 text-right"> {{promation.foodExpense|currency: 'INR':true}}</td>
+                    <td class="w110 text-right">{{promation.avAidsExpense|currency: 'INR':true}}</td>
+                    <td class="w80 text-right">  {{promation.giftsExpense|currency: 'INR':true}}</td>
+                    <td class="w110 text-right"> {{promation.miscExpense|currency: 'INR':true}}</td>
+                    <td> {{promation.remarks}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="miscExpense.length!=0" class="row">
+          <div class="cs-table left-right-20">
+            <div class="heading-bg  mb0">
+              <h2>Misc Expense</h2>
+            </div>
+            <div class="table-head">
+              <table> 
+                <tr >
+                  
+                  <th class="w200">Date</th>
+                  <th class="w200">Nature Of Exp.</th>
+                  <th class="w200">Beneficiaries Name</th>
+                  <th class="w200">Place Of Expense</th>
+                  <th class="w100 text-right">Amount</th>
+                  <th>Remark</th>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let misc of miscExpense">
+                    <td class="w200">{{misc.date|date:'EEEE, MMMM d, y'}}</td>
+                    <td *ngIf="misc.miscActivityType==1" class="w200">Entertainment Expenses</td>
+                    <td *ngIf="misc.miscActivityType==2" class="w200">Gift To Dealers</td>
+                    <td *ngIf="misc.miscActivityType==3" class="w200">Lunch/Dinner With Team</td>
+                    <td *ngIf="misc.miscActivityType==4" class="w200">Training Program</td>
+                    <td *ngIf="misc.miscActivityType==5" class="w200"> Other</td>
+                    <td class="w200">{{misc.nameOfBeneficiary}}</td>
+                    <td class="w200">{{misc.placeOfExpense}}</td>
+                    <td class="w100 text-right"> &#x20B9; {{misc.amount|currency: 'INR':true}}</td>
+                    <td> {{misc.remarks}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="outStationExpense.length!=0" class="row">
+          <div *ngIf="outStationExpense.foodExpenses.length!=0" class="cs-table left-right-20">
+            <div class="heading-bg  mb0">
+              <h2>Food Expense</h2>
+            </div>
+            
+            <div class="table-head">
+              <table> 
+                <tr>
+                  <th class="w200">Date Of Visit</th>
+                  <th class="w110">City</th>
+                  <th class="w150">Bill Amount</th>
+                  <th class="w300">Remark</th>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let foodExpense of outStationExpense.foodExpenses">
+                    <td class="w200"> {{foodExpense.date|date:'EEEE, MMMM d, y'}}</td>
+                    <td class="w110">{{foodExpense.city}}</td>
+                    <td class="w150">{{foodExpense.billAmount}}</td>
+                    <td class="w300">{{foodExpense.remarks}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+          <div *ngIf="outStationExpense.outStationLocalExp.length!=0" class="cs-table left-right-20">
+            
+            <div class="heading-bg  mb0">
+              <h2>Local Expense</h2>
+            </div>
+            <div class="table-head">
+              <table> 
+                <tr>
+                  <th class="w200">Date Of Visit</th>
+                  <th class="w110">From</th>
+                  <th class="w110">To</th>
+                  <th class="w150">Modal Of Travel</th>
+                  <th class="w130">Fare</th>
+                  
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let outTravel of outStationExpense.outStationLocalExp">
+                    <td class="w200"> {{outTravel.date |date:'EEEE, MMMM d, y'}}</td>
+                    <td class="w110">{{outTravel.from}}</td>
+                    <td class="w110">{{outTravel.to}}</td>
+                    <td class="w150">
+                      <span *ngIf="outTravel.modeOfTravel==10">AUTO</span>
+                      <span *ngIf="outTravel.modeOfTravel==1">BUS</span>
+                      <span *ngIf="outTravel.modeOfTravel==6"> AC TAXI</span>
+                      <span *ngIf="outTravel.modeOfTravel==7">NON-AC TAXI</span>
+                      <span *ngIf="outTravel.modeOfTravel==8">TWO WHEELER</span>
+                      <span *ngIf="outTravel.modeOfTravel==5">METRO</span>
+                    </td>
+                    <td class="w130">{{outTravel.fare}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+          <div *ngIf="outStationExpense.outStationTravelExp.length!=0" class="cs-table left-right-20">
+            
+            <div class="heading-bg  mb0">
+              <h2>Travel Expense</h2>
+            </div>
+            <div class="table-head">
+              <table> 
+                <tr>
+                  <th class="w200">Date Of Depature</th>
+                  <th class="w150">From</th>
+                  <th class="w200">Date of Arrival</th>
+                  <th class="w150">TO</th>
+                  <th class="w150">Mode of Travel</th>
+                  <th class="w130">Class</th>
+                  
+                  <th class="w130">Ticket No</th>
+                  <th class="w130 ">Amount</th>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let outTravel of outStationExpense.outStationTravelExp">
+                    <td class="w200"> {{outTravel.departureTime |date:'medium'}}</td>
+                    <td class="w150">{{outTravel.departureStation}}</td>
+                    <td class="w200">{{outTravel.arrivalTime |date:'medium'}}</td>
+                    <td class="w150">{{outTravel.arrivalStation}}</td>
+                    <td class="w150">
+                      <span *ngIf="outTravel.modeOfTravel==1">BUS</span>
+                      <span *ngIf="outTravel.modeOfTravel==2">TRAIN</span>
+                      <span *ngIf="outTravel.modeOfTravel==3">AIRLINE</span>
+                      <span *ngIf="outTravel.modeOfTravel==5">TEXI</span>
+                    </td>
+                    <td class="w130">{{outTravel.class}}</td>
+                    
+                    <td class="w130">{{outTravel.ticketNo}}</td>
+                    <td class="w130">{{outTravel.amount}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+          <div *ngIf="outStationExpense.outStationHotelExp.length!=0" class="cs-table left-right-20">
+            <div class="heading-bg  mb0">
+              <h2>Hotel Expense</h2>
+            </div>
+            <div class="table-head">
+              <table> 
+                <tr>
+                  <th class="w200">Check In Date</th>
+                  <th class="w200">Check Out Date</th>
+                  <th class="w110">City</th>
+                  <th class="w150">Hotel Name</th>
+                  <th class="w130">Amount</th>
+                  <th>Remark</th>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let outTravel of outStationExpense.outStationHotelExp">
+                    <td class="w200"> {{outTravel.checkInDate|date:'EEEE, MMMM d, y'}}</td>
+                    <td class="w200">{{outTravel.checkOutDate|date:'EEEE, MMMM d, y'}}</td>
+                    <td class="w110">{{outTravel.city}}</td>
+                    <td class="w150">{{outTravel.hotelName}}</td>
+                    <td class="w130">{{outTravel.billAmount}}</td>
+                    <td >{{outTravel.remarks}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+          <div *ngIf="outStationExpense.miscExpenses.length!=0" class="row">
+            <div class="cs-table left-right-20">
+              <div class="heading-bg  mb0">
+                <h2>Misc Expense</h2>
+              </div>
+              <div class="table-head">
+                <table> 
+                  <tr >
+                    
+                    <th class="w200">Date</th>
+                    <th class="w200">Nature Of Exp.</th>
+                    <th class="w200">Beneficiaries Name</th>
+                    <th class="w200">Place Of Expense</th>
+                    <th class="w100 text-right">Amount</th>
+                    <th>Remark</th>
+                  </tr>
+                </table>
+              </div>
+              
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor="let misc of outStationExpense.miscExpense">
+                      <td class="w200">{{misc.date|date:'EEEE, MMMM d, y'}}</td>
+                      <td *ngIf="misc.miscActivityType==1" class="w200">Entertainment Expenses</td>
+                      <td *ngIf="misc.miscActivityType==2" class="w200">Gift To Dealers</td>
+                      <td *ngIf="misc.miscActivityType==3" class="w200">Lunch/Dinner With Team</td>
+                      <td *ngIf="misc.miscActivityType==4" class="w200">Training Program</td>
+                      <td *ngIf="misc.miscActivityType==5" class="w200"> Other</td>
+                      <td class="w200">{{misc.nameOfBeneficiary}}</td>
+                      <td class="w200">{{misc.placeOfExpense}}</td>
+                      <td class="w100 text-right"> &#x20B9; {{misc.amount|currency: 'INR':true}}</td>
+                      <td> {{misc.remarks}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div>
+    </div>
+    
+    <!-- <div class="fixed-btn">
+      <a class="bottom-btn" mat-button routerLink="/expenseclaim" routerLinkActive="active"><i class="material-icons">edit</i></a>
+    </div> -->
+    
+  </div>
+  
+  <div class="h100"></div>
+  
+  

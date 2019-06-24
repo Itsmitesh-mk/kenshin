@@ -1,0 +1,168 @@
+
+<form #f="ngForm" (ngSubmit)="f.valid && onSubmit()">
+  <div class="main-container">
+    <div *ngIf="loader"> 
+      <div class="cs-loader">
+        <img src="assets/img/loader.png" class="rotate"> 
+      </div>
+    </div>
+    <div class="middle-container">
+      <div class="page-heading">
+        <img src="assets/img/task.svg" class="h-icon">
+        <div class="heading-text">
+          <h2>Assign Lead Task</h2>
+          <p>Assign Lead Task</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container-outer">
+      <div class="container" >
+        <div class="row">
+          <div class="col s2">&nbsp;</div>
+          <div class="col s8">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>Assign Task</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <div class="from-fields">
+                <div class="row">
+                </div>
+                <div class="row">
+                  <div class="col s6">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="Select {{rolename}}" name="distributor" #distributor="ngModel" [(ngModel)]="taskForm.distributor" [ngClass]="{ 'is-invalid': f.submitted && distributor.invalid }" required>
+                          <mat-option   (click)="getSalesList(distributor.pin)" *ngFor="let distributor of distributorList" value="{{distributor.establishment}}">
+                            {{distributor.establishment}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-error *ngIf="f.submitted && distributor.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="distributor.errors.required">Distributor is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  
+                  
+                  
+                  
+                  <div class="col s6 ">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="Territory" id="tid" name="tid" #tid="ngModel" [(ngModel)]="taskForm.tid">
+                          <mat-option (click)="sale()" *ngFor='let territoryId of salesid' value="{{territoryId.territoryID}}">{{territoryId.territoryName}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      
+                      <mat-error class="invalid-feedback">
+                        <mat-error *ngIf="!salesid || salesid.length==0">No Data Found!</mat-error>
+                      </mat-error>
+                      
+                    </div>
+                  </div>
+                  
+                  
+                  
+                  <div class="col s6">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput [matDatepicker]="days" [min]='currentDate' readonly placeholder="To Be Compelted By" name="deadline" [(ngModel)]="taskForm.deadline"  required>
+                        <mat-datepicker-toggle matSuffix [for]="days"></mat-datepicker-toggle>
+                        <mat-datepicker #days></mat-datepicker>
+                      </mat-form-field>
+                      <!-- <mat-error *ngIf="submitted && e.deadline.errors" >Task Deadline is required</mat-error> -->
+                    </div>
+                  </div>
+                  
+                  <div class="col s6">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="Critical" name="taskPriority" [(ngModel)]="taskForm.taskPriority"  >
+                          <mat-option value=1>Currently Critical</mat-option>
+                          <mat-option value=2>Potentially Critical</mat-option>
+                          <mat-option value=3>Necessary</mat-option>
+                          <mat-option value=4>Recommended </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      
+                      <!-- <mat-error *ngIf="submitted && e.taskPriority.errors" >Task Priority is required</mat-error> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s6">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="Select Sales User" name="sales" #sales="ngModel" [(ngModel)]="taskForm.sales" [ngClass]="{ 'is-invalid': f.submitted && sales.invalid }" required>
+                          <span *ngFor="let sales of salesList">
+                            <mat-option  value="{{sales.userId}}" >
+                              {{sales.userName}}
+                            </mat-option>
+                          </span>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-error  class="invalid-feedback">
+                        <mat-error *ngIf="salesList.length==0 && taskForm.tid">No Data Found!</mat-error>
+                      </mat-error>
+                      <mat-error *ngIf="f.submitted && sales.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="sales.errors.required">Sales user is required</mat-error>
+                      </mat-error>
+                      
+                    </div>
+                  </div>
+                  <div class="col s6">
+                    <div class="from-fields">
+                      <div class="control-field" >
+                        <mat-form-field class="cs-input wp100 h-input">
+                          <textarea matInput placeholder="Description"  name="remarks" [(ngModel)]="taskForm.remarks"  #remarks="ngModel" [ngClass]="{ 'is-invalid': f.submitted && remarks.invalid }" required></textarea>
+                        </mat-form-field>
+                        <mat-error *ngIf="f.submitted && remarks.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="remarks.errors.required">Remark is required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="col s12">
+                    <div class="from-fields">
+                      <div class="control-field" >
+                        <mat-form-field class="cs-input wp100 h-input">
+                          <textarea matInput placeholder="Description"  name="remarks" [(ngModel)]="taskForm.remarks"  #remarks="ngModel" [ngClass]="{ 'is-invalid': f.submitted && remarks.invalid }" required></textarea>
+                        </mat-form-field>
+                        <mat-error *ngIf="f.submitted && remarks.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="remarks.errors.required">Remark is required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                  </div> -->
+                </div>
+                <div class="col s8">
+                  <div class="highlights">
+                    <ul>
+                      <li *ngIf="taskForm.taskPriority==1">Financial loss and Safety Related issues</li>
+                      <li *ngIf="taskForm.taskPriority==2">Potential Financial or reputation loss, relationships with customer, statutory requirements</li>
+                      <li *ngIf="taskForm.taskPriority==3">Policies and instructions from management</li>
+                      <li *ngIf="taskForm.taskPriority==4">All others (no business impact)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col s2">&nbsp;</div>
+            <div class="col s2">&nbsp;</div>
+            <div class="col s8">
+              <div class="cs-btn fixedd mt32 text-right">
+                <div class="in-btn">
+                  <button mat-raised-button color="accent">Save</button>
+                </div>
+              </div>
+            </div>
+            <div class="col s2">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="h50"></div>
+  </div>
+</form>

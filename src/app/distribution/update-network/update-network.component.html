@@ -1,0 +1,360 @@
+<div class="edit-modal">
+    <form name="form" (ngSubmit)="f.form.valid && updateMobileEmail()"  #f="ngForm" novalidate>
+        <div *ngIf="loader"> 
+            <div class="cs-loader">
+              <img src="assets/img/loader.png" class="rotate"> 
+            </div>
+          </div>
+        
+        <div *ngIf="networkUserDetail.type=='email'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update Email</p>
+            <div class=" from-fields">
+                <div class="control-field">
+                    <mat-form-field class="example-full-width cs-input">
+                        <input matInput placeholder="Email-ID" name="email" value="email" [(ngModel)]="networkUserDetail.email" #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+                    </mat-form-field>
+                    <div class="alert alert-danger" *ngIf="!email.valid && email.touched">
+                        Please Enter Valid Email!
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="networkUserDetail.type=='networkCode'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update Network Code</p>
+            <div class=" from-fields">
+                <div class="control-field">
+                    <mat-form-field class="example-full-width cs-input">
+                        <input matInput placeholder="Network Code" name="networkCode" value="networkCode" [(ngModel)]="networkUserDetail.networkCode" #networkCode="ngModel" [ngClass]="{ 'is-invalid': f.submitted && networkCode.invalid }" required>
+                    </mat-form-field>
+                    <div class="alert alert-danger" *ngIf="!networkCode.valid && networkCode.touched">
+                        Please Enter Network Code!
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="networkUserDetail.type=='dates'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update Dates</p>
+            <div class=" from-fields">
+                <div class="row">
+
+                <div class="col s4 control-field">
+                        <!-- <mat-form-field class="example-full-width cs-input">
+                            <input input matInput type="date" placeholder="Commencement Date" name="dateOfCommencement" [(ngModel)]="dateArray.dateOfCommencement" #dateOfCommencement="ngModel" [ngClass]="{ 'is-invalid': f.submitted && dateOfCommencement.invalid }" required>
+                        </mat-form-field> -->
+                        <mat-form-field class="cs-input">
+                            <input matInput [matDatepicker]="pickertwo" placeholder="Commencement Date" name="dateOfCommencement" [(ngModel)]="dateArray.dateOfCommencement" #dateOfCommencement="ngModel" [ngClass]="{ 'is-invalid': f.submitted && dateOfCommencement.invalid }" required>
+                            <mat-datepicker-toggle matSuffix [for]="pickertwo"></mat-datepicker-toggle>
+                            <mat-datepicker #pickertwo></mat-datepicker>
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="!dateOfCommencement.valid && dateOfCommencement.touched">
+                            Please Enter Commencement Date!
+                        </div>
+                    </div>
+
+
+                    <div class="col s4 control-field">
+                        <!-- <mat-form-field class="example-full-width cs-input">
+                            <input input matInput type="date" placeholder="Date Of Birth" name="dateOfBirth" [(ngModel)]="dateArray.dateOfBirth" #dateOfBirth="ngModel" [ngClass]="{ 'is-invalid': f.submitted && dateOfBirth.invalid }" required>
+                        </mat-form-field> -->
+                        
+                        <mat-form-field class="cs-input">
+                            <input matInput [matDatepicker]="picker" placeholder="Date Of Birth" name="dateOfBirth" [(ngModel)]="dateArray.dateOfBirth" #dateOfBirth="ngModel" [ngClass]="{ 'is-invalid': f.submitted && dateOfBirth.invalid }" required>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="!dateOfBirth.valid && dateOfBirth.touched">
+                            Please Enter Birth Date!
+                        </div>
+                    </div>
+                    
+                    <div class="col s4 control-field">
+                        <!-- <mat-form-field class="example-full-width cs-input">
+                            <input input matInput type="date" placeholder="Date Of Marriage" name="dateOfMarriage"  [(ngModel)]="dateArray.dateOfMarriage" #dateOfMarriage="ngModel" [ngClass]="{ 'is-invalid': f.submitted && dateOfMarriage.invalid }" required>
+                        </mat-form-field> -->
+                        
+                        <mat-form-field class="cs-input">
+                            <input matInput [matDatepicker]="pickerone" placeholder="Date Of Marriage" name="dateOfMarriage"  [(ngModel)]="dateArray.dateOfMarriage" #dateOfMarriage="ngModel" [ngClass]="{ 'is-invalid': f.submitted && dateOfMarriage.invalid }" required>
+                            <mat-datepicker-toggle matSuffix [for]="pickerone"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerone></mat-datepicker>
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="!dateOfMarriage.valid && dateOfMarriage.touched">
+                            Please Enter Marriage Date!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="networkUserDetail.type=='bank'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update Bank Details</p>
+            <div class=" from-fields">
+                <div class="row">
+                    <div class="col s4 control-field">
+                        <mat-form-field class="example-full-width cs-input">
+                            <input matInput placeholder="Bank Name" name="bankName" value="bankName" [(ngModel)]="networkUserDetail.bankName" #bankName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && bankName.invalid }" required>
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="!bankName.valid && bankName.touched">
+                            Please Enter Bank Name.
+                        </div>
+                    </div>
+                    <div class="col s4 control-field">
+                        <mat-form-field class="example-full-width cs-input">
+                            <input matInput placeholder="Account Number" name="accountNumber" value="accountNumber"  minlength="10" maxlength="14" min="0" [(ngModel)]="networkUserDetail.accountNumber" #accountNumber="ngModel" [ngClass]="{ 'is-invalid': f.submitted && accountNumber.invalid }" required>
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="!accountNumber.valid && accountNumber.touched">
+                            Please Enter Account Number.
+                        </div>
+                    </div>
+                    <div class="col s4 control-field">
+                        <mat-form-field class="example-full-width cs-input">
+                            <input matInput placeholder="IFSC Code" name="ifscCode" value="ifscCode" [(ngModel)]="networkUserDetail.ifscCode" minlength="11" maxlength="11" #ifscCode="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ifscCode.invalid }" required>
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="!ifscCode.valid && ifscCode.touched">
+                            Please Enter IFSC Code.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="networkUserDetail.type=='gst'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update GST</p>
+            <div class=" from-fields">
+                <div class="control-field">
+                    <mat-form-field class="example-full-width cs-input">
+                        <input matInput placeholder="GST" name="gst" value="gst" [(ngModel)]="networkUserDetail.gst" #gst="ngModel" minlength="15" maxlength="15" min="0" [ngClass]="{ 'is-invalid': f.submitted && gst.invalid }" required>
+                    </mat-form-field>
+                    <div class="alert alert-danger" *ngIf="!gst.valid && gst.touched">
+                        Please Enter 15 Digit GST
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="networkUserDetail.type=='pan'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update PAN</p>
+            <div class=" from-fields">
+                <div class="control-field">
+                    <mat-form-field class="example-full-width cs-input">
+                        <input matInput placeholder="PAN" name="pan" value="pan" [(ngModel)]="networkUserDetail.pan" #pan="ngModel" minlength="10" maxlength="10" min="0" [ngClass]="{ 'is-invalid': f.submitted && pan.invalid }" required>
+                    </mat-form-field>
+                    <div class="alert alert-danger" *ngIf="!pan.valid && pan.touched">
+                        Please Enter 10 Digit Valid PAN....
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="networkUserDetail.type=='mobile'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update Mobile</p>
+            <div class=" from-fields">
+                <div class="control-field">
+                    <mat-form-field class="example-full-width cs-input">
+                        <input matInput type="text"  maxlength="10"  placeholder="Mobile" name="mobile"   value="mobile" [(ngModel)]="networkUserDetail.mobile" minlength="10" maxlength="10" min="0" #mobile="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mobile.invalid }" (keypress)="MobileNumber($event)" required>
+                    </mat-form-field>
+                    <div class="alert alert-danger" *ngIf="!mobile.valid && mobile.touched">
+                        Please Enter Valid Mobile
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="networkUserDetail.type=='taskremarks'" mat-dialog-content style="overflow: hidden;">
+                <p class="heading">Update Remark</p>
+                <div class=" from-fields">
+                    <div class="control-field">
+                        <mat-form-field class="example-full-width cs-input">
+                            <input matInput placeholder="Remark" name="remarks" value="remarks" [(ngModel)]="networkUserDetail.remarks" #remarks="ngModel" [ngClass]="{ 'is-invalid': f.submitted && remarks.invalid }" required>
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="!remarks.valid && remarks.touched">
+                            Please Enter remarks !
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div *ngIf="networkUserDetail.type=='landline'" mat-dialog-content style="overflow: hidden;">
+                <p class="heading">Update Landline</p>
+                <div class=" from-fields">
+                    <div class="control-field">
+                        <mat-form-field class="example-full-width cs-input">
+                            <input matInput type="text"  maxlength="10"  placeholder="Landline" name="landline"   value="landline" [(ngModel)]="networkUserDetail.landline"  minlength="6" maxlength="13" #landline="ngModel" [ngClass]="{ 'is-invalid': f.submitted && landline.invalid }" required>
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="landline.invalid && landline.touched">
+                                Landline is must be atleast 6 digit
+                            </div>
+                            <div class="alert alert-danger" *ngIf="landline.invalid && landline.errors.required">
+                                    Landline is required
+                            </div>
+                    </div>
+                </div>
+       </div>
+        
+        <div *ngIf="networkUserDetail.type=='nameOfApplicant'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update Name Of Applicant</p>
+            <div class=" from-fields">
+                <div class="control-field">
+                    <mat-form-field class="example-full-width cs-input">
+                        <input matInput type="text" placeholder="Name Of Applicant" name="nameOfApplicant"   value="nameOfApplicant" [(ngModel)]="networkUserDetail.nameOfApplicant" #nameOfApplicant="ngModel" [ngClass]="{ 'is-invalid': f.submitted && nameOfApplicant.invalid }" required>
+                    </mat-form-field>
+                    <div class="alert alert-danger" *ngIf="!nameOfApplicant.valid && nameOfApplicant.touched">
+                        Please Enter Name Of Applicant.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="networkUserDetail.type=='addlimit'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Add Target</p>
+            <div class=" from-fields">
+                <div class="row">
+                    <div class="col s6 control-field">
+                        <mat-form-field class="cs-input">
+                            <mat-select placeholder="Select year" name="financialYear" id="financialYear" [(ngModel)]="networkUserDetail.financialYear" #financialYear="ngModel" [ngClass]="{ 'is-invalid': f.submitted && financialYear.invalid }" required>
+                                <mat-option value="2019-2020"  >2019-2020</mat-option>
+                                <mat-option value="2020-2021"  >2020-2021</mat-option>
+                                <mat-option value="2021-2022"  >2021-2022</mat-option>
+                                <mat-option value="2022-2023"  >2022-2023</mat-option>
+                                <mat-option value="2023-2024"  >2023-2024</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-error *ngIf="f.submitted && financialYear.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="financialYear.errors.required">Financial Year is required</mat-error>
+                        </mat-error>
+                    </div>
+                    
+                    <div class="col s6 control-field">
+                        <mat-form-field class="example-full-width cs-input">
+                            <input matInput type="text" placeholder="Target" name="targetLimit"   value="targetLimit" [(ngModel)]="networkUserDetail.targetLimit" #targetLimit="ngModel" [ngClass]="{ 'is-invalid': f.submitted && targetLimit.invalid }" required>
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="!targetLimit.valid && targetLimit.touched">
+                            Please Enter Target....
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="networkUserDetail.type=='editlimit'" mat-dialog-content style="overflow: hidden;">
+            <p class="heading">Update Target</p>
+            <div class=" from-fields">
+                <div class="row">
+                    <div class="col s6 control-field">
+                        <mat-form-field class="example-full-width cs-input">
+                            <input matInput type="text" placeholder="Financial Year" name="financialYear"  readonly value="financialYear" [(ngModel)]="networkUserDetail.financialYear" #financialYear="ngModel" [ngClass]="{ 'is-invalid': f.submitted && financialYear.invalid }" required>
+                        </mat-form-field>
+                        <mat-error *ngIf="f.submitted && financialYear.invalid" class="invalid-feedback">
+                            <mat-error *ngIf="financialYear.errors.required">Financial Year is required</mat-error>
+                        </mat-error>
+                    </div>
+                    <div class="col s6 control-field">
+                        <mat-form-field class="example-full-width cs-input">
+                            <input matInput type="text" placeholder="Target" name="targetLimit"   value="targetLimit" [(ngModel)]="networkUserDetail.targetLimit" #targetLimit="ngModel" [ngClass]="{ 'is-invalid': f.submitted && targetLimit.invalid }" required>
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="!targetLimit.valid && targetLimit.touched">
+                            Please Enter Target!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="data.type=='assign'" mat-dialog-content>
+            <p class="heading">Update Sales</p>
+            <mat-form-field class="cs-input">
+                <mat-select placeholder="Select Sales" name="sales" [(ngModel)]="data.sales" multiple>
+                    <mat-option *ngFor='let sales of saleslist' value="{{sales.userId}}" >{{sales.userName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div> 
+
+        <div *ngIf="data.type=='source'" mat-dialog-content>
+            <p class="heading">Update Source</p>
+            <mat-form-field class="cs-input">
+                <mat-select placeholder="Source" matNativeControl name="source" id="source" #source="ngModel" [(ngModel)]="networkUserDetail.source"  [ngClass]="{'has-error' : source.invalid }">
+                    <mat-option [value]="" disabled>Select Source</mat-option>
+                    <mat-option [value]="1">SOCIAL</mat-option>
+                    <mat-option [value]="5">CALL</mat-option>
+                    <mat-option [value]="2">DIRECT</mat-option>
+                    <mat-option [value]="3">WALK-IN</mat-option>
+                    <mat-option [value]="4">REFERRAL</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div> 
+        
+        <div *ngIf="data.type=='contact'" mat-dialog-content>
+            <p class="heading">Update Contact</p>
+            <div class="from-fields">
+                <form #p="ngForm" (ngSubmit)="p.valid && addContactPerson()">
+                    <div class="row">
+                        <div class="col s4 ">
+                            <div class="control-field">
+                                <mat-form-field class="cs-input">
+                                    <input matInput placeholder="Name" name="name" #name="ngModel" [(ngModel)]="contact_person.name" (keypress)="namecheck($event)" >
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col s4">
+                            <div class="control-field">
+                                <mat-form-field class="cs-input">
+                                    <input matInput placeholder="Mobile No. 1" name="mobile1" #mobile1="ngModel" [(ngModel)]="contact_person.mobile1" minlength="10" maxlength="10" min="0" (keypress)="MobileNumber($event)">
+                                </mat-form-field>
+                                <div class="alert alert-danger" *ngIf="!mobile1.valid && mobile1.touched">
+                                    Contact no is Invalid...
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s4 ">
+                            <div class="control-field pr80">
+                                <mat-form-field class="cs-input">
+                                    <input matInput placeholder="Mobile No. 2"  name="mobile2" #mobile2="ngModel" [(ngModel)]="contact_person.mobile2" minlength="10" maxlength="10" min="0" (keypress)="MobileNumber($event)" >
+                                </mat-form-field>
+                                <div class="plus-btn">
+                                    <button mat-raised-button color="accent">
+                                        <i class="material-icons" >add</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row mt15">
+                <div class="col s12 padding0">
+                    <div class="cs-table left-right-20">
+                        <div class="table-head">
+                            <table>
+                                <tr>
+                                    <th>Name</th>
+                                    <th class="w200">Mobile No. 1</th>
+                                    <th class="w200 bdr0">Mobile No. 2</th>
+                                    <th class="w130">&nbsp;</th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="table-container">
+                            <div class="table-content">
+                                <table>
+                                    <tr *ngFor="let value of tmp_list;let index=index">
+                                        <td>{{value.name}}</td>
+                                        <td class="w200">{{value.mobile1}}</td>
+                                        <td class="w200">{{value.mobile2}}</td>
+                                        <td class="w130">
+                                            <a mat-button class="del-btn" (click)="removeContact(index)">Delete</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div mat-dialog-actions>
+            <button mat-raised-button  color="warn" [mat-dialog-close]="false">Cancel</button>
+            <button mat-raised-button color="accent">Save</button>
+        </div>
+    </form>
+</div>

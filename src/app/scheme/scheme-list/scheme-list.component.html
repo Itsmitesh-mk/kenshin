@@ -1,0 +1,99 @@
+<div class="main-container">
+  <div class="cs-loader" *ngIf="loader"> 
+    <img src="assets/img/loader.png" class="rotate">
+  </div>
+  <div class="middle-container pb15">
+    <div class="page-heading">
+      <img src="assets/img/scheme.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Scheme</h2>
+        <p>Number of Scheme : <span>{{schemeList.length}}</span></p>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="container-outer pt0">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+            <div class="table-head">
+              <table class="sno-border"> 
+                <tr>
+                  <th class="w30">&nbsp;</th>
+                  <th class="w100">Date</th>
+                  <th class="w170">Tittle</th>
+                  <th class="w110">VALID FROM</th>
+                  <th class="w110">VALIT TILL</th>
+                  <th class="w170">Total Prodcut Code</th>
+                  <th>Description</th>
+                  <th class="w80">STATUS</th>
+                  
+                </tr>
+              </table>
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <div class="table-content">
+              <table class="sno-border">
+                
+                <tr *ngFor="let scheme of schemeList ; let i=index">
+                  <td class="w30">{{i+1}}</td>
+                  <td class="w100">{{scheme.createdOn | date:'EEEE, MMMM d, y'}}</td>
+                  <td class="w170"><a class="link-btn" mat-button routerLink="/scheme-detail/{{scheme.schemeCode}}" routerLinkActive="active">{{scheme.title}}</a></td>
+                  <td class="w110">{{scheme.validFrom | date:' MMMM d, y'}}</td>
+                  <td class="w110">{{scheme.validTill | date:' MMMM d, y'}}</td>
+                  <td class="w170"><a class="link-btn" mat-button routerLink="/scheme-detail/{{scheme.schemeCode}}" routerLinkActive="active">{{scheme.schemeProductDetails.length}}</a>
+                  </td>
+                  <td [innerHTML]="scheme.schemeDescription">{{scheme.schemeDescription}}
+                    <div class="action-btns">
+                      <!-- <a mat-button class="edit"><i class="material-icons">create</i> view</a> -->
+                      <button mat-button class="delete" (click)="removeScheme(scheme.schemeCode)" ><i class="material-icons">delete_sweep</i> Delete</button>
+                    </div>
+                  </td>
+                  <td class="w80">
+                    <mat-slide-toggle class="switch-toggle" color="accent" [checked]="scheme.isActive==1" (change)="isactive(scheme.schemeCode,scheme.isActive)"></mat-slide-toggle>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div *ngIf="div" class="data-not-available" >
+    <div class="outer">
+      <div class="iinear">
+        <div class="figure" matRipple>
+          <div class="header">
+            <img src="assets/img/data-not-available-header.svg" alt="">
+          </div>
+          <div class="description">
+            
+            <div class="img">
+              <i class="material-icons">error_outline</i>
+            </div>
+            
+            <div class="cs-heading">
+              <h2>Data Not Available</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div *ngIf="userType==1" class="fixed-multibtn-botm">
+  <ul>
+    <li><a  matTooltip="Add New" matRipple routerLink="/add-scheme" routerLinkActive="active"><i class="material-icons">add</i></a></li>
+  </ul>
+</div>
+<div class="h50"></div>

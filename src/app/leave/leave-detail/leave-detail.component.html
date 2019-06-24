@@ -1,0 +1,171 @@
+<div class="main-container">
+  <div class="cs-loader" *ngIf="loader"> 
+    <img src="assets/img/loader.png" class="rotate">
+  </div>
+  
+  <div class="middle-container">
+    
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/leave-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{allDetailedData.userName}}</h2>
+      </div>
+    </div>
+    <div *ngIf="userId==allDetailedData.userID"  class="left-auto">
+      <div  class="cs-btn  text-right">
+        <div class="in-btn">
+          <button mat-raised-button color="accent" routerLink="/editleave/{{allDetailedData.leaveApplicationId}}"><i class="material-icons">create</i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s7">
+          <div class="details-info padding0">
+            <div class="basic-details">
+              <div class="col s12 cs-figure padding0">
+                <h2>Basic Detail</h2>
+                <ul>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Created Date</span>
+                        <p>{{allDetailedData.applicationDate | date: 'dd-MM-yyyy' }}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                      <div class="outer">
+                        <div class="inner">
+                          <span>Leave Type</span>
+                          <p>{{allDetailedData.leaveTypeName}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Start Date</span>
+                        <p>{{allDetailedData.startDate | date: 'dd-MM-yyyy'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>End Date</span>
+                        <p>{{allDetailedData.endDate | date: 'dd-MM-yyyy'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <ul class="mt15">
+                  <li style="border-left: 1px solid #B29D9D; min-height: 100px;">
+                    <span>Remark</span>
+                    <p >{{allDetailedData.remarks}}</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+          <div class="col s5" *ngIf="userRole > 5" >
+            <div class="details-info padding0">
+              <div class="basic-details">
+                <div class="cs-figure">
+                  <h2>Status </h2>
+                  <ul>
+                    <li style="border: 1px solid #B29D9D;">
+                      <div class="outer">
+                        <div class="inner">
+                          <span>Leave Status</span>
+                          <p *ngIf="allDetailedData.approvalStatus==1" class="status pending">Approved</p>
+                          <p *ngIf="allDetailedData.approvalStatus==0" class="status pending">Pending</p>
+                          <p *ngIf="allDetailedData.approvalStatus==2" class="status pending">Reject</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <ul class="mt15" *ngIf="allDetailedData.approvalStatus==2">
+                      <li style="border: 1px solid #B29D9D; min-height: 100px;">
+                        <div class="outer">
+                          <div class="inner">
+                            <span>Reason</span>
+                            <p>{{allDetailedData.reason}}</p>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                </div>
+                
+                
+                
+              </div>
+            </div>
+          </div>
+          <div *ngIf="userId!=allDetailedData.userID" class="col s5">
+            <div class="details-info padding0">
+              <div class="basic-details">
+                <div class="cs-figure">
+                  <h2 class="pb0">Update Status </h2>
+                  
+                </div>
+                
+                <form  name="form"   #f=ngForm   (ngSubmit)=" f.form.valid && update_status(allDetailedData.approvalStatus,allDetailedData.leaveApplicationId)" novalidate>
+                  <div class="from-fields">
+                    <div class="row">
+                      <div class="col s12 padding0">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input infix-bodr">
+                            
+                            <mat-select placeholder="Select Status"  name="approvalStatus" [(ngModel)]="allDetailedData.approvalStatus">
+                              <mat-option [value]=1>Approved</mat-option>
+                              <mat-option [value]=0>Pending</mat-option>
+                              <mat-option [value]=2>Reject</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div *ngIf="allDetailedData.approvalStatus == 2 " class="col s12 padding0">
+                        <div class="control-field">
+                          <mat-form-field   class="cs-input infix-bodr8">
+                            <!-- -->
+                            <textarea    matInput placeholder="Reason" #reason="ngModel" class="h70" name="reason" [(ngModel)]="form.reason" required  ></textarea>
+                          </mat-form-field>
+
+                          <mat-error *ngIf="f.submitted && reason.invalid" class="invalid-feedback">
+                              <mat-error *ngIf="reason.errors.required">Reason of reject is required</mat-error>
+                            </mat-error>
+                        </div>
+                      </div>
+                      
+                      <div class="col s12 padding0">
+                        <div  class="cs-btn fixedd mt15 text-right">
+                          <div class="in-btn">
+                            <button mat-raised-button color="accent" mat-stroked-button [disabled]="!allDetailedData.approvalStatus"  >Save</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div class="h50"></div>
+  
+  

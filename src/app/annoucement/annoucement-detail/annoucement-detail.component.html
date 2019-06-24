@@ -1,0 +1,285 @@
+<div class="main-container">
+
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  
+    <div class="middle-container">
+      <div class="page-heading">
+        <img src="assets/img/leads_icon.svg" class="h-icon">
+        <div class="heading-text">
+          <h2>Announcement / Notice</h2>
+          <p>Create New Notice For all Users</p>
+        </div>
+      </div>
+    </div>
+    
+    <form name="form" (ngSubmit)="f.form.valid && (data.isSMSChecked || data.isEmailChecked) &&  salesNetworkSelectedData.length > 0 && saveAnnouncementDetail()"  #f="ngForm" novalidate>
+
+    <div class="container-outer">
+      <!-- <app-master-tab></app-master-tab>
+      <div class="container tab-container" > -->
+        <div class="row">
+          <div class="col s12">
+            <div class="sprate-box">
+              <div class="cs-heading">
+                <h2>ANNOUNCEMENT / NOTICE </h2>
+                
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              
+              <div class="row">
+                  <div class="col s12 pr0 pl0">
+                    <div class="user-type">
+                      <section class="example-section">
+
+                        <span *ngFor="let list of userRolesArr">
+                          <mat-checkbox *ngIf="list.userTypeId==2" [(ngModel)]="list.checked" (change)="roleSelectedChange(list)" name="{{list.roleName}}" class="example-margin" color="accent">{{list.roleName}}</mat-checkbox>
+                       </span>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+            
+            
+                <div class="row mt15">
+                  <div class="col s4">
+                    <div class="territory-info">
+
+                      <div class="head" [ngClass]="{'active':active.state==true}">
+                        <h2>STATE</h2>
+
+                        <!-- <mat-checkbox class="fix-check" [(ngModel)]="checkState">&nbsp;</mat-checkbox> -->
+                        <i class="material-icons search-icon" (click)="toggleterritory('state','open')"  matRipple>search</i>
+
+                        <input type="text" [(ngModel)]="data.stateSearch" name="stateSearch" placeholder="search..." class="fix-search">
+                        <i class="material-icons close-icon" (click)="data.stateSearch='';toggleterritory('state','close')" matRipple>clear</i>
+                      </div>
+
+                      <div class="cs-checkbox">
+
+                        <div class="checkbox-outer">
+                          <section class="checkbox-inner">
+                            <ng-container *ngFor="let state of states | myfilter:{src: 'state', search: data.stateSearch}; let i=index">    
+                              <mat-checkbox class="check-list"  (change)="getDistrictList(state,stateval[i])"  [(ngModel)]="stateval[i]"  name="stateVal"  value="{{state}}">{{state}}</mat-checkbox>
+                            </ng-container>
+                          </section>
+                        </div>
+
+                        <!-- <div class="botm-pdr">
+                          <div class="botm-content" [ngClass]="{'active':active.addone==true}">
+                            <a mat-button (click)="toggleterritory('addone','open')">add new</a>
+                            <input type="text" placeholder="Enter state" class="botm-input" name="state" [(ngModel)]="territory_form.state" required>
+                            <a class="add-input" matRipple >save</a>
+                          </div>
+                        </div> -->
+
+                      </div>
+
+                    </div>
+                  </div>
+                  
+                  <div class="col s4">
+                    <div class="territory-info">
+
+                      <div class="head" [ngClass]="{'active':active.district==true}">
+                        <h2>DISTRICTS</h2>
+
+                        <!-- <mat-checkbox class="fix-check"  [(ngModel)]="checkDistrict">&nbsp;</mat-checkbox> -->
+
+                        <i class="material-icons search-icon" (click)="toggleterritory('district','open')"  matRipple>search</i>
+
+                        <input type="text" [(ngModel)]="data.districtSearch" name="districtSearch"  placeholder="search..." class="fix-search">
+
+                        <i class="material-icons close-icon" (click)="data.districtSearch='';toggleterritory('district','close')" matRipple>clear</i>
+                      </div>
+
+                      <div class="cs-checkbox">
+
+                        <div class="checkbox-outer">
+                          <section class="checkbox-inner">
+                              <ng-container *ngFor= "let dist of districts">
+                                  <div style="text-align:center;padding: 5px;background:#eee;color: #111;">{{dist.stateName}}</div>   
+                                  
+                                  <!-- (change)="getAreaList(dist.stateName,distr.districtName,distr.checked)" -->
+
+                                  <mat-checkbox class="check-list" *ngFor= "let distr of dist.distrcits | myfilter:{src: 'district', search: data.districtSearch};let j=index" [(ngModel)]="distr.checked" name="district"  value="{{distr.districtName}}">{{distr.districtName}}</mat-checkbox>                                       
+                                </ng-container>
+                          </section>
+                        </div>
+                        
+                        <!-- <div class="botm-pdr" >
+                          <div class="botm-content" [ngClass]="{'active':active.addtwo==true}">
+                            <a mat-button (click)="toggleterritory('addtwo','open')">add new</a>
+                            <input type="text" placeholder="Enter districts" name="districts"  class="botm-input" required>
+                            <a class="add-input" matRipple >save</a>
+                          </div>
+                        </div> -->
+
+                      </div>
+
+                    </div>
+                  </div> 
+                  
+                  
+                  <div class="col s4">
+                    <div class="territory-info">
+
+                      <div class="head" [ngClass]="{'active':active.pincode==true}">
+                        <h2>Sales Network</h2>
+
+                        <!-- <mat-checkbox class="fix-check">&nbsp;</mat-checkbox>
+                        <i class="material-icons search-icon" (click)="toggleterritory('pincode','open')"  matRipple>search</i>
+                        <input type="text" placeholder="search..." class="fix-search">
+                        <i class="material-icons close-icon" (click)="toggleterritory('pincode','close')" matRipple>clear</i> -->
+
+                      </div>
+
+                      <div class="cs-checkbox">
+
+                        <div class="checkbox-outer">
+                          <section class="checkbox-inner">
+
+                              <ng-container >
+                                  <ng-container>
+
+                                  <span *ngFor="let list of salesNetworkData">
+
+                                     <div style="text-align:center;padding: 5px;background:#eee;color: #111;">{{list.roleName}}</div>
+
+                                     <mat-checkbox [(ngModel)]="row.checked" *ngFor="let row of list.roleDataArr" value="{{row.userId}}" (change) = "saveNetworkData(row.userId, list.roleId, row.userName, row.checked)" name="{{row.userName}}"  class="check-list">{{row.userName}}</mat-checkbox>
+
+                                  </span>
+
+                                  </ng-container>
+                              </ng-container>
+
+                           <!-- <ng-container *ngFor="let city of cities;let i=index;" >
+                              <ng-container *ngFor="let ct of city.citiesnpins;let j=index;"><div style="text-align:center;padding: 5px;background:#eee;color: #111;">{{ct.cityName}}</div>
+                                <mat-checkbox class="check-list" *ngFor="let area of ct.areas;let i=index;">{{area.pincode}}</mat-checkbox>
+                              </ng-container>
+                          </ng-container> -->
+
+                          </section>
+                        </div>
+
+                        <!-- <div class="botm-pdr">
+                          <div class="botm-content" [ngClass]="{'active':active.addthree==true}"> -->
+                            <!-- <a mat-button (click)="toggleterritory('addthree','open')">add new</a>
+                            <input type="text" placeholder="Enter Pincode" name="pincode" [(ngModel)]="territory_form.pincode" class="botm-input" required>
+                            <a class="add-input" matRipple >save</a> -->
+      
+                              <!-- <mat-form-field class="botm-select">
+                                <select matNativeControl required>
+                                  <option value="volvo">Faridabad</option>
+                                  <option value="saab">Gurugram</option>
+                                  <option value="mercedes">Rewari</option>
+                                  <option value="audi">Panipat</option>
+                                </select>
+                              </mat-form-field>
+                          </div>
+                        </div> -->
+
+                      </div>
+
+                    </div>
+                  </div> 
+                </div>
+
+                <mat-error *ngIf="f.submitted && !salesNetworkSelectedData.length" class="invalid-feedback">
+                    <mat-error *ngIf="f.submitted && !salesNetworkSelectedData.length">Choose Sales Network!</mat-error>
+                </mat-error>
+              
+              <!-- <div class="row">
+                <div class="col s12">
+                  <div class="editor"> -->
+                    <!-- <img src="assets/img/editor.jpg" class="wp100 mt15"> -->
+
+                    <!-- <mat-form-field class="cs-input wp100 h-input">
+                        <textarea matInput placeholder="Description" required></textarea>
+                    </mat-form-field>
+
+                  </div>
+                </div>
+              </div> -->
+
+              <div class="row">
+                <div class="col s12">
+                  <div class="from-fields">
+                 <div class="control-field">
+                  <mat-form-field class="cs-input wp100 h-input">
+                      <textarea matInput [(ngModel)]="data.subject" placeholder="Subject" name="subject" #subject="ngModel" [ngClass]="{ 'is-invalid': f.submitted && subject.invalid }" required></textarea>
+                  </mat-form-field>
+
+                  <mat-error *ngIf="f.submitted && subject.invalid" class="invalid-feedback">
+                      <mat-error *ngIf="subject.errors.required">Subject required</mat-error>
+                    </mat-error>
+                  <!-- <mat-error *ngIf="f.submitted && description.invalid" class="invalid-feedback">
+                      <mat-error *ngIf="description.errors.required">Description is required</mat-error>
+                    </mat-error> -->
+                  </div>
+                </div>
+                </div>
+              </div>
+
+
+              <div class="row">
+                  <div class="col s12">
+                    <div class="from-fields">
+                   <div class="control-field">
+                    <mat-form-field class="cs-input wp100 h-input">
+                        <textarea matInput [(ngModel)]="data.message" placeholder="Description" name="message" #message="ngModel" [ngClass]="{ 'is-invalid': f.submitted && message.invalid }" required></textarea>
+                    </mat-form-field>
+                      <mat-error *ngIf="f.submitted && message.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="message.errors.required">Description required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              
+              <mat-divider class="left-right-15 mt10 mb10"></mat-divider>
+              <div class="cs-heading">
+                <h2>ACTION</h2>
+              </div>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              
+              <div class="row">
+                <div class="col s12">
+                  <div class="select-one">
+                    <section class="check-list">
+                      <mat-checkbox [(ngModel)]="data.isSMSChecked" name="smsChecked" class="select-check">SMS</mat-checkbox>
+                      <mat-checkbox [(ngModel)]="data.isEmailChecked" 
+                      name="emailChecked" class="select-check">EMAIL</mat-checkbox>
+                    </section>
+
+                    <mat-error *ngIf="f.submitted && !data.isSMSChecked && !data.isEmailChecked" class="invalid-feedback">
+                        <mat-error *ngIf="f.submitted && !data.isSMSChecked && !data.isEmailChecked">Choose atleast one Option!</mat-error>
+                    </mat-error>
+
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          
+          <div class="col s12">
+            <div class="cs-btn fixedd mt32 text-right">
+              <div class="in-btn">
+                <button type="submit" mat-raised-button color="accent">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- </div> -->
+    </div>
+
+   </form>
+  </div>
+  
+  <div class="h50"></div>

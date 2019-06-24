@@ -1,0 +1,133 @@
+<div class="edit-modal" >
+  <p class="heading">Update Travel</p>
+  <div mat-dialog-content style="overflow-y: inherit; overflow-x: hidden; overflow: inherit;">
+    <div class="from-fields">
+      <div class="row mt15">
+        <div class="col s4">
+          <div class="multi-all-select">
+            <label>State</label>
+            <ng-multiselect-dropdown
+            [placeholder]="'Select State'"
+            [data]="travelStateList"
+            [(ngModel)]="planData.state"
+            [settings]="dropdownSettings"
+            (onSelect)="getDistrictList($event)"
+           
+            >
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div class="col s4">
+        <div class="multi-all-select">
+          <label>District</label>
+          <ng-multiselect-dropdown
+          [placeholder]="'Select District'"
+          [data]="travelDistrictList"
+          [(ngModel)]="planData.districtName"
+          [settings]="dropdownSettings1"
+          (onSelect)="getCityList($event)"
+         
+          >
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+    <div class="col s4">
+      <div class="control-field pr80">
+        <div class="multi-all-select">
+          <label>City</label>
+          <ng-multiselect-dropdown
+          [placeholder]="'Select City'"
+          [data]="travelCityList"
+          [(ngModel)]="planData.cityName"
+          [settings]="dropdownSettings2"
+          (onSelect)="onItemSelect(planData.cityName)"
+         
+          >
+        </ng-multiselect-dropdown>
+      </div>
+      <!-- <div class="plus-btn">
+        <button type="button" mat-raised-button color="accent">
+          <i class="material-icons">add</i>
+        </button>
+      </div> -->
+    </div>
+  </div>
+  <div class="col s12">
+    <div class="select-one pt10">
+      <span>Do you want any sales activity ?</span>
+      <mat-radio-group style="display: flex;"  name="isSalesActivity" #isSalesActivity="ngModel" [(ngModel)]="sendData.isSalesActivity" >
+        <mat-radio-button [value]=true >Yes</mat-radio-button>
+        <mat-radio-button [value]=false >No</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+  <div class="row" *ngIf="sendData.isSalesActivity==true">
+    <div class="col s6">
+      <div class="control-field">
+        <mat-form-field class="cs-input infix-bodr">
+          <mat-select placeholder="Select" name="activityType" #activityType="ngModel" [(ngModel)]="sendData.activityType">
+            <mat-option [value]=1>Mechanic get together</mat-option>
+            <mat-option [value]=2>Retailer get together</mat-option>
+            <mat-option [value]=3>van Campaign</mat-option>
+            <mat-option [value]=4>Stall Campaign</mat-option>
+            <mat-option [value]=5>Exhibition Participation</mat-option>
+            <mat-option [value]=6>Signboard</mat-option>
+            <mat-option [value]=7>Wall/Shop Painting</mat-option>
+            <mat-option [value]=8>GiveAways</mat-option>
+            <mat-option [value]=9>Printing Of Lesafelts,banners, posters etc.</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="col s6">
+      <div class="control-field">
+        <mat-form-field class="cs-input infix-bodr">
+          <input matInput type="number" placeholder="Budget" name="salesBudget" #salesBudget="ngModel" [(ngModel)]="sendData.salesBudget" >
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- <div class="row mt15">
+  <div class="col s12 padding0">
+    <div class="cs-table left-right-20">
+      <div class="table-head">
+        <table>
+          <tr>
+            <th>State</th>
+            <th class="w220">District</th>
+            <th class="w220 ">City</th>
+            <th class="w130 text-center">Action</th>
+          </tr>
+        </table>
+      </div>
+      <div class="table-container">
+        <div class="table-content">
+          <table>
+            <tr>
+              <td>Haryana</td>
+              <td class="w220">Faridabad</td>
+              <td class="w220">Faridabad</td>
+              <td class="w130">
+                <div class="action-btns default-action">
+                  <a mat-button class="delete"  (click)="removePlan(i,indx)"><i class="material-icons">delete_sweep</i>Delete</a>
+                </div>     
+                <a mat-button class="del-btn" (click)="removePlan(i,indx)">Delete</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="warn"  [mat-dialog-close]="false" class="mr15">Cancel</button>
+  <div >
+    <!-- [disabled]="!travelData.details||!travelData.actual||!travelData.reasonForDeviation" (click)="update_travel()" -->
+    <button mat-raised-button  [mat-dialog-close]="true" color="accent" (click)="update_travel()">Save</button>
+  </div>
+</div>
+</div>

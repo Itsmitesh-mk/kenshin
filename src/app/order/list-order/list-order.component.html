@@ -1,0 +1,74 @@
+
+<div class="edit-modal">
+        <div class="cs-loader" *ngIf="loader"> 
+                <img src="assets/img/loader.png" class="rotate">
+              </div>
+            
+<mat-dialog-content class="mat-typography pl15 pr15" style="overflow-x: hidden !important; position: relative;">
+     <p class="heading">PRODUCT INFORMATION</p>
+     <!-- <div class="top-search right-serach" style="top: 25px;">
+            <input type="text" placeholder="SEARCH. . ." style="background: #f8f8f8;">
+            <i class="material-icons">search</i>
+          </div> -->
+    <div class="col s12 padding0">
+        <div class="cs-table left-right-15">
+            <div class="table-head">
+                <table>
+                    <tr>
+                        <th class="w110">Part Number</th>
+                        <th>Product Model</th>
+                        <th class="w130">OEM Code</th>
+                        <th class="w80">Min QTY</th>
+                        <th class="w70">QTY</th>
+                        <th class="w80 text-right">Rate</th>
+                        <th class="w120 text-right">Price Support</th>
+                        <th class="w100 text-right">Item Value</th>
+                        <th class="w100 text-right">Amount</th>
+                        <th class="w60">GST %</th>
+                        <th *ngIf="div" class="w170">Action</th>
+                        <th *ngIf="div==false" class="w70">Action</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="table-container pb0">
+                <div class="table-content">
+                    <table>
+                        <tr *ngFor="let product of productList;let index=index">
+                            <td class="w110">{{product.partNumber}}</td>
+                            <td>{{product.model}}</td>
+                            <td class="w130">{{product.oem}}</td>
+                            <td class="w80">{{product.moq}}</td>
+                            <td class="w70">
+                                <div class="td-input">
+                                    <input type="number" (change)="checkValidate(index)" (input)="calculateAmount(index,product.quantity)" name="quantity" #quantity="ngModel" [(ngModel)]="product.quantity" required>
+                                </div>
+                            </td>
+                            <td class="w80 text-right">&#8377; {{product.discountedListPrice}}</td>
+                            <td class="w120 text-right">&#8377; {{product.priceSupport}}</td>
+
+                            <!-- <td class="w100">
+                                <div class="td-input">
+                                    <input type="number" name="priceSupport" #priceSupport="ngModel" (input)="calculatePriceSupport(index,product.priceSupport)" [(ngModel)]="product.priceSupport" required>
+                                </div>
+                            </td> -->
+                            <td class="w100 text-right">&#8377; {{product.itemValue}}</td>
+                            <td class="w100 text-right">&#8377; {{product.amount}}</td>
+                            <td class="w60">{{product.gstPercentage}} %</td>
+                            <td *ngIf="product.edit" class="w70 text-center">
+                                <a class="action-cart" mat-button><i class="material-icons green-clr" (click)="saveproduct(index,product.productId)" >save</i></a>
+                            </td>
+                            <td *ngIf="product.edit==false" class="w70 text-center">
+                                <a class="action-cart" mat-button><i class="material-icons red-clr" (click)="remove(product.productId,index)">delete_sweep</i></a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button (click)="saveUpdate()" cdkFocusInitial color="warn">Close</button>
+</mat-dialog-actions>
+</div>

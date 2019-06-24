@@ -1,0 +1,87 @@
+<div class="edit-modal">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div mat-dialog-content>
+    
+    <p class="heading">Update Address</p>
+    <div class="from-fields">
+      
+      <div class="row">
+        <div class="col s6">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr8">
+              <mat-select placeholder="State" name="state" #state="ngModel" [(ngModel)]="sales_data.state" [ngClass]="{'has-error' : state.invalid } " required>
+                <mat-option (click)="get_district()"  *ngFor="let state of statelist" value="{{state}}">{{state}}</mat-option>
+                <div class="alert alert-danger" *ngIf="!state.valid && state.touched">
+                  State is required....
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col s6">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr8">                
+              <mat-select placeholder="District"   name="district" #district="ngModel" [(ngModel)]="sales_data.district" [ngClass]="{'has-error' : district.invalid } " >
+                <mat-option (click)="get_city()"  *ngFor="let district of district1" value="{{district.districtName}}">{{district.districtName}}</mat-option>
+                <div class="alert alert-danger" *ngIf="!district.valid && district.touched">
+                  District is required....
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col s6">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr8">
+              <mat-select placeholder="City"  name="city" #city="ngModel" [(ngModel)]="sales_data.city" [ngClass]="{'has-error' : city.invalid } " >
+                <mat-option  (click)= "get_pincode()" *ngFor="let city of cities" value="{{city.cityName}}">{{city.cityName}}</mat-option>
+                <div class="alert alert-danger" *ngIf="!city.valid && city.touched">
+                  City is required....
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col s6">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr8">
+              <mat-select placeholder="Pin"  name="pin" #pin="ngModel" [(ngModel)]="sales_data.pin"  [ngClass]="{'has-error' : pin.invalid } " >
+                <mat-option   *ngFor="let pin of areas" value="{{pin}}">{{pin}}</mat-option>
+                <div class="alert alert-danger" *ngIf="!pin.valid && pin.touched">
+                  Pin is required....
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr8" >
+              <textarea matInput placeholder="Address" name="street" #street="ngModel" [(ngModel)]="sales_data.street" class="h90"></textarea>
+              <div class="alert alert-danger" *ngIf="!street.valid && street.touched">
+                Street is required....
+              </div>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div mat-dialog-actions>
+    <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+    <ng-container *ngIf="district.valid">
+      <button mat-raised-button color="accent" (click)="update_salesuser()">Save</button>
+    </ng-container>
+  </div>
+  
+</div>

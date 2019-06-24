@@ -1,0 +1,18 @@
+<div class="edit-modal">
+  <mat-dialog-content class="mat-typography" style="overflow: inherit;">
+      <p class="heading">PRODUCT INFORMATION</p>
+      <div class="col s12 padding0" *ngFor="let urlData of urls;let i=index">
+        <div class="cs-image">
+          <img *ngIf="data.concernStatus==0" src={{urlData}} >
+          <img *ngIf="data.concernStatus!=0"  src="{{api+urlData.documentId+'/'+'1'}}">
+          <div *ngIf="data.concernStatus==0" class="overlay">
+            <a class="del-btn" (click)="deleteimg(i)"><i class="material-icons">delete_sweep</i></a>
+          </div>
+        </div>
+      </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+      <!-- <button mat-button  >Update</button> -->
+      <button mat-raised-button color="warn"  [mat-dialog-close]="true" >Close</button>
+  </mat-dialog-actions>
+</div>

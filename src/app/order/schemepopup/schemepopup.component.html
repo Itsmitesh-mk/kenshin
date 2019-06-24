@@ -1,0 +1,22 @@
+
+<div class="edit-modal">
+    <mat-dialog-content  style="overflow-x: hidden !important;">
+      <p class="heading">Offer Description</p>
+      <div class="col s12">
+        <div class="container" >
+          <div class="row">
+            <div class="col s12 padding0">
+
+                <ul class="terms-condition mt15">
+                    <li *ngFor="let scheme of schemeList">{{scheme.offerDescription}}</li>
+                </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-raised-button color="warn"[mat-dialog-close]="false" cdkFocusInitial>Close</button>
+    </mat-dialog-actions>
+  </div>

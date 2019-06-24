@@ -1,0 +1,90 @@
+<div class="main-container" >
+    <div class="cs-loader" *ngIf="loader"> 
+        <img src="assets/img/loader.png" class="rotate">
+      </div>
+    
+
+  <div class="middle-container">
+    <div class="page-heading">
+        <img src="assets/img/payment_icon.svg" class="h-icon">
+        <div class="heading-text">
+        <!-- <div *ngIf="userRole==1" class="back-btn">
+            <a mat-button ><i  routerLink="/expense-list" routerLinkActive="active" class="material-icons">arrow_right_alt</i></a>
+          </div> -->
+          <h2>Expense List</h2>
+          <p>{{userName}}</p>
+        </div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="container-outer">
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="table-head">
+              <table class="sno-border">
+                <tr>
+                  <th  class="w30">&nbsp;</th>
+                  <th>Date</th>
+                  <th class="w200">Expense Type</th>
+                  <th class="w150">Expense Amount</th>
+                  <th class="w200">Status</th>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let expense of expenseList;let i=index">
+                    <td class="w30">{{i+1}}</td>
+                    <td><a class="link-btn" routerLink="/detail-by-date/{{expense.expenseId}}" routerLinkActive="active" mat-button>{{expense.createdOn | date :'EEEE, MMMM d, y'}}</a></td>
+                    <td *ngIf="expense.expenseType==1" class="w200">Local Conveyance</td>
+                    <td *ngIf="expense.expenseType==2" class="w200">Outstation Travel</td>
+                    <td *ngIf="expense.expenseType==3" class="w200">Sales Promotion Activity</td>
+                    <td *ngIf="expense.expenseType==4" class="w200">Misc Exp.</td>
+                    <td class="w150">{{expense.actualExpenseAmount |currency: 'INR':true}}</td>
+                    <td *ngIf="expense.status==1"  class="w200 yellow-clr">Pending</td>
+                    <td *ngIf="expense.status==2" class="w200 green-clr">Approve</td>
+                    <td *ngIf="expense.status==3" class="w200 red-clr">Reject</td>
+
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="data-not-available" *ngIf="div">
+    <div class="outer">
+        <div class="iinear">
+            <div class="figure" matRipple>
+                <div class="header">
+                    <img src="assets/img/data-not-available-header.svg" alt="">
+                </div>
+                
+                <div class="description">
+                    <div class="cs-heading">
+                        <h2>No Expense of This User</h2>
+                    </div>
+                    <div class="img">
+                            <i class="material-icons">error_outline</i>
+                    </div>
+                    <div class="psc">
+                        <p>data not available</p>
+                        <!-- <p>Tap on <a href="">ADD NEW</a> for Service Plan</p> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fixed-multibtn-botm">
+  <ul>
+    <li><a  matTooltip="Add New" routerLink="/add-expense" routerLinkActive="active" matRipple><i class="material-icons">add</i></a></li>
+  </ul>
+</div>
+</div>

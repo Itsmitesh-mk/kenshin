@@ -1,0 +1,28 @@
+<div class="edit-modal">
+  
+      <!-- <div *ngIf="loader"> 
+          <div class="cs-loader">
+              <mat-spinner class="loader"></mat-spinner> 
+          </div>
+      </div> -->
+      
+      <div  mat-dialog-content>
+          <p class="heading">A+ Cities</p>
+          <div class=" from-fields mt15">
+            <mat-chip-list>
+              <mat-chip>Mumbai</mat-chip>
+              <mat-chip>Hyderabad</mat-chip>
+              <mat-chip>Delhi</mat-chip>
+              <mat-chip>Chennai</mat-chip>
+              <mat-chip>Bangalore</mat-chip>
+              <mat-chip>Kolkata</mat-chip>
+              <mat-chip>Pune</mat-chip>
+            </mat-chip-list>
+          </div>
+      </div>
+      
+      <div mat-dialog-actions>
+          <button mat-raised-button  color="warn" [mat-dialog-close]="false">Cancel</button>
+          <!-- <button mat-raised-button color="accent">Save</button> -->
+      </div>
+</div>

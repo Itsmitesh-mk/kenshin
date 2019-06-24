@@ -1,0 +1,198 @@
+<div class="edit-modal">
+<form name="form" (ngSubmit)="f.form.valid && updateMobileEmail()"  #f="ngForm" novalidate>
+        <div *ngIf="loader"> 
+                <div class="cs-loader">
+                  <img src="assets/img/loader.png" class="rotate"> 
+                </div>
+         </div>
+
+
+
+<div *ngIf="data.type=='userName'" mat-dialog-content>
+                <p class="heading">Update User Detail</p>
+                
+                <div class="row">
+                        <div class="from-fields col s12">
+                                <div class="control-field">
+                                        <mat-form-field class="example-full-width cs-input">
+                                                <!-- <input matInput placeholder="Email" value="email" [(ngModel)]="data.email"> -->
+                                                <input matInput placeholder="Name" name="username"  [(ngModel)]="data.userName" #userName="ngModel" required>
+                                        </mat-form-field>
+                                </div>
+                                <div class="alert alert-danger" *ngIf="!data.userName">
+                                        Name Required!
+                                </div>
+                        </div>
+                </div>
+
+
+                <div class="row">
+                        <div class="from-fields col s12">
+
+                                <div class="control-field">
+                                        <mat-form-field class="cs-input infix-bodr8">
+                                                <mat-select placeholder="Role" name="role" [(ngModel)]="data.role"  #role="ngModel" required>
+                                                        <mat-option *ngFor='let role of roleData' [value]="role.roleId">{{role.roleName}}</mat-option>
+                                                </mat-select>
+                                        </mat-form-field>
+                                </div>
+
+                                <div class="alert alert-danger" *ngIf="!data.role">
+                                        Role Required!
+                                </div>
+                        </div>
+                </div>
+                
+        </div>
+        
+
+        <div *ngIf="data.type=='target'" mat-dialog-content>
+                        <p class="heading">Update Yearly Target</p>
+                        
+                <div class="row">
+                        <div class="from-fields col s12">
+                                <div class="control-field">
+                                        <mat-form-field class="example-full-width cs-input">
+                                                <!-- <input matInput placeholder="Email" value="email" [(ngModel)]="data.email"> -->
+                                                <input matInput placeholder="Yearly Target" name="target" id="target" [(ngModel)]="data.totalTarget" #target="ngModel" maxlength="10" (keypress)="MobileNumber($event)"  required>
+                                        </mat-form-field>
+                                </div>
+                                <div class="alert alert-danger" *ngIf="!data.userName">
+                                        Target Required!
+                                </div>
+                        </div>
+                </div>
+        </div>
+
+
+
+<div *ngIf="data.type=='email'" mat-dialog-content>
+<p class="heading">Update Email</p>
+
+<div class="row">
+        <div class="from-fields col s12">
+                <div class="control-field">
+                        <mat-form-field class="example-full-width cs-input">
+                                <!-- <input matInput placeholder="Email" value="email" [(ngModel)]="data.email"> -->
+                                <input matInput placeholder="Email-ID" name="email" value="email" [(ngModel)]="data.email" #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+                        </mat-form-field>
+                </div>
+                <div class="alert alert-danger" *ngIf="!email.valid && email.touched">
+                        Please Enter Valid Email....
+                </div>
+        </div>
+</div>
+</div>
+
+
+<div *ngIf="data.type=='mobile'" mat-dialog-content>
+<p class="heading">Update Mobile</p>
+<div class="row">
+        <div class="from-fields col s12">
+                <div class="control-field">
+                        <mat-form-field class="example-full-width cs-input">
+                                <input matInput type="text"  maxlength="10"  placeholder="Mobile" name="mobile"   value="mobile" [(ngModel)]="data.mobile" minlength="10" maxlength="10" min="0" #mobile="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mobile.invalid }" (keypress)="MobileNumber($event)" required>
+                                <!-- <input matInput placeholder="Mobile" value="mobile" [(ngModel)]="data.mobile"> -->
+                        </mat-form-field>
+                        <div class="alert alert-danger" *ngIf="!mobile.valid && mobile.touched">
+                                Please Enter Valid Mobile....
+                        </div>
+                </div>
+        </div>
+</div>
+
+
+</div>
+
+
+<div *ngIf="data.type=='concern_approval'" mat-dialog-content>
+
+<p class="heading">Update Concern Right</p>
+<div class="row">
+        <div class="from-fields col s12">
+                <div class="control-field">
+                        <mat-form-field class="cs-input">
+                                <mat-select placeholder="Select Concern Right" name="concern_approval" [(ngModel)]="data.concernApprovalAccess">
+                                        <mat-option [value] ="true" >Yes</mat-option>
+                                        <mat-option [value] ="false" >No</mat-option>
+                                </mat-select>
+                        </mat-form-field>
+                </div>
+        </div>
+</div>
+
+</div>
+
+
+<div *ngIf="data.type=='designationName'" mat-dialog-content>
+
+<p class="heading">Update Designation</p>
+<div class="row">
+        <div class="from-fields col s12">
+                <div class="control-field">
+
+                <mat-form-field class="cs-input">
+                        <mat-select placeholder="Designation" name="designation" id="designation" [(ngModel)]="data.designation"  #designation="ngModel">
+                                <mat-option *ngFor='let list of designationData' [value]="list.designation">{{list.designationName}}</mat-option>
+                        </mat-select>
+                </mat-form-field>
+                </div>
+        </div>
+</div>
+
+</div>
+
+
+
+<div *ngIf="data.type=='territory'" mat-dialog-content>
+<p class="heading">Update Territories</p>
+<div class="row">
+        <div class="from-fields col s12">
+                <div class="control-field">
+                        <mat-form-field class="cs-input">
+                                <mat-select placeholder="Select territory" name="territory" [(ngModel)]="data.territory" multiple>
+                                        <mat-option *ngFor='let territory of territorylist' value="{{territory.territoryID}}" >{{territory.territoryName}}</mat-option>
+                                </mat-select>
+                        </mat-form-field>
+                </div>
+        </div>
+</div>
+
+
+</div>  
+<div *ngIf="data.type=='segment'" mat-dialog-content>
+<p class="heading">Update Segment</p>
+<div class="row">
+        <div class="from-fields col s12">
+                <div class="control-field">
+                        <mat-form-field class="cs-input">
+                                <mat-select placeholder="Select segment" name="segment" [(ngModel)]="data.segment" multiple>
+                                        <mat-option *ngFor='let segment of segmentlist' value="{{segment.text}}" >{{segment.text}}</mat-option>
+                                </mat-select>
+                        </mat-form-field>
+                </div>
+        </div>
+</div>
+
+</div>
+<div *ngIf="data.type=='assign'" mat-dialog-content>
+<p class="heading">Update Juniors</p>
+
+<div class="row">
+        <div class="from-fields col s12">
+                <div class="control-field">
+                        <mat-form-field class="cs-input">
+                                <mat-select placeholder="Select Juniors" name="Juniors" [(ngModel)]="data.Juniors" multiple>
+                                        <mat-option *ngFor='let junior of junior' value="{{junior.userId}}" >{{junior.userName}}</mat-option>
+                                </mat-select>
+                        </mat-form-field>
+                </div>
+        </div>
+</div>
+</div>
+<div mat-dialog-actions>
+<button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+<button mat-raised-button color="accent">Save</button>
+</div>
+</form>
+</div>

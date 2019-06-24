@@ -1,0 +1,37 @@
+<div class="edit-modal">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  
+  
+  <div mat-dialog-content >
+    <p class="heading">Update Packing Information</p>
+    <div class="from-fields">
+      <div class="col s12">          
+        <div class="row">
+          <div class="col s6">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input matInput name="masterPacking"  placeholder="masterPacking" [(ngModel)]="extraData.masterPacking">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col s6">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input matInput  name="secondaryPacking"  placeholder="secondaryPacking" [(ngModel)]="extraData.secondaryPacking">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div mat-dialog-actions>
+    <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button color="accent"[mat-dialog-close]="true" (click)="update_detail()">Save</button>
+  </div>
+</div>

@@ -1,0 +1,208 @@
+<div class="main-container">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <img src="assets/img/gift.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Gift</h2>
+        <p>Add New POP & Gift</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <form (ngSubmit)="f.form.valid && onSubmit() " #f="ngForm" novalidate>
+          <div class="col s8">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>POP & GIFT</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <div class="from-fields" >
+                <div class="row mb0">
+                  <div class="col s6 pl0">
+                    <div class="col s12 pl0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="Gift NAME" name="name" id="name" #name="ngModel" [(ngModel)]="gift_form.name" #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required>
+                        </mat-form-field>
+                        <mat-error *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="name.errors.required">Name is required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                    <!-- <div class="col s6 pl0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="Qty" name="quantity" id="quantity" #quantity="ngModel" [(ngModel)]="gift_form.quantity" #quantity="ngModel" (keypress)="MobileNumber($event)" [ngClass]="{ 'is-invalid': f.submitted && quantity.invalid }" required>
+                        </mat-form-field>
+                        <mat-error *ngIf="f.submitted && quantity.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="quantity.errors.required">Quantity is required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div> -->
+                    <div class="col s12 pl0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="Redeem Points" name="point" id="point" #point="ngModel" [(ngModel)]="gift_form.point" (keypress)="MobileNumber($event)">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col s6 pr0">
+                    <div class="from-fields">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input wp100 h-input infix-bodr8">
+                          <textarea class="h110" matInput placeholder="Description"  name="description" id="description" #description="ngModel"  [(ngModel)]="gift_form.description"  #description="ngModel" [ngClass]="{ 'is-invalid': f.submitted && description.invalid }" required></textarea>
+                        </mat-form-field>
+                        <mat-error *ngIf="f.submitted && description.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="description.errors.required">Description is required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="sprate-box pt0 mt15">
+              <div class="cs-heading">
+                <h2>Additonal Fields</h2>
+              </div>
+              <div class="from-fields" >
+                <div class="row mt15 mb0">
+                  <div class="col s4 pl0">
+                    <p class="cs-lable">Labels</p>
+                  </div>
+                  <div class="col s8 pr0">
+                    <p class="cs-lable">Values</p>
+                  </div>
+                </div>
+                <div class="row mb0">
+                  <div class="col s4 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr">
+                        <input matInput name="label1" [(ngModel)]="gift_form.aditionalField1Label">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col s8 pr0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr">
+                        <input matInput name="value1" [(ngModel)]="gift_form.aditionalField1Value">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb0">
+                  <div class="col s4 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput name="label2" [(ngModel)]="gift_form.aditionalField2Label">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col s8 pr0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput  name="value2" [(ngModel)]="gift_form.aditionalField2Value">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb0">
+                  <div class="col s4 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput  name="label3" [(ngModel)]="gift_form.aditionalField3Label">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col s8 pr0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput  name="value3" [(ngModel)]="gift_form.aditionalField3Value">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb0">
+                  <div class="col s4 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput name="label4" [(ngModel)]="gift_form.aditionalField4Label">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col s8 pr0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput name="Value4" [(ngModel)]="gift_form.aditionalField4Value">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          
+          
+          <div class="col s4 right-sticky">
+            <div class="sprate-box pt0">
+              <div class="cs-logs">
+                <div class="cs-heading">
+                  <h2>GIFT IMAGES</h2>
+                  <!-- <label >
+                    <input type="file" (change)="insertImage($event)" style="display: none;">
+                    Add New
+                  </label> -->
+                </div>
+                <!-- <div class="logs-outer padding0">
+                </div> -->
+
+                <div class="col s12">
+                    <div class="cs-file-multiple scroll">
+                      <ul>
+                        <li *ngFor="let urlData of urls;let i=index">
+                          <label>
+                            <img src="{{urlData}}">
+                            <a (click)="deleteimg(i)" class="close"><i class="material-icons">delete_sweep</i></a>
+                          </label>
+                        </li>
+                        <li>
+                          <div class="cs-file">
+                            <label>
+                              <input type="file" (change)="insertImage($event)" style="display:none;">
+                              <i class="material-icons add-file-icon" >add</i>
+                            </label>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col s12">
+            <div class="cs-btn fixedd mt32 text-right">
+              <div class="in-btn">
+                <button mat-raised-button color="accent" (click)=" setFocus(f.form)" >Save</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="h50"></div>

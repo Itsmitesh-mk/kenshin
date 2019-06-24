@@ -1,0 +1,70 @@
+<div class="main-container">
+
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+
+  <div class="middle-container">
+
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/leave-rule-list/" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{ruleData.subject}} Policy</h2>
+        <p class="light">{{ruleData.createdOn | date: 'dd-MMM-yyyy'}}</p>
+      </div>
+    </div>
+    
+
+    <div *ngIf="userdata.role==1 && userdata.superAdmin" class="left-auto">
+      <div class="cs-btn text-right">
+        <div class="in-btn">
+          <a mat-raised-button color="accent"  matTooltip="Edit"  routerLink="/add-leave-rules/{{this.ruleId}}" routerLinkActive="active"><i class="material-icons">edit</i></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="details-info padding0">
+            <div class="basic-details">
+              <div class="col s12 {{index>0 ? 'mt15' : ''}} cs-figure grid-figure space-li padding0" >
+                <ul>
+                  <li *ngFor="let list of ruleData.designationsWiseLeaves; let index = index" style="border: 1px solid #B29D9D;">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>{{list.designationName}}</span>
+                        <p class="counter">{{list.noOfLeaves}} days</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="row mt15">
+          <div class="col s12">
+              <div class="cs-description">
+                  <h2>description</h2>
+                  <p [innerHTML]="ruleData.description"></p>
+                  </div>
+              </div>
+          </div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="h50"></div>

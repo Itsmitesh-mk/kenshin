@@ -1,0 +1,225 @@
+<form  #f="ngForm" (ngSubmit)="f.form.valid && creatNextFollowUp()" novalidate>
+  <div class="main-container">
+    <div *ngIf="loader"> 
+      <div class="cs-loader">
+        <img src="assets/img/loader.png" class="rotate"> 
+      </div>
+    </div>
+    <div class="middle-container">
+      <div class="page-heading">
+        <!-- <img src="assets/img/leads_icon.svg" class="h-icon"> -->
+        <div class="heading-text bc-space">
+          <h2><span *ngIf='activityDetail.networkEstablishement'>{{activityDetail.networkEstablishement}}</span><span *ngIf='activityDetail.otherCustomer'>{{activityDetail.otherCustomer}}</span></h2>
+          <!-- <h2>{{activityDetail.establishment}}</h2> -->
+          <p></p>
+          
+          <div class="back-btn">
+            <a mat-button routerLink="/followup-list" routerLinkActive="active" ><i class="material-icons">arrow_right_alt</i></a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="left-auto" *ngIf="activityDetail.isClosed==false">
+        <div class="cs-btn  text-right">
+          <div class="in-btn">
+            <button type="button" mat-raised-button color="accent" (click)="close_followup()">Close Follow-Up</button>
+            <a mat-raised-button color="accent" *ngIf="activityDetail.nextFollowUpType==2 ||activityDetail.followUpType==2"  (click)="createactivity(activityDetail.activityId)" routerLinkActive="active">Create Check-In</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-outer">
+      <div class="container" >
+        <div class="row">
+          <div class="col s12">
+            <div class="details-info">
+              <div class="basic-details ">
+                <div class="col s12 cs-figure pl0 pr0">
+                  <ul>
+                    <li>
+                      <div class="outer">
+                        <div class="inner">
+                          <span>Follow Up Date</span>
+                          <p> {{activityDetail.followUpDate | date:'EEEE, MMMM d, y'}}</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="outer">
+                        <div class="inner">
+                          <span>Follow Up Type</span>
+                          <p>{{activityDetail.followUpTypeName}}</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="outer">
+                        <div class="inner">
+                          <span>User Name</span>
+                          <p>{{activityDetail.userName}}</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="outer">
+                        <div class="inner">
+                          <span>Activity Module</span>
+                          <p>{{activityDetail.activityModuleName}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <ul>
+                  <li>
+                      <div class="outer">
+                        <div class="inner">
+                          <span>Remarks</span>
+                          <p>{{activityDetail.remarks}}</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                        <div class="outer">
+                          <div class="inner">
+                            <span>Status</span>
+                            <p><span *ngIf="activityDetail.isClosed==true">Closed</span><span *ngIf="activityDetail.isClosed==false">Open</span></p>
+                          </div>
+                        </div>
+                      </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- <div class="row">
+          <div class="col s12">
+            <div class="tabs">
+              <ul>
+                <li><a  routerLinkActive="active" (click)="cloase_followup()">Close Follow-Up</a></li>
+                <li><a *ngIf="activityDetail.nextFollowUpType==2 ||activityDetail.followUpType==2"  (click)="createactivity(activityDetail.activityId)" routerLinkActive="active">create activity</a></li>
+              </ul>
+            </div>
+          </div>
+        </div> -->
+        <div class="row mt15" *ngIf="openfollowup==1">
+          <div class="col s12">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>Next Follow-up Information</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <div class="from-fields">
+                <div class="row">
+                  <div class="col s6 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="Next Followup Type" name="nextFollowUpType" #nextFollowUpType="ngModel"  [ngClass]="{'has-error' :f.submitted && nextFollowUpType.invalid } " [(ngModel)]="data.nextFollowUpType" required>
+                          <mat-option value="1">Call</mat-option>
+                          <mat-option value="2">Meeting</mat-option>
+                          <mat-option value="3">Email</mat-option>
+                          <mat-option value="4">Taks</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-error *ngIf="f.submitted && nextFollowUpType.invalid" class="invalid-feedback">
+                        <mat-error>Follow Up Type is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  
+                  <div class="col s6 pr0" *ngIf="data.nextFollowUpType!=4">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput [matDatepicker]="pickers" placeholder="Next Followup Date" name="nextFollowUpDate"  [ngClass]="{'has-error' :f.submitted && nextFollowUpDate.invalid } " #nextFollowUpDate="ngModel" [min]='currentDate' [(ngModel)]="data.nextFollowUpDate" readonly required>
+                        <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+                        <mat-datepicker #pickers></mat-datepicker>
+                      </mat-form-field>
+                      <mat-error *ngIf="f.submitted && nextFollowUpDate.invalid" class="invalid-feedback">
+                        <mat-error>Follow Up Date is required</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb20" *ngIf="data.nextFollowUpType!=4">
+                  <div class="col s12 padding0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <textarea matInput placeholder="Remark"  name="remarks" #remarks="ngModel" [(ngModel)]="data.remarks"  required></textarea>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col s4 empty"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="openfollowup==1">
+          <div class="col s12">
+            <div class="cs-btn fixedd mt32 text-right">
+              <div class="in-btn">
+                <button mat-raised-button color="accent">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+        
+        <!-- <div class="row" *ngIf="followuphistory!=''">
+          <div class="col s12">
+            <div class="sprate-box mt15 padding0" >
+              <div class="full-address">
+                <div class="top-heading">
+                  <h2>Follow-up History</h2>
+                </div>
+                <div class="cs-table">
+                  <div class="table-head">
+                    <table>
+                      <tr>
+                        <th class="w170"> date</th>
+                        <th class="w170">Follow-up type</th>
+                        <th >Remarks</th>
+                        <th >Status</th>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="table-container">
+                    <div class="table-content none-shadow">
+                      <table>
+                        <tr *ngFor="let check of followuphistory">
+                          <td class="w170">{{check.followUpDate|date:'d MMM y'}}</td>
+                          <td class="w170">
+                            <span *ngIf="check.followUpType==1">Call</span>
+                            <span *ngIf="check.followUpType==2">Meeting</span>
+                            <span *ngIf="check.followUpType==3">Email</span>
+                          </td>
+                          <td>{{check.remarks}}</td>
+                          <td><span *ngIf="check.isClosed==true">Closed</span><span *ngIf="check.isClosed==false">Open</span></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+         -->
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </div>
+    </div>
+  </div>
+</form>
+<div class="h50"></div>

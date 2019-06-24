@@ -1,0 +1,17 @@
+
+<div class="edit-modal">
+  <mat-dialog-content  style="overflow-x: hidden !important;">
+    <p class="heading">Message Description</p>
+    <div class="col s12">
+      <div class="pragraph">
+        <p [innerHTML]="massage">
+         
+        </p>
+      </div>
+    </div>
+    
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button color="warn"[mat-dialog-close]="false" cdkFocusInitial>Close</button>
+  </mat-dialog-actions>
+</div>

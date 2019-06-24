@@ -1,0 +1,267 @@
+<div class="main-container">
+  <div class="cs-loader" *ngIf="loader"> 
+    <img src="assets/img/loader.png" class="rotate">
+  </div>
+  
+  <div class="middle-container">
+    <div class="page-heading">
+      <img src="assets/img/travel.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Travel Plan</h2>
+        <p>Add Travel Plan</p>
+      </div>
+    </div>
+  </div>
+  
+  <form (ngSubmit)="f.form.valid && onClick()" #f="ngForm">
+    <div class="container-outer">
+      <div class="container" >
+        <div class="row">
+          <div class="col s12">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>Basic Details</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <div class="from-fields">
+                <div class="row">
+                  <div class="col s3 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input infix-bodr8">
+                        <mat-select placeholder="Select Year" name="year" #year="ngModel" [(ngModel)]="data.year" required>
+                          <mat-option (click)="divmonth(data.year)" *ngFor="let year of yearArray" value={{year}}>{{year}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-error *ngIf="f.submitted && year.invalid " class="invalid-feedback">
+                        <mat-error *ngIf="year.errors.required">Year is required....</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  <div *ngIf="monthDiv"> 
+                    <div  class="col s3 ">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <mat-select placeholder=" Select Month" name="month" #month="ngModel" [(ngModel)]="data.month" required>
+                            <mat-option (click)="addTravel(day)" *ngFor="let day of monthArray;let i=index" value={{i+1}}>{{day}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-error *ngIf="f.submitted && month.invalid " class="invalid-feedback">
+                          <mat-error *ngIf="month.errors.required">Month is required....</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                    <div class="col s2 pr0" >
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <mat-select placeholder="Select Senior For Approval" name="travelApprover" #travelApprover="ngModel" [(ngModel)]="data.travelApprover" required>
+                            <mat-option (click)="getSenior()" *ngFor="let senior of seniors" value={{senior.userId}}>{{senior.userName}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-error *ngIf="f.submitted && travelApprover.invalid " class="invalid-feedback">
+                          <mat-error *ngIf="travelApprover.errors.required">Approver is required....</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                    <div class="col s2 pr0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput type="number" placeholder="Travel Budget" #travelBudget="ngModel" name="travelBudget" [(ngModel)]="data.travelBudget" required>
+                        </mat-form-field>
+                        <mat-error *ngIf="f.submitted && travelBudget.invalid " class="invalid-feedback">
+                          <mat-error *ngIf="travelBudget.errors.required">Travel Budget required...</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                   
+                    <div class="col s2 pr0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput type="number" readonly placeholder="Sales Budget" #salesBudget="ngModel" name="salesBudget" [(ngModel)]="data.salesBudget" required>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <!-- <div class="col s2 pr0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput type="number" readonly placeholder="Budget" #budget="ngModel" name="budget" [(ngModel)]="data.budget" required>
+                        </mat-form-field>
+                      </div>
+                    </div> -->
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            
+            <div class="row" >
+              <div class="sprate-box pt0 mt15" style="overflow: inherit;">
+                <div class="cs-heading" style="border-radius: 6px 6px 0px 0px;">
+                  <h2>Travel Details</h2>
+                </div>
+                <div class="collaps flat-collaps mt15" >
+                  <div class="collaps-area">
+                    <mat-accordion>
+                      <mat-expansion-panel  style="overflow: inherit;" *ngFor="let day of dayArray;let i=index;let detail of planDetail">
+                        <mat-expansion-panel-header class="outer-panel mb10">
+                          <mat-panel-title>
+                            {{day.planDate | date :'EEEE, MMMM d, y'}}
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div>
+                          <mat-divider class="mb15 mt15 left-right-20"></mat-divider>
+                          <div class="row" >
+                            <div class="from-fields">
+                              <div class="row">
+                                <div class="col s4">
+                                  <div class="multi-all-select">
+                                    <label>State</label>
+                                    <ng-multiselect-dropdown
+                                    [placeholder]="'Select State'"
+                                    [data]="shippingState"
+                                    [(ngModel)]="detail.state"                                    
+                                    name="state"
+                                    [settings]="dropdownSettings"
+                                    (onSelect)="getShippingDistrict(detail.state,i)">
+                                  </ng-multiselect-dropdown>
+                                </div>
+                              </div>
+                              <div class="col s4">
+                                <div class="multi-all-select">
+                                  <label>District</label>
+                                  <ng-multiselect-dropdown
+                                  [placeholder]="'Select District'"
+                                  [data]="tmpDistrictArray"
+                                  [(ngModel)]="detail.district"                                  
+                                  name="district"
+                                  [settings]="dropdownSettings1"
+                                  (onSelect)="getShippingCity(detail.district,i)">
+                                </ng-multiselect-dropdown>
+                              </div>
+                            </div>
+                            <div class="col s4">
+                              <div class="control-field pr80">
+                                <div class="multi-all-select">
+                                  <label>City</label>
+                                  <ng-multiselect-dropdown
+                                  [placeholder]="'Select City'"
+                                  [data]="shippingCity"
+                                  [(ngModel)]="detail.city"                                  
+                                  name="city"
+                                  [settings]="dropdownSettings2"
+                                  (onSelect)="travelcity(detail.city,i)">
+                                </ng-multiselect-dropdown>
+                              </div>
+                              <div class="plus-btn">
+                                <button type="button" (click)="travelList(i)" mat-raised-button color="accent">
+                                  <i class="material-icons" >add</i>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    <div *ngIf="day.details.length!=0" class="row mt15">
+                      <div class="col s12 padding0">
+                        <div class="cs-table left-right-20">
+                          <div class="table-head">
+                            <table>
+                              <tr>
+                                <th class="w180">State</th>
+                                <th class="w180">District</th>
+                                <th class="w150">City</th>
+                                <th> Sales Activity </th>
+                                <th class="w90">&nbsp;</th>
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="table-container">
+                            <div class="table-content none-shadow">
+                              <table>
+                                <tr *ngFor="let detail of day.details ; let indx=index">
+                                  <td class="w180">{{detail.state}}</td>
+                                  <td class="w180">{{detail.district}}</td>
+                                  <td class="w150">{{detail.city}}</td>
+                                  <td>
+                                    <div class="from-fields ">
+                                      <div class="row">
+                                        <div class="col s4">
+                                          <div class="select-one pt10">
+                                            <span>Do you want any sales activity ?</span>
+                                            <mat-radio-group style="display: flex;"  [(ngModel)]="detail.isSalesActivity" name="isSalesActivity{{indx}}" >
+                                              <mat-radio-button value='Yes' >Yes</mat-radio-button>
+                                              <mat-radio-button value='No' >No</mat-radio-button>
+                                            </mat-radio-group>
+                                          </div>
+                                        </div>
+                                        <div *ngIf="detail.isSalesActivity=='Yes'">
+                                          <div class="col s4">
+                                            <div class="control-field">
+                                              <mat-form-field class="cs-input infix-bodr">
+                                                <mat-select placeholder="Select" name="activityType{{indx}}" [(ngModel)]="detail.activityType">
+                                                  <mat-option value="1">Mechanic get together</mat-option>
+                                                  <mat-option value="2">Retailer get together</mat-option>
+                                                  <mat-option value="3">van Campaign</mat-option>
+                                                  <mat-option value="4">Stall Campaign</mat-option>
+                                                  <mat-option value="5">Exhibition Participation</mat-option>
+                                                  <mat-option value="6">Signboard</mat-option>
+                                                  <mat-option value="7">Wall/Shop Painting</mat-option>
+                                                  <mat-option value="8">GiveAways</mat-option>
+                                                  <mat-option value="9">Printing Of Lesafelts,banners, posters etc.</mat-option>
+                                                </mat-select>
+                                              </mat-form-field>
+                                            </div>
+                                          </div>
+                                          <div class="col s4">
+                                            <div class="control-field">
+                                              <mat-form-field class="cs-input infix-bodr">
+                                                <input matInput type="number" placeholder="Budget" (change)="calculateBudget(detail.salesBudget)" name="salesBudget{{indx}}" [(ngModel)]="detail.salesBudget">
+                                              </mat-form-field>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      
+                                    </div>
+                                  </td>
+                                  <td class="w90">
+                                    <a mat-button class="del-btn" (click)="removePlan(i,indx)">Delete</a>
+                                  </td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="row">
+  
+  </div>
+  
+  <div class="col s12">
+    <div class="cs-btn mt15 text-right">
+      <div class="in-btn">
+        <button mat-raised-button color="accent" (click)="travelStatus(1)">Save As Draft</button>
+        <button mat-raised-button color="accent" (click)="travelStatus(2)" >Save For Approvel</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</form>
+</div>
+
+<div class="h50"></div>

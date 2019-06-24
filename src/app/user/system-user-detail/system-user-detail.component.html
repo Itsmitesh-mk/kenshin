@@ -1,0 +1,309 @@
+<div class="main-container" >
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/system-user-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{systemdata.userName}}</h2>
+        <p class="light">{{systemdata.role_name}}</p>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer">
+    
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="profile-info">
+                <ul class="flex-start">
+
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/phone.svg" class="fix-img">
+                      <span>Designation</span>
+                      <p>{{systemdata.designationName}}</p>
+                      <!-- <a *ngIf="this.role==1" class="edit-icon" color="accent" matRipple matTooltip="EDIT" [(ngModel)]="systemdata.mobile" (click)="openEmail('mobile')"><i class="material-icons">create</i></a> -->
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/gmail.svg" class="fix-img">
+                      <span>Email</span>
+                      <p class="link-clr">{{systemdata.email}}</p>
+                      <a *ngIf="this.role==1" class="edit-icon" color="accent" matRipple matTooltip="EDIT" [(ngModel)]="systemdata.email" (click)="openEmail('email')"><i class="material-icons">create</i></a>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/phone.svg" class="fix-img">
+                      <span>Mobile</span>
+                      <p>{{systemdata.mobile}}</p>
+                      <a *ngIf="this.role==1" class="edit-icon" color="accent" matRipple matTooltip="EDIT" [(ngModel)]="systemdata.mobile" (click)="openEmail('mobile')"><i class="material-icons">create</i></a>
+                    </div>
+                  </li>
+
+                
+                  <!-- <li  class="col s4">
+                    <div class="cs-box">
+                      <img src="assets/img/map-location.svg" class="fix-img">
+                      <span>Assign Location</span>
+                      <p>Faridabad Golden</p>
+                    </div>
+                  </li> -->
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col s8">
+          <div class="sprate-box padding0">
+            <div class="full-address">
+              <div class="top-heading">
+                <h2>ADDRESS</h2>
+              </div>
+              <a *ngIf="this.role==1" mat-button class="address-edit" matTooltip="EDIT" color="accent"  (click)="openDialog('address')"><i class="material-icons">edit</i></a>
+              <div class="nationality">
+                <img src="assets/img/india.svg" alt="">
+                <p>India</p>
+              </div>
+              <div class="ds-from-fields">
+                <div class="cs-row">
+                  <div class="static-info">
+                    <p>State</p>
+                    <p>{{systemdata.state}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>District</p>
+                    <p>{{systemdata.district}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>City</p>
+                    <p>{{systemdata.city}}</p>
+                  </div>
+                  <div class="static-info w100" style="min-width: 100px;">
+                    <p>Pin Code</p>
+                    <p>{{systemdata.pin}}</p>
+                  </div>
+                </div>
+                <div class="cs-row">
+                  <div class="static-info">
+                    <p>address</p>
+                    <p>{{systemdata.street}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col s4">
+          <div class="sprate-box padding0">
+            <div class="cs-logs">
+              <div class="top-heading">
+                <h2>ACCOUNT INFO</h2>
+              </div>
+              <div class="logs-outer">
+                <div class="logs-list">
+                  <div class="account-details">
+                    <ul>
+                      <li>
+                        <div class="outer">
+                          <div class="inner">
+                            <div class="cs-account">
+                              <p>User Name</p>
+                              <h5>{{systemdata.email}}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      
+                      <li class="active" [ngClass]="{'active':systemdata.active==true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                        <div class="outer">
+                          <div class="inner">
+                            <div class="cs-account">
+                              <!-- <p>Password</p> -->
+                              <form name="form" (ngSubmit)="f.form.valid && updatepassword()"  #f="ngForm" novalidate>
+                                <div class="from-fields">
+                                  <div class="control-field pr80">
+                                    <mat-form-field class="cs-input infix-bodr">
+                                      <input matInput type="text" placeholder="Change password" name="password" [(ngModel)]="account_form.password" #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required>
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                                <mat-error *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+                                  <mat-error *ngIf="password.errors.required">Password is required</mat-error>
+                                </mat-error>
+                                <button mat-raised-button color="accent" class="material-icons pass-icon">Save</button>
+                              </form>
+                              <!-- <i class="material-icons pass-icon pass-show"   (click)="toggleterritory(systemdata.active,'open')">visibility</i>
+                                <i class="material-icons pass-icon pass-hide" (click)="toggleterritory(systemdata.active,'close')">visibility_off</i> -->
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      
+                        <!-- <li class="status-bg">
+                          <div class="outer">
+                            <div class="inner">
+                              <div class="cs-account">
+                                <p>Status</p>
+                                <h5>Active</h5>
+                                <mat-slide-toggle class="status-toogle" color="warn"  [(ngModel)]='systemdata.isActive' (change)="isactive(systemdata.isActive)">&nbsp;</mat-slide-toggle>
+                              </div>
+                            </div>
+                          </div>
+                        </li> -->
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+
+
+        <div *ngIf="!moduleAssignedEdit && systemdata.type=='1'" class="row">
+          <div class="col s12">
+            <div class="sprate-box padding0">
+              <div class="full-address">
+                <div class="top-heading">
+                  <h2>Modules Assigned Details</h2>
+                </div>
+
+                <a (click)="editModulesHandler()" mat-button class="address-edit" matTooltip="EDIT" color="accent"><i class="material-icons">edit</i></a>
+                <div class="cs-table">
+
+                    <div class="table-container">
+                      <div class="table-content none-shadow">
+                        <table>
+                          <tr [hidden]="!list.show" *ngFor="let list of dbModuleData.moduleAccesses">
+                            <td>{{list.module}}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div *ngIf="moduleAssignedEdit" class="row">
+          <div class="col s12">
+            <div class="collaps mt15">
+              <div class="cs-heading">
+                <h2>Modules Rights</h2>
+              </div>
+              <mat-divider class="mt10 mb15"></mat-divider>
+              <div class="collaps-area">
+        
+        
+                <mat-accordion>
+        
+                  <mat-expansion-panel *ngFor="let list of moduleData; let index = index" [expanded]="step === index" (opened)="setStep(0)">
+                    <mat-expansion-panel-header class="outer-panel mb10">
+                      <mat-panel-title>
+                        {{list.moduleName}}
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="cs-rights">
+        
+                      <div class="all-selct">
+                        <mat-checkbox [(ngModel)]="list.view" (change)="selectAllHandler(index)" name="View">View</mat-checkbox>
+                      </div>
+        
+                      <ul *ngIf="list.view">
+        
+                        <li>
+                           <mat-checkbox [(ngModel)]="list.isSelectAllChecked" (change)="selectAllHandler(index)" name="Select All">Select All</mat-checkbox>
+                        </li>
+        
+                        <li *ngFor="let modeuleList of list.moduleRights; let childIndex = index">
+                            <mat-checkbox [(ngModel)]="modeuleList.checked" name="{{modeuleList.name}}{{index}}{{childIndex}}">{{modeuleList.name}}</mat-checkbox>
+                        </li>
+                        
+                      </ul>
+        
+                    </div>
+                  </mat-expansion-panel>
+                    
+                </mat-accordion>
+              </div>
+            </div>
+          </div>
+        
+        
+          <p *ngIf="system_detail.role=='1' && !isModuleSelected">Atleast One Module Right Required!</p>
+        </div> -->
+
+        <div *ngIf="moduleAssignedEdit" class="row">
+            <div class="col s12">
+              <div class="sprate-box mt15">
+                <div class="cs-heading">
+                  <h2>Modules Rights</h2>
+                </div>
+                <mat-divider class="left-right-15 mt10 mb15 mat-divider"></mat-divider>
+          
+                <div class="cs-table left-right-20">
+                    <div class="table-head">
+                      <table>
+                        <tr>
+                          <th class="w50 text-center">&nbsp;</th>
+                          <th>Module Name</th>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="table-container">
+                      <div class="table-content none-shadow">
+                        <table>
+                          <tr *ngFor="let list of moduleData">
+                            <td class="w50 text-center">
+                              <mat-checkbox [(ngModel)]="list.view" name="{{list.view}}" color="accent">&nbsp;</mat-checkbox>
+                            </td>
+                            <td>{{list.moduleName}}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+          
+              </div>
+            </div>
+        </div>
+
+        <p class="key-message" *ngIf="moduleAssignedEdit && !isModuleSelected">Atleast One Module Right Required!</p>
+
+        <div *ngIf="moduleAssignedEdit" class="row">
+          <div class="col s12">
+            <div class="cs-btn text-right">
+              <div class="in-btn">
+               <button mat-raised-button (click)="moduleAssignedEdit=false" color="warn" class="material-icons pass-icon">Cancel</button>
+                <button mat-raised-button (click)="saveAccessHandler()" color="accent" class="material-icons pass-icon">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="h50"></div>
+  
+  

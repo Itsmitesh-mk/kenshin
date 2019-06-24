@@ -1,0 +1,173 @@
+<div class="main-container">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container pb15">
+    <div class="page-heading">
+      <img src="assets/img/territory.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Postal / Territory Master</h2>
+        <p>Add New Location</p>
+      </div>
+    </div>
+
+    <div  *ngIf="filter.name || filter.segment || filter.pincode " class="filter-container left-auto">
+      <div (click)="clearfilter()" class="filter-btn">
+        <button mat-button >CLEAR FILTER</button>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="container-outer pt0">
+  <!-- <app-master-tab-list></app-master-tab-list> -->
+  
+  <div >
+    <div class="row">
+      <div class="col s12">
+        <div class="cs-table left-right-20">
+          <div class="sticky-head">
+          <div class="table-head">
+            <table>
+              <tr>
+                <th >Territory Name</th>
+                <th class="w150 text-center">Segments</th>
+                <th class="w150 text-center">Sales Users</th>
+                <th class="w150 text-center">Distributors</th>
+                <th class="w150 text-center">States</th>
+                <th class="w150 text-center">Districts</th>
+                <th class="w150 text-center">Pincodes</th>
+              </tr>
+            </table>
+          </div>
+          <div class="table-head bdrt">
+             <table>
+              <tr>
+                  <th >
+                    <div class="th-search-acmt" [ngClass]="{ 'clear-feilds' : removename == true}">
+                          <mat-form-field>
+                                  <input type="text"  name="name" [(ngModel)]="filter.name" (ngModelChange)="nameList()" matInput [matAutocomplete]="auto1">
+                                  <mat-autocomplete #auto1="matAutocomplete" >
+                                      <mat-option *ngFor="let name of namelist" (click)="nameFilter()" value="{{name.territoryName}}">{{name.territoryName}}</mat-option>
+                                  </mat-autocomplete>
+                          <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removenamefilter()"><i class="material-icons">clear</i></a>
+                          </mat-form-field> 
+                    </div>
+                  </th>
+
+                  <th class="w150 text-center">
+                    <div class="th-search-acmt" [ngClass]="{ 'clear-feilds' : filter.segment}">
+                          <mat-form-field>
+
+                            <input type="text"  name="segment" [(ngModel)]="filter.segment" (ngModelChange)="segmentList()" matInput [matAutocomplete]="auto2">
+
+                          <mat-autocomplete #auto2="matAutocomplete" >
+                              <mat-option *ngFor="let list of segmentlist" (click)="segmentFilter()" value="{{list.text}}">{{list.text}}</mat-option>
+                          </mat-autocomplete>
+
+                          <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removeSegmentFilter()"><i class="material-icons">clear</i></a>
+                          </mat-form-field> 
+                    </div>
+                  </th>
+
+                  <th class="w150 text-center">&nbsp;</th>
+
+                  <th class="w150 text-center">&nbsp;</th>
+
+                  <th class="w150 text-center">&nbsp;</th>
+                  <th class="w150 text-center">&nbsp;</th>
+                  <th class="w150 text-center">
+                      <div class="th-search-acmt" [ngClass]="{ 'clear-feilds' : filter.pincode && filter.pincode != null}">
+                            <mat-form-field>
+                                    <input type="text"  name="pincode" [(ngModel)]="filter.pincode" (ngModelChange)="pincodeTerritoryList()" maxlength="6" matInput [matAutocomplete]="auto3">
+
+                            <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removePinFilter()"><i class="material-icons">clear</i></a>
+                            </mat-form-field> 
+                      </div>
+                  </th>
+                </tr>
+                </table>
+                
+          </div>
+        </div>
+          <div class="table-container">
+            <div class="table-content">
+              <table>
+                <tr *ngFor="let list of data; let i=index;">
+
+                  <td >
+                     <a class="link-btn" routerLink="/territory-add/{{list.territoryID}}" routerLinkActive="active" mat-button>{{list.territoryName}}</a>
+                  </td>
+
+                  <td class="w150 text-center f12 segment-red">   
+                    {{list.segmentsCount}}
+                  </td>
+                
+
+                  <td class="w150 text-center f12 user-blue">
+                      {{list.salesUsersCount}}
+                  </td>
+
+                  <td class="w150 text-center f12 user-blue">
+                    {{list.networkCount}}
+                  </td>
+                 
+                  <td class="w150 text-center f12 state-yellow">
+                      {{list.statesCount}}
+                  </td>
+
+                  <td class="w150 text-center f12 district-green">
+                      {{list.districtsCount}}
+                  </td>
+
+                  <td class="w150 text-center f12 pincode-pink">
+                      {{list.pinCodesCount}}
+                      <div class="action-btns">
+                          <a mat-button class="view" routerLink="/territory-add/{{list.territoryID}}" routerLinkActive="active">
+                             <i class="material-icons">remove_red_eye</i> View</a>
+                          <button mat-button class="delete" (click)="deleteTerritory(list.territoryID)"><i class="material-icons">delete_sweep</i> Delete</button>
+                        </div>
+                  </td>
+
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="div" class="data-not-available" >
+      <div class="outer">
+          <div class="iinear">
+              <div class="figure" matRipple>
+                  <div class="header">
+                      <img src="assets/img/data-not-available-header.svg" alt="">
+                  </div>
+                  
+                  <div class="description">
+                      <!-- <div class="cs-heading">
+                          <h2>No Territory List</h2>
+                      </div> -->
+                      <div class="img">
+                              <i class="material-icons">error_outline</i>
+                      </div>
+                      <div class="psc">
+                          <p>data not available</p>
+                          <!-- <p>Tap on <a href="">ADD NEW</a> for Service Plan</p> -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  </div>
+  <div class="fixed-multibtn-botm">
+    <ul>
+      <li><a  matTooltip="Add New" matRipple routerLink="/territory-add/0" routerLinkActive="active"><i class="material-icons">add</i></a></li>
+    </ul>
+  </div>
+</div>

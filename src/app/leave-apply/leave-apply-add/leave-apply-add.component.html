@@ -1,0 +1,82 @@
+<div class="main-container">
+  <div class="middle-container">
+    <div class="page-heading">
+      <img src="assets/img/leads_icon.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Leave</h2>
+        <p>Add New Leave</p>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="sprate-box">
+            <div class="cs-heading">
+              <h2>LEAVE INFORMATION</h2>
+              <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+            </div>
+            
+            <mat-divider class="left-right-15 mt10"></mat-divider>
+            <div class="from-fields">
+              <div class="row">
+                <div class="col s4">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-select placeholder="Leave Type">
+                        <mat-option value="option1">Casual</mat-option>
+                        <mat-option value="option2">Casual</mat-option>
+                        <mat-option value="option3">Casual</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col s4">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <input matInput [matDatepicker]="picker" placeholder="Start Date">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col s4">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <input matInput [matDatepicker]="pickers" placeholder="End Date">
+                      <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+                      <mat-datepicker #pickers></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              
+              
+              <div class="row mb10">
+                <div class="col s12">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <textarea matInput placeholder="Description" class="h100"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col s12">
+          <div class="cs-btn fixedd mt32 text-right">
+            <div class="in-btn">
+              <button mat-raised-button color="accent">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="h50"></div>

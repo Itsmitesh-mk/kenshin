@@ -1,0 +1,84 @@
+<div class="edit-modal">
+  <!-- <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <mat-spinner class="loader"></mat-spinner> 
+    </div>
+  </div> -->
+
+  <div *ngIf="loader">
+      <div class="cs-loader">
+        <mat-spinner class="loader"></mat-spinner> 
+      </div>
+  </div>
+  
+  <div mat-dialog-content>
+    <p class="heading">Document & Image </p>
+    <div class=" from-fields">
+      <div class="control-field">
+        <mat-form-field class="example-full-width cs-input">
+          <input matInput [(ngModel)]="formData.title" placeholder="Tittle">
+        </mat-form-field>
+        <div class="alert alert-danger" *ngIf="!formData.title">
+            Document Name Missing!
+        </div>
+
+        <div class="alert alert-danger" *ngIf="formData.title && formData.title.length<4">
+            Document Name Must be atleast 4 Letters!
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col s12 padding0">
+          <div class="upload-excel mt15">
+            <label>
+              <input (change)="insertDocument($event)" style="display: none;" type="file">
+              <div class="outer">
+                <div class="innear">
+                  <i class="material-icons upload-ic">cloud_upload</i>
+                  <p>Add Document</p>
+                </div>
+              </div>
+            </label>
+            <span class="file-format">PDF, Image format Attach!</span>
+          </div>
+          <p class="file-name">{{selectedFile ? selectedFile[0].name : ''}}</p>
+        </div>
+      </div>
+      
+      <!-- <div class="row">
+        <div class="col s12 padding0">
+          <div class="cs-file-multiple sm-file scroll">
+            <ul class="mt15">
+              <li *ngFor="let urlData of urls;let i=index">
+                <label>
+                  <img src="{{urlData}}">
+                  <a (click)="deleteimg(i)" class="close"><i class="material-icons">delete_sweep</i></a>
+                </label>
+              </li>
+              <li>
+                <div class="cs-file">
+                  <label>
+                      <input type="file" (change)="insertImage($event)" style="display:none;">
+                      <p>Upload Images</p>
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="alert alert-danger" *ngIf="!urls || urls.length==0">
+         Please Upload Image!
+      </div>
+
+
+    </div>
+  </div>
+
+  
+  <div mat-dialog-actions>
+    <button mat-raised-button  color="warn" [mat-dialog-close]="false">Cancel</button>
+    <button (click)="saveNetworkDocument()" mat-raised-button color="accent">Save</button>
+  </div>
+</div>

@@ -1,0 +1,1797 @@
+<div class="main-container">
+  <div class="cs-loader" *ngIf="loader"> 
+    <img src="assets/img/loader.png" class="rotate">
+  </div>
+  
+  <div class="middle-container">
+    <div class="page-heading">
+      <img src="assets/img/payment_icon.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Expense</h2>
+        <p>Add Expense</p>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer" >
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="sprate-box pt0 mb15">
+            <div class="cs-heading">
+              <h2>USER EXPENSE</h2>
+            </div>
+            <div class="row">
+              <div class="col s12 padding0">
+                <div class="select-one">
+                  <mat-radio-group (change)="openExpenseForm()" #form="ngModel" [(ngModel)]="expenseForm.form" required>
+                    <mat-radio-button value=2>Outstation Travel</mat-radio-button>
+                    <mat-radio-button value=3>Sales Promotion Activity</mat-radio-button>
+                    <mat-radio-button value=4>Misc Exp</mat-radio-button>
+                    <mat-radio-button value=1>Local Conveyance</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div *ngIf="expenseForm.form && seniorList.length!=0" class="row">
+        <div class="col s6 pl0">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr8">
+              <mat-select placeholder="Select Senior For Approval" name="expenseSanctioner" #expenseSanctioner="ngModel" id="expenseSanctioner" [(ngModel)]="expenseForm.expenseSanctioner"  required >
+                <mat-option *ngFor="let senior of seniorList" value={{senior.userId}}>{{senior.userName}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="expenseSanctioner.errors.required">Purpose Of Visit required</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div> -->
+      <form *ngIf="expenseForm.form==1" (ngSubmit)="f.form.valid && LocalConvenseExpense() || setFocus(f.form)" #f="ngForm" novalidate>
+        <div class="cs-bill" >
+          <div class="row">
+            <div class="col s12">
+              <div class="sprate-box pt0">
+                <div class="cs-heading">
+                  <h2> BASIC INFORMATION</h2>
+                </div>
+                <div class="from-fields">
+                  <div class="row">
+                    <div class="col s4 pl0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <mat-select placeholder="Select Senior For Approval" name="expenseSanctioner" #expenseSanctioner="ngModel" id="expenseSanctioner" [(ngModel)]="localConvense.expenseSanctioner"  required >
+                            <mat-option *ngFor="let senior of seniorList" value={{senior.userId}}>{{senior.userName}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-error *ngIf="f.submitted && expenseSanctioner.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="expenseSanctioner.errors.required">Approver is required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="collaps flat-collaps">
+            <div class="collaps-area">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header class="outer-panel form-collaps mb10">
+                    <mat-panel-title>
+                      TRAVEL ENTITLEMENT
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="inner-body">
+                    <div class="from-fields">
+                      
+                      <div class="row">
+                        <div class="col s6 pl0">
+                          <div class="row">
+                            <div class="col s4">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput [matDatepicker]="days" [max]='currentDate' readonly placeholder="Date Of Visit" name="visitDate" #visitDate="ngModel" [(ngModel)]="localHQExpense.visitDate" >
+                                  <mat-datepicker-toggle matSuffix [for]="days"></mat-datepicker-toggle>
+                                  <mat-datepicker #days></mat-datepicker>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col s4">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="From" name="from" #from="ngModel" [(ngModel)]="localHQExpense.from" >
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col s4">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="To" name="to" #to="ngModel" [(ngModel)]="localHQExpense.to" >
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col s4">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <mat-select placeholder="Type of Mode" name="modeType" #modeType="ngModel" [(ngModel)]="localHQExpense.modeType" >
+                                    <mat-option *ngIf="allowanceList.length!=0 && (allowanceList.selfCarPerKM!=0 ||allowanceList.selfBikePerKM!=0 )" (click)="readonlyValue(localHQExpense.modeType)" value=1>SELF VEHICLE</mat-option>
+                                    <mat-option (click)="readonlyValue(localHQExpense.modeType)" value=2>PUBLIC TRANSPORT</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col s4">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <mat-select placeholder="Mode Of Travel" name="mode" #mode="ngModel" [(ngModel)]="localHQExpense.mode" >
+                                    <mat-option value=10 *ngIf="localHQExpense.modeType==2">AUTO</mat-option>
+                                    <mat-option value=1 *ngIf="localHQExpense.modeType==2">BUS</mat-option>
+                                    <mat-option value=6 *ngIf="localHQExpense.modeType==2">AC TAXI</mat-option>
+                                    <mat-option value=7 *ngIf="localHQExpense.modeType==2">NON-AC TAXI </mat-option>
+                                    <mat-option value=5 *ngIf="localHQExpense.modeType==2">METRO </mat-option>
+                                    <mat-option value=9 *ngIf="localHQExpense.modeType==1 && allowanceList.selfCarPerKM!=0">CAR</mat-option>
+                                    <mat-option value=8 *ngIf="localHQExpense.modeType==1 && allowanceList.selfBikePerKM!=0">BIKE </mat-option>
+                                    
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div *ngIf="localHQExpense.modeType==1" class="col s4">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Vehicle No" type="text" name="vehicleNumber" #vehicleNumber="ngModel" [(ngModel)]="localHQExpense.vehicleNumber">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          <div  class="row">
+                            <div *ngIf="localHQExpense.modeType==1" class="col s4">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="KMs Covered" type="number" (input)="calculateAmount(localHQExpense.mode,localHQExpense.distanceKMS)" name="distanceKMS" #distanceKMS="ngModel" [(ngModel)]="localHQExpense.distanceKMS">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col s4">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Amount" type="number" name="amount" #amount="ngModel" [(ngModel)]="localHQExpense.amount" readonly={{readonlyArea}} >
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            
+                            <div class="col s4">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Other Exp." type="number" name="otherExpense" #otherExpense="ngModel" [(ngModel)]="localHQExpense.otherExpense" >
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="col s6 pr0">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <textarea matInput placeholder="Remark" class="h165" name="remarks" #remarks="ngModel" [(ngModel)]="localHQExpense.remarks"></textarea>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col s12 padding0 mt15">
+                      <div class="cs-btn text-right">
+                        <div class="in-btn">
+                          <button mat-raised-button color="accent" [disabled]="!localHQExpense.remarks || !localHQExpense.visitDate|| !localHQExpense.from || !localHQExpense.to ||!localHQExpense.mode ||!localHQExpense.modeType  " (click)="addToLocalConvenseList()" type="button">Add To List</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+          
+          
+          <div *ngIf="localConveyances.length!=0" class="row mt15">
+            <div class="cs-table left-right-20">
+              <div class="table-head">
+                <table> 
+                  <tr>
+                    <th class="w160">Date Of Visit</th>
+                    <th class="w110">From</th>
+                    <th class="w110">To</th>
+                    <th class="w150">Modal Of Type</th>
+                    <th class="w150">Modal Of Travel</th>
+                    <th class="w130">KMs Covered</th>
+                    <th class="w110 text-right">Amount</th>
+                    <th class="w110 text-right">Other Exp.</th>
+                    <th>Remark</th>
+                  </tr>
+                </table>
+              </div>
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor="let Localexpense of localConveyances;let index=index">
+                      <td class="w160"> {{Localexpense.visitDate |date:'EEEE, MMMM d, y'}}</td>
+                      <td class="w110">{{Localexpense.from}}</td>
+                      <td class="w110">{{Localexpense.to}}</td>
+                      <td *ngIf="Localexpense.modeType==1" class="w150">SELF</td>
+                      <td *ngIf="Localexpense.modeType==2"class="w150">PUBLIC TRANSPORT</td>
+                      <td *ngIf="Localexpense.mode==10" class="w150">AUTO</td>
+                      <td *ngIf="Localexpense.mode==1" class="w150">BUS</td>
+                      <td *ngIf="Localexpense.mode==6" class="w150">AC-TAXI</td>
+                      <td *ngIf="Localexpense.mode==7" class="w150">NON AC-TAXI</td>
+                      <td *ngIf="Localexpense.mode==5" class="w150">METRO</td>
+                      <td *ngIf="Localexpense.mode==9" class="w150">CAR</td>
+                      <td *ngIf="Localexpense.mode==8" class="w150">BIKE</td>
+                      <td class="w130 ">{{Localexpense.distanceKMS}}</td>
+                      <td class="w110 text-right"> &#x20B9; {{Localexpense.amount}}</td>
+                      <td class="w130 text-right"> &#x20B9; {{Localexpense.otherExpense}}</td>
+                      <td>{{Localexpense.remarks}}
+                        <div class="action-btns">
+                          <button mat-button class="delete" (click)="removeLocalConvenseList(index)"><i class="material-icons">delete_sweep</i> Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="row mt15">
+            <div class="col s12">
+              <div class="cs-file-multiple scroll">
+                <ul>
+                  <li class="w110 pr10" *ngFor="let urlData of urls;let i=index">
+                    <label>
+                      <img src="{{urlData}}">
+                      <a (click)="deleteimg(i)" class="close"><i class="material-icons">delete_sweep</i></a>
+                    </label>
+                  </li>
+                  <li class="w110 pr10">
+                    <div class="cs-file wp100">
+                      <label>
+                        <input type="file" (change)="insertImage($event)" style="display:none;" multiple>
+                        <i class="material-icons add-file-icon" >add</i>
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <div class="sm-table">
+                <table>
+                  <tr>
+                    <th class="text-right">Local Travel Expense</th>
+                    <th class="w30 text-center">:</th>
+                    <td class="w100 text-right">&#x20B9; {{localExp}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">Other Type Expense</th>
+                    <th class="text-center">:</th>
+                    <td class="text-right">&#x20B9; {{otherLocalExp}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">Total</th>
+                    <th class="text-center">:</th>
+                    <td class="text-right">&#x20B9; {{totalLocalExp}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col s12">
+              <div class="cs-btn mt15 text-right">
+                <div class="in-btn">
+                  <button mat-raised-button color="accent" (click)="localConvense.status=1" >Save as Draft</button>
+                  <button mat-raised-button color="accent" (click)="localConvense.status=2">Save For Approval</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </form>
+      
+      <form *ngIf="expenseForm.form==2" (ngSubmit)="f1.form.valid && outTravelExpense()|| setFocus(f1.form)" #f1="ngForm" novalidate>
+        <div class="cs-bill"  >
+          <div class="row">
+            <div class="col s12">
+              <div class="sprate-box pt0">
+                <div class="cs-heading">
+                  <h2> BASIC INFORMATION {{f1.form.valid}}</h2>
+                </div>
+                <div class="from-fields">
+                  <div class="row">
+                    <div class="col s4">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="Purpose Of Visit" type="text" id="purposeOfVisit" name="purposeOfVisit" #purposeOfVisit="ngModel" [(ngModel)]="OutStationExpense.purposeOfVisit"  [ngClass]="{'has-error' : purposeOfVisit.invalid }" required>
+                        </mat-form-field>
+                        <mat-error *ngIf="f1.submitted && purposeOfVisit.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="purposeOfVisit.errors.required">Purpose Of Visit required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                    <div class="col s4">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="ADVANCE AMOUNT" type="number" id="advanceAmount" name="advanceAmount" #advanceAmount="ngModel" [(ngModel)]="OutStationExpense.advanceAmount"  [ngClass]="{'has-error' : advanceAmount.invalid }" required>
+                          <!--  -->
+                        </mat-form-field>
+                        <mat-error *ngIf="f1.submitted && advanceAmount.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="advanceAmount.errors.required">Advance Amount is required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                    <div class="col s4 pl0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <mat-select placeholder="Select Senior For Approval" name="expenseSanctioner" #expenseSanctioner="ngModel" id="expenseSanctioner" [(ngModel)]="OutStationExpense.expenseSanctioner"  required >
+                            <mat-option *ngFor="let senior of seniorList" value={{senior.userId}}>{{senior.userName}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-error *ngIf="f1.submitted && expenseSanctioner.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="expenseSanctioner.errors.required">Approver is required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="collaps flat-collaps mt15">
+            <div class="collaps-area">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header class="outer-panel form-collaps mb10">
+                    <mat-panel-title>
+                      TRAVEL ENTITLEMENT
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="inner-body">
+                    <div class="from-fields">
+                      <div class="row">
+                        <div class="col s6 pl0">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <mat-select placeholder="Mode Of Travel" name="modeOfTravel" #modeOfTravel="ngModel" [(ngModel)]="journyExpense.modeOfTravel" >
+                                <mat-option value=1>BUS</mat-option>
+                                <mat-option value=2>TRAIN</mat-option>
+                                <mat-option value=3>AIRLINE</mat-option>
+                                <mat-option value=5>TAXI </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        
+                        <div class="col s6">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <mat-select placeholder="Class" name="class" #class="ngModel" [(ngModel)]="journyExpense.class">
+                                <mat-option (click)="checkValid(journyExpense.class)"value='AC Buses' *ngIf="journyExpense.modeOfTravel==1" >AC Buses </mat-option>
+                                <mat-option (click)="checkValid(journyExpense.class)"value='Non - AC Buses' *ngIf="journyExpense.modeOfTravel==1">Non - AC Buses</mat-option>
+                                <mat-option (click)="checkValid(journyExpense.class)"value='2A' *ngIf="journyExpense.modeOfTravel==2">2A</mat-option>
+                                <mat-option (click)="checkValid(journyExpense.class)"value='3A' *ngIf="journyExpense.modeOfTravel==2">3A</mat-option>
+                                <mat-option (click)="checkValid(journyExpense.class)"value='SL' *ngIf="journyExpense.modeOfTravel==2">SL</mat-option>
+                                <mat-option (click)="checkValid(journyExpense.class)"value='Economy Class' *ngIf="journyExpense.modeOfTravel==3">Economy Class </mat-option>
+                                <mat-option (click)="checkValid(journyExpense.class)"value='Private' *ngIf="journyExpense.modeOfTravel==5">Private</mat-option>
+                                <mat-option (click)="checkValid(journyExpense.class)"value='Shared' *ngIf="journyExpense.modeOfTravel==5">Shared</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col s4" *ngIf="modeError==1">
+                        You Are Not Eligable for This Type of Mode
+                      </div>
+                      <div >
+                        <div class="row mb0">
+                          <div class="col s12 pl0">
+                            <div class="heading-bg mb0 mt15 mrl24">
+                              <h2>DEPARTURE</h2>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="row">
+                          <div class="col s4 pl0">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input infix-bodr8">
+                                <input matInput [matDatepicker]="nine"  readonly [max]='currentDate' placeholder="Date" name="departureDate" #departureDate="ngModel" [(ngModel)]="journyExpense.departureDate">
+                                <mat-datepicker-toggle matSuffix [for]="nine"></mat-datepicker-toggle>
+                                <mat-datepicker #nine></mat-datepicker>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div class="col s4">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input infix-bodr8">
+                                <input matInput placeholder="Station" name="departureStation" #departureStation="ngModel" [(ngModel)]="journyExpense.departureStation">
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          
+                          <div class="col s4">
+                            <!-- <div class="control-field mt14">
+                              <div class="cs-input">
+                                <input [owlDateTimeTrigger]="dt5" [owlDateTime]="dt5" placeholder="Time" name="departureTime" #departureTime="ngModel" [(ngModel)]="journyExpense.departureTime">
+                                <owl-date-time [pickerType]="'timer'" #dt5></owl-date-time>
+                              </div>
+                            </div> -->
+                            <div class="control-field mt14">
+                              <div class="cs-input">
+                                <!-- required -->
+                                <input placeholder="Check In Time" #departureTime="ngModel" name="departureTime" [(ngModel)]="journyExpense.departureTime" id="departureTime" [format]="12" [ngxTimepicker]="default"  readonly >
+                              </div>
+                            </div>
+                            <ngx-material-timepicker #default></ngx-material-timepicker>
+                            
+                          </div>
+                        </div>
+                        
+                        
+                        <div class="row mb0">
+                          <div class="col s12 pl0">
+                            <div class="heading-bg  mb0 mt15">
+                              <h2>ARRIVAL</h2>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="row">
+                          <div class="col s4">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input infix-bodr8">
+                                <input matInput [matDatepicker]="elevn" readonly [min]="journyExpense.departureDate" [max]="currentDate" placeholder="Date" name="arrivalDate" #arrivalDate="ngModel" [(ngModel)]="journyExpense.arrivalDate">
+                                <mat-datepicker-toggle matSuffix [for]="elevn"></mat-datepicker-toggle>
+                                <mat-datepicker #elevn></mat-datepicker>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div class="col s4">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input infix-bodr8">
+                                <input matInput placeholder="Station" name="arrivalStation" #arrivalStation="ngModel" [(ngModel)]="journyExpense.arrivalStation">
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          
+                          <div class="col s4">
+                            <!-- <div class="control-field">
+                              <div class="cs-input mt14">
+                                <input [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" placeholder="Time" name="arrivalTime" #arrivalTime="ngModel" [(ngModel)]="journyExpense.arrivalTime">
+                                <owl-date-time [pickerType]="'timer'" #dt4></owl-date-time>
+                              </div>
+                            </div> -->
+                            <div class="control-field mt14">
+                              <div class="cs-input">
+                                <!-- required -->
+                                <input placeholder="Check Out Time" #arrivalTime="ngModel" name="arrivalTime" [(ngModel)]="journyExpense.arrivalTime"  id="arrivalTime" [format]="12" [ngxTimepicker]="default1" readonly >
+                              </div>
+                            </div>
+                            <ngx-material-timepicker #default1></ngx-material-timepicker>
+                            
+                          </div>
+                        </div>
+                        
+                        <mat-divider class="left-right-15 mt15"></mat-divider>
+                        <div class="row">
+                          <div *ngIf="journyExpense.mode!=4" class="col s4 pl0">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input infix-bodr8">
+                                <input matInput placeholder="Detail Ticket No" name="ticketNo" #ticketNo="ngModel" [(ngModel)]="journyExpense.ticketNo">
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div class="col s4 ">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input infix-bodr8">
+                                <input matInput placeholder="Amount" name="amount" #amount="ngModel" [(ngModel)]="journyExpense.amount">
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div  *ngIf="journyExpense.mode!=4" class="col s12 mt15 mb15">
+                      <div class="cs-btn text-right">
+                        <div class="in-btn">
+                          <button mat-raised-button color="accent" [disabled]="!journyExpense.departureDate||!journyExpense.departureStation|| !journyExpense.departureTime||!journyExpense.arrivalStation||!journyExpense.arrivalDate||!journyExpense.arrivalTime||!journyExpense.modeOfTravel||!journyExpense.ticketNo||!journyExpense.amount||!journyExpense.class" (click)="addToOutTravelExpense()">Add To List</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+          
+          <div *ngIf="tmpJournyExpense.length!=0" class="row mt15">
+            <div class="cs-table left-right-20">
+              <div class="table-head">
+                <table> 
+                  <tr>
+                    <th class="text-center">BUS/RAIL/AIR FARE</th>
+                  </tr>
+                </table>
+              </div>
+              
+              <div  class="table-head  bdrt">
+                <table> 
+                  <tr >
+                    <th class="padding0 pt10 text-center">
+                      DEPARTURE
+                      <table class="inner-table bdrt mt10">
+                        <tr>
+                          <th class="text-center">Date</th>
+                          <th class="text-center">Station</th>
+                          <th class="text-center">Time</th>
+                        </tr>
+                      </table>
+                    </th>
+                    <th class="padding0 pt10 text-center">
+                      ARRIVAL
+                      <table class="inner-table bdrt mt10">
+                        <tr>
+                          <th class="text-center">Date</th>
+                          <th class="text-center">Station</th>
+                          <th class="text-center">Time</th>
+                        </tr>
+                      </table>
+                    </th>
+                    <th class="w150 text-center">Class & Mode Of Travel</th>
+                    <th class="w100 text-center">Status</th>
+                    <th class="w150">Deatil Of Ticket No. / K.M. (PVT. VEHICLE)</th>
+                    <th class="w100 text-right">Amount</th>
+                  </tr>
+                </table>
+              </div>
+              
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor="let journy of tmpJournyExpense;let index=index">
+                      <td class="padding0">
+                        <table class="inner-table">
+                          <tr>
+                            <td class="text-center">{{journy.departureDate |date:'EEEE, MMMM d, y'}}</td>
+                            <td class="text-center">{{journy.departureStation}}</td>
+                            <td class="text-center">{{journy.departureTime }}</td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td class="padding0">
+                        <table class="inner-table">
+                          <tr>
+                            <td class="text-center">{{journy.arrivalDate|date:'EEEE, MMMM d, y'}}</td>
+                            <td class="text-center">{{journy.arrivalStation}}</td>
+                            <td class="text-center">{{journy.arrivalTime }}</td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td class="w170 text-center">
+                        <span *ngIf="journy.modeOfTravel==1"> BUS /</span>
+                        <span *ngIf="journy.modeOfTravel==2"> TRAIN /</span>
+                        <span *ngIf="journy.modeOfTravel==3"> AIRLINE /</span>
+                        <span *ngIf="journy.modeOfTravel==5"> TEXI /</span>
+                        <span >{{journy.class}}</span></td>
+
+                      <td class="w100 approved">Allow</td>
+                      <td *ngIf="journy.distanceKMS==null" class="w150">{{journy.ticketNo}}</td>
+                      <td class="w100 text-right">&#x20B9; {{journy.amount}}
+                        <div class="action-btns">
+                          <button mat-button class="delete" (click)="removeOutTravelExpense(index)"><i class="material-icons">delete_sweep</i> Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                    <tr class="active-col">
+                      <td class="padding0">
+                        <table class="inner-table">
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td class="padding0">
+                        <table class="inner-table">
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td class="w150 text-center">&nbsp;</td>
+                      <td class="w150 text-center">&nbsp;</td>
+                      <td class="w100">Total</td>
+                      <td class="w100 text-right">&#x20B9; {{totalOutTravelExp}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+          
+          <div class="collaps flat-collaps mt15">
+            <div class="collaps-area">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header class="outer-panel form-collaps mb10">
+                    <mat-panel-title>
+                      HOTEL
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="inner-body">
+                    <div class="from-fields">
+                      <div class="row">
+                        <div class="col s6 pl0">
+                          <div class="row">
+                            <div class="col s6 pl0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input type="text" placeholder="City" aria-label="city"  name="city" [(ngModel)]="Arraycity.city" (input)="cityList(Arraycity.city)" matInput  [matAutocomplete]="city">
+                                  <mat-autocomplete #city="matAutocomplete" >
+                                    <mat-option (click)="selectedCity(city)" *ngFor="let city of cityListArray" value="{{city.city}}">
+                                      {{city.city}} / {{city.stateName}}
+                                    </mat-option>
+                                  </mat-autocomplete>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col s6 pr0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput [matDatepicker]="thirteens" readonly [max]='currentDate' placeholder="Check In Date" name="checkInDate" #checkInDate="ngModel" [(ngModel)]="outStationHotelExp.checkInDate">
+                                  <mat-datepicker-toggle matSuffix [for]="thirteens"></mat-datepicker-toggle>
+                                  <mat-datepicker #thirteens></mat-datepicker>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col s6 pl0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput [matDatepicker]="thirteen" readonly [min]="outStationHotelExp.checkInDate" [max]='currentDate' placeholder="Check Out Date" name="checkOutDate" #checkOutDate="ngModel" [(ngModel)]="outStationHotelExp.checkOutDate">
+                                  <mat-datepicker-toggle matSuffix [for]="thirteen"></mat-datepicker-toggle>
+                                  <mat-datepicker #thirteen></mat-datepicker>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col s6 pr0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Hotel Name" name="hotelName" #hotelName="ngModel" [(ngModel)]="outStationHotelExp.hotelName" >
+                                  <!-- name="hotelBill" #hotelBill="ngModel" [(ngModel)]="outStationHotelExp.hotelBill" -->
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col s6 pl0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Amount" (input)="checkValidAmount(outStationHotelExp.billAmount)"  name="billAmount" #billAmount="ngModel" [(ngModel)]="outStationHotelExp.billAmount" >
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          <div *ngIf="hotelcitydiv==true">
+                            You Are not eligable for this Amount
+                          </div>
+                        </div>
+                        
+                        <div class="col s6 pr0">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <textarea matInput placeholder="Remark"name="remarks" #remarks="ngModel" [(ngModel)]="outStationHotelExp.remarks" class="h168"></textarea>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col s12 mt15 mb15">
+                      <div class="cs-btn text-right">
+                        <div class="in-btn">
+                          <button mat-raised-button color="accent" [disabled]="!outStationHotelExp.checkInDate ||!outStationHotelExp.checkOutDate ||!outStationHotelExp.billAmount || !outStationHotelExp.hotelName || !outStationHotelExp.city || !outStationHotelExp.remarks" (click)="outStationHotelExpList()">Add To List</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+          
+          
+          <div *ngIf="tmpoutStationHotelExp.length!=0" class="row mt15">
+            <div class="cs-table left-right-20">
+              <div class="table-head">
+                <table> 
+                  <tr>
+                    <th class="w150">City</th>
+                    <th class="w120">Check In Date</th>
+                    <th class="w135">Check Out Date</th>
+                    <th class="w160">Hotel name</th>
+                    <th class="w100 text-right">Amount</th>
+                    <th class="w100">Status</th>
+                    <th>Remark</th>
+                  </tr>
+                </table>
+              </div>
+              
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor=" let hotel of tmpoutStationHotelExp;let index=index">
+                      <td class="w150">{{hotel.city.city}}</td>
+                      <td class="w120">{{hotel.checkInDate|date:'EEEE, MMMM d, y'}}</td>
+                      <td class="w135">{{hotel.checkOutDate|date:'EEEE, MMMM d, y'}}</td>
+                      <td class="w160">{{hotel.hotelName}}</td>
+                      <td class="w100 text-right">&#x20B9; {{hotel.billAmount}}</td>
+                      <td class="w100 approved" *ngIf="hotelCityError==0" >Allow</td>
+                      <td class="w100 reject" *ngIf="hotelCityError==1" >Not Allow</td>
+                      <td><p>{{hotel.remarks}}</p>
+                        <div class="action-btns">
+                          <button mat-button class="delete" (click)="removeOutStationHotelExpense(index)"><i class="material-icons">delete_sweep</i> Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+          <div class="collaps flat-collaps mt15">
+            <div class="collaps-area">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header class="outer-panel form-collaps mb10">
+                    <mat-panel-title>
+                      FOOD
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="inner-body">
+                    <div class="from-fields">
+                      <div class="row">
+                        <div class="col s6 pl0">
+                          <div class="row">
+                            <div class="col s6 pl0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input type="text" placeholder="City" aria-label="city"  name="city" [(ngModel)]="Arraycity.city" (input)="cityList(Arraycity.city)" matInput  [matAutocomplete]="city1">
+                                  <mat-autocomplete #city1="matAutocomplete" >
+                                    <mat-option (click)="selectedFoodExpenseCity(city)" *ngFor="let city of cityListArray" value="{{city.city}}">
+                                      {{city.city}} / {{city.stateName}}
+                                    </mat-option>
+                                  </mat-autocomplete>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col s6 pr0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput [matDatepicker]="thirteenss"  placeholder="Date" name="date" #date="ngModel" [max]="currentDate" [(ngModel)]="outStationFoodExp.date">
+                                  <mat-datepicker-toggle matSuffix [for]="thirteenss"></mat-datepicker-toggle>
+                                  <mat-datepicker #thirteenss></mat-datepicker>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col s6 pl0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Amount" (input)="checkValidFoodAmount(outStationFoodExp.billAmount)" name="billAmount" #billAmount="ngModel" [(ngModel)]="outStationFoodExp.billAmount">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          <div *ngIf="foodCityError==1">
+                            You are not Eligable for this Amount
+                          </div>
+                        </div>
+                        
+                        <div class="col s6 pr0">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <textarea matInput placeholder="Remark" class="h100" name="remarks" #remarks="ngModel" [(ngModel)]="outStationFoodExp.remarks" ></textarea>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col s12 mt15 mb15">
+                      <div class="cs-btn text-right">
+                        <div class="in-btn">
+                          <button mat-raised-button color="accent" type="button" (click)="outStationFoodExpList()" >Add To List</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+          
+          <div *ngIf="tmpoutStationFoodExp.length!=0" class="row mt15">
+            <div class="cs-table left-right-20">
+              <div class="table-head">
+                <table> 
+                  <tr>
+                    <th class="w200">City</th>
+                    <th class="w200">Date</th>
+                    <th class="w120">Status</th>
+                    <th class="w150 text-right">Amount</th>
+                    <th>Remark</th>
+                  </tr>
+                </table>
+              </div>
+              
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor="let food of tmpoutStationFoodExp;let index=index">
+                      <td class="w200">{{food.city}}</td>
+                      <td class="w200">{{food.date|date:'EEEE, MMMM d, y'}}</td>
+                      <td class="w120 approved" *ngIf="foodCityError==0">Allow</td>
+                      <td class="w120 reject" *ngIf="foodCityError==1">Not-Allow</td>
+                      <td class="w150 text-right">&#x20B9; {{food.billAmount}}</td>
+                      <td><p>{{food.remarks}}</p>
+                        <div class="action-btns">
+                          <button mat-button class="delete" (click)="removeOutStationFoodExp(index)"><i class="material-icons">delete_sweep</i> Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+          <div class="collaps flat-collaps mt15">
+            <div class="collaps-area">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header class="outer-panel form-collaps mb10">
+                    <mat-panel-title>
+                      LOCAL CONVENCE
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="inner-body">
+                    <div class="from-fields">
+                      <div class="row">
+                        <div class="col s2">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <mat-select placeholder="Mode Of Travel" name="modeOfTravel" #modeOfTravel="ngModel" [(ngModel)]="outStationLocalExp.modeOfTravel" >
+                                <mat-option (click)="checkValidLocalFare(outStationLocalExp.modeOfTravel)" value=10>AUTO</mat-option>
+                                <mat-option (click)="checkValidLocalFare(outStationLocalExp.modeOfTravel)" value=1>BUS</mat-option>
+                                <mat-option (click)="checkValidLocalFare(outStationLocalExp.modeOfTravel)" value=6>AC TAXI</mat-option>
+                                <mat-option (click)="checkValidLocalFare(outStationLocalExp.modeOfTravel)" value=7>NON-AC TAXI </mat-option>
+                                <mat-option (click)="checkValidLocalFare(outStationLocalExp.modeOfTravel)" value=8>TWO WHEELER </mat-option>
+                                <mat-option (click)="checkValidLocalFare(outStationLocalExp.modeOfTravel)" value=5>METRO </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div *ngIf="localFareError==1">
+                            You Are Not Allow This Travel Mode
+                          </div>
+                        </div>
+                        <div class="col s2">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <input matInput [matDatepicker]="fourteen" readonly [max]='currentDate' placeholder="Date" name="date" #date="ngModel" [(ngModel)]="outStationLocalExp.date"> 
+                              <mat-datepicker-toggle matSuffix [for]="fourteen"></mat-datepicker-toggle>
+                              <mat-datepicker #fourteen></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col s2 ">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <input matInput placeholder="From" name="from" #from="ngModel" [(ngModel)]="outStationLocalExp.from" >
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col s2 ">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <input matInput placeholder="To" name="to" #to="ngModel" [(ngModel)]="outStationLocalExp.to" >
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col s2">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <input matInput placeholder="Fare" name="fare" #fare="ngModel" [(ngModel)]="outStationLocalExp.fare">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        
+                        <div class="col s2">
+                          <div class="cs-btn mt12">
+                            <div class="in-btn">
+                              <button mat-raised-button color="accent" [disabled]="!outStationLocalExp.date||!outStationLocalExp.from||!outStationLocalExp.to||!outStationLocalExp.modeOfTravel||!outStationLocalExp.fare" (click)="outStationLocalExpList()">Add To List</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+          
+          <div *ngIf="tmpoutStationLocalExp.length!=0" class="row mt15">
+            <div class="cs-table left-right-20">
+              <div class="table-head">
+                <table> 
+                  <tr>
+                    <th class="w130">Date</th>
+                    <th class="w170 text-center">From</th>
+                    <th class="w170 text-center">To</th>
+                    <th class="w170 text-center">Mode</th>
+                    
+                    <th>Fare</th>
+                  </tr>
+                </table>
+              </div>
+              
+              
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor="let outLocalTravel of tmpoutStationLocalExp;let index=index ">
+                      <td class="w130"> {{outLocalTravel.date|date:'EEEE, MMMM d, y'}}</td>
+                      <td class="w170 text-center">{{outLocalTravel.from}}</td>
+                      <td class="w170 text-center">{{outLocalTravel.to}}</td>
+                      <td class="w170 text-center">
+                        <span *ngIf="outLocalTravel.modeOfTravel==10">AUTO</span>
+                        <span *ngIf="outLocalTravel.modeOfTravel==1">BUS</span>
+                        <span *ngIf="outLocalTravel.modeOfTravel==6">AC TEXI</span>
+                        <span *ngIf="outLocalTravel.modeOfTravel==7">NON-AC TEXI</span>
+                        <span *ngIf="outLocalTravel.modeOfTravel==8">TWO WHEELER</span>
+                        <span *ngIf="outLocalTravel.modeOfTravel==5">METRO</span>
+                      </td>
+                      <td>&#x20B9; {{outLocalTravel.fare}}
+                        <div class="action-btns">
+                          <button mat-button class="delete" (click)="removeOutStatonLocalExp(index)"><i class="material-icons">delete_sweep</i> Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="collaps flat-collaps mt15">
+            <div class="collaps-area">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header class="outer-panel form-collaps mb10">
+                    <mat-panel-title>
+                      MISC EXPENSE INFORMATION
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="inner-body">
+                    <div class="from-fields">
+                      <div class="row">
+                        <div class="col s6 pl0">
+                          <div class="row">
+                            <div class="col s6 pl0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <mat-select placeholder="Nature of expense" name="miscActivityType" #miscActivityType="ngModel" [(ngModel)]="outStationMiscExp.miscActivityType" >
+                                    <mat-option value="1">Entertainment Expenses</mat-option>
+                                    <mat-option value="2">Gift To Dealers</mat-option>
+                                    <mat-option value="3">Lunch/Dinner With Team</mat-option>
+                                    <mat-option value="4">Training Program</mat-option>
+                                    <mat-option value="5">Other</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col s6 pr0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput [matDatepicker]="five" readonly [max]='currentDate' placeholder="Date" name="date" #date="ngModel" [(ngModel)]="outStationMiscExp.date" readonly>
+                                  <mat-datepicker-toggle matSuffix [for]="five"></mat-datepicker-toggle>
+                                  <mat-datepicker #five></mat-datepicker>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col s6 pl0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Place Of Expense" name="placeOfExpense" #placeOfExpense="ngModel" [(ngModel)]="outStationMiscExp.placeOfExpense">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            
+                            <div class="col s6 pr0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Name of Beneficiaries" name="nameOfBeneficiary" #nameOfBeneficiary="ngModel" [(ngModel)]="outStationMiscExp.nameOfBeneficiary">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="row">
+                            <!-- <div class="col s6 pl0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Reason" name="reason" #reason="ngModel" [(ngModel)]="miscExpenselist.reason">
+                                </mat-form-field>
+                              </div>
+                            </div> -->
+                            <div class="col s6 pr0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Amount" name="amount" #total="ngModel" [(ngModel)]="outStationMiscExp.amount">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="col s6 pr0">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <textarea matInput placeholder="Remark" class="h165" name="remarks" #remarks="ngModel" [(ngModel)]="outStationMiscExp.remarks" ></textarea>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+                    
+                    <div class="col s12 mt15">
+                      <div class="cs-btn text-right">
+                        <div class="in-btn">
+                          <button mat-raised-button color="accent" [disabled]="!outStationMiscExp.miscActivityType ||!outStationMiscExp.date ||!outStationMiscExp.placeOfExpense ||!outStationMiscExp.nameOfBeneficiary ||!outStationMiscExp.amount ||!outStationMiscExp.remarks" (click)="addOutMiscExpenseList()">Add To List</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+          
+          <div *ngIf="tmpOutTravelMiscExp.length!=0" class="row mt15">
+            <div class="cs-table left-right-20">
+              <div class="table-head">
+                <table> 
+                  <tr >
+                    <th class="w160">Date</th>
+                    <th class="w180">Nature Of Exp.</th>
+                    <th class="w170">Beneficiaries Name</th>
+                    <th class="w160">Place Of Expense</th>
+                    <th class="w100 text-right">Total</th>
+                    <th>Remark</th>
+                  </tr>
+                </table>
+              </div>
+              
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor="let misc of tmpOutTravelMiscExp">
+                      <td class="w160">{{misc.date|date:'EEEE, MMMM d, y'}}</td>
+                      <!-- <td class="w200">{{misc.miscActivityType}}</td> -->
+                      <td *ngIf="misc.miscActivityType==1" class="w180">Entertainment Expenses</td>
+                      <td *ngIf="misc.miscActivityType==2" class="w180">Gift To Dealers</td>
+                      <td *ngIf="misc.miscActivityType==3" class="w180">Lunch/Dinner With Team</td>
+                      <td *ngIf="misc.miscActivityType==4" class="w180">Training Program</td>
+                      <td *ngIf="misc.miscActivityType==5" class="w180"> Other</td>
+                      <td class="w170">{{misc.nameOfBeneficiary}}</td>
+                      <td class="w160">{{misc.placeOfExpense}}</td>
+                      <td class="w100 text-right"> &#x20B9; {{misc.amount}}</td>
+                      <td> {{misc.remarks}}
+                        <div class="action-btns">
+                          <button mat-button class="delete" (click)="removeOutStationMiscExp(index)"><i class="material-icons">delete_sweep</i> Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt15">
+            <div class="col s12">
+              <div class="cs-file-multiple scroll">
+                <ul>
+                  <li class="w110 pr10" *ngFor="let urlData of urls;let i=index">
+                    <label>
+                      <img src="{{urlData}}">
+                      <a (click)="deleteimg(i)" class="close"><i class="material-icons">delete_sweep</i></a>
+                    </label>
+                  </li>
+                  <li class="w110 pr10">
+                    <div class="cs-file wp100">
+                      <label>
+                        <input type="file" (change)="insertImage($event)" style="display:none;" multiple>
+                        <i class="material-icons add-file-icon" >add</i>
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          
+          <div class="row">
+            <div class="col s12">
+              <div class="sm-table">
+                <table>
+                  <tr>
+                    <th class="text-right">OutStation Travel</th>
+                    <th class="w30 text-center">:</th>
+                    <td class="w100 text-right">{{totalOutTravelExp |currency: 'INR':true}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">OutStation Hotel Exp.</th>
+                    <th class="text-center">:</th>
+                    <td class="text-right">{{totalOutHotelExp|currency: 'INR':true}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">OutStation LOACL CONVENEC</th>
+                    <th class="text-center">:</th>
+                    <td class="text-right">{{totalOutLocalExp|currency: 'INR':true}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">OutStation Food Exp.</th>
+                    <th class="w30 text-center">:</th>
+                    <td class="w100 text-right">{{totalOutStationFoodExp |currency: 'INR':true}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">OutStation Misc Exp.</th>
+                    <th class="w30 text-center">:</th>
+                    <td class="w100 text-right">{{totalOutMiscExp |currency: 'INR':true}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <mat-divider class="mt15 mb15"></mat-divider>
+          
+          <div class="row">
+            <div class="col s12">
+              <div class="sm-table">
+                <table>
+                  <tr>
+                    <th class="text-right">BILL AMOUNT</th>
+                    <th class=" w30 text-center">:</th>
+                    <td class=" w120 text-right"> {{totalOutStationExp|currency: 'INR':true}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">ADVANCE</th>
+                    <th class="text-center">:</th>
+                    <td class="text-right">{{OutStationExpense.advanceAmount|currency: 'INR':true}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">CLAIM</th>
+                    <th class="text-center">:</th>
+                    <td class="text-right"> {{TotalClaimAmount|currency: 'INR':true}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col s12 mt15">
+              <div class="cs-btn text-right">
+                <div class="in-btn">
+                  <button mat-raised-button color="accent"(click)="OutStationExpense.status=1" >Save as Draft</button>
+                  <button mat-raised-button color="accent" (click)="OutStationExpense.status=2">Subbmit For Approvel</button>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </form>
+      
+      <form *ngIf="expenseForm.form==3" (ngSubmit)="f2.form.valid && promationExpense()|| setFocus(f2.form)" #f2="ngForm" novalidate>
+        <div class="cs-bill">
+          <div class="row">
+            <div class="col s12">
+              <div class="sprate-box pt0">
+                <div class="cs-heading">
+                  <h2>BASIC INFORMATION</h2>
+                </div>
+                <div class="from-fields">
+                  
+                  <div class="row">
+                    <div class="col s4">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="ADVANCE AMOUNT" type="number" id="advanceAmount" name="advanceAmount" #advanceAmount="ngModel" [(ngModel)]="allPromationExpense.advanceAmount"  [ngClass]="{'has-error' : advanceAmount.invalid }" required>
+                        </mat-form-field>
+                        <mat-error *ngIf="f2.submitted && advanceAmount.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="advanceAmount.errors.required">Purpose Of Visit required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                    <div class="col s4 pl0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <mat-select placeholder="Select Senior For Approval" name="expenseSanctioner" #expenseSanctioner="ngModel" id="expenseSanctioner" [(ngModel)]="allPromationExpense.expenseSanctioner" [ngClass]="{'has-error' : expenseSanctioner.invalid }" required >
+                            <mat-option *ngFor="let senior of seniorList" value={{senior.userId}}>{{senior.userName}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-error *ngIf="f2.submitted && expenseSanctioner.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="expenseSanctioner.errors.required">Advance Amount is required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          
+          
+          
+          <div class="collaps flat-collaps mt15">
+            <div class="collaps-area">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header class="outer-panel form-collaps mb10">
+                    <mat-panel-title>
+                      SALES PERMOTION ACTIVITY
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="inner-body">
+                    <div class="from-fields"> 
+                      <div class="row">
+                        <div class="col s3 pl0">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <mat-select placeholder="Sales Promotion" name="salesActivityType" #salesActivityType="ngModel" [(ngModel)]="promation_Expense.salesActivityType">
+                                <mat-option value="1">Mechanic get together</mat-option>
+                                <mat-option value="2">Retailer get together</mat-option>
+                                <mat-option value="3">van Campaign</mat-option>
+                                <mat-option value="4">Stall Campaign</mat-option>
+                                <mat-option value="5">Exhibition Participation</mat-option>
+                                <mat-option value="6">Signboard</mat-option>
+                                <mat-option value="7">Wall/Shop Painting</mat-option>
+                                <mat-option value="8">GiveAways</mat-option>
+                                <mat-option value="9">Printing Of Lesafelts,banners, posters etc.</mat-option>
+                                <!-- <mat-option value="10">Other</mat-option> -->
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col s3">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <input matInput [matDatepicker]="two" readonly [max]='currentDate' placeholder="Date" name="date" #date="ngModel" [(ngModel)]="promation_Expense.date">
+                              <mat-datepicker-toggle matSuffix [for]="two"></mat-datepicker-toggle>
+                              <mat-datepicker #two></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col s3">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <input matInput placeholder="Place Of Activity" name="placeOfActivity" #placeOfActivity="ngModel" [(ngModel)]="promation_Expense.placeOfActivity" >
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col s3 pr0">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <input matInput type="number" placeholder="No Of Attendees" name="noOfAttendees" #noOfAttendees="ngModel" [(ngModel)]="promation_Expense.noOfAttendees">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="row">
+                        <div class="col s6 pl0">
+                          <div class="row">
+                            <div class="col s6 pl0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Rental Expense" type="number" name="rentalExpenses" #rentalExpenses="ngModel" [(ngModel)]="promation_Expense.rentalExpenses">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col s6 pr0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Food Expense"  type="number" name="foodExpense" #foodExpense="ngModel" [(ngModel)]="promation_Expense.foodExpense">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col s6 pl0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Av Aids Expense"  type="number" name="avAidsExpense" #avAidsExpense="ngModel" [(ngModel)]="promation_Expense.avAidsExpense">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col s6 pr0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Gift Expense"  type="number" name="giftsExpense" #giftsExpense="ngModel" [(ngModel)]="promation_Expense.giftsExpense">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col s6 padding0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Misc Expense"  type="number" name="miscExpense" #miscExpense="ngModel" [(ngModel)]="promation_Expense.miscExpense">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col s6 padding0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Misc Expense"  type="number" name="approvedAmount" #approvedAmount="ngModel" [(ngModel)]="promation_Expense.approvedAmount">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="col s6 pr0">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <textarea matInput placeholder="Remark" name="remarks" #remarks="ngModel" [(ngModel)]="promation_Expense.remarks" class="h165"></textarea>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col s12 mt15">
+                      <div class="cs-btn text-right">
+                        <div class="in-btn">
+                          <button mat-raised-button color="accent" (click)="addToPromationList()" type="button">Add To List</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+          
+          <div *ngIf="pExpenseArray.length!=0" class="row mt15">
+            <div class="cs-table left-right-20">
+              <div class="table-head">
+                <table> 
+                  <tr>
+                    <th class="w160">Date</th>
+                    <th>Sales Promotion</th>
+                    <th class="w90">Place of Activity</th>
+                    <th class="w100">No Of Attendees</th>
+                    <th class="w100 text-right">Rental Exp.</th>
+                    <th class="w100 text-right">Food Exp.</th>
+                    <th class="w100 text-right">Av-Aids Exp.</th>
+                    <th class="w80 text-right">Gift Exp.</th>
+                    <th class="w90 text-right">Misc Exp.</th>
+                    <th class="w80 text-right">Total</th>
+                    <th>Remark</th>
+                  </tr>
+                </table>
+              </div>
+              
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor=" let promation of pExpenseArray;let index=index">
+                      <td class="w160"> {{promation.date |date:'EEEE, MMMM d, y'}}</td>
+                      <!-- <td>{{promation.salesActivityType}}</td> -->
+                      <td *ngIf="promation.salesActivityType==1">Mechanic get together</td>
+                      <td *ngIf="promation.salesActivityType==2"> Retailer get together</td>
+                      <td *ngIf="promation.salesActivityType==3">van Campaign</td>
+                      <td *ngIf="promation.salesActivityType==4">Stall Campaign</td>
+                      <td *ngIf="promation.salesActivityType==5">Exhibition Participation</td>
+                      <td *ngIf="promation.salesActivityType==6">Signboard</td>
+                      <td *ngIf="promation.salesActivityType==7">Wall/Shop Painting</td>
+                      <td *ngIf="promation.salesActivityType==8">GiveAways</td>
+                      <td *ngIf="promation.salesActivityType==9">Printing Of Lesafelts,banners, posters etc.</td>
+                      <td class="w90">{{promation.placeOfActivity}}</td>
+                      <td class="w100">{{promation.noOfAttendees}}</td>
+                      <td class="w100 text-right">&#x20B9; {{promation.rentalExpenses}}</td>
+                      <td class="w100 text-right">&#x20B9; {{promation.foodExpense}}</td>
+                      <td class="w100 text-right">&#x20B9; {{promation.avAidsExpense}}</td>
+                      <td class="w80 text-right"> &#x20B9; {{promation.giftsExpense}}</td>
+                      <td class="w90 text-right">&#x20B9; {{promation.miscExpense}}</td>
+                      <td class="w80 text-right"> &#x20B9; {{promation.total}}</td>
+                      <td> {{promation.remarks}}
+                        <div class="action-btns">
+                          <button mat-button class="delete" (click)="removeSalesPromotionalList(index)"><i class="material-icons">delete_sweep</i> Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt15">
+            <div class="col s12">
+              <div class="cs-file-multiple scroll">
+                <ul>
+                  <li class="w110 pr10" *ngFor="let urlData of urls;let i=index">
+                    <label>
+                      <img src="{{urlData}}">
+                      <a (click)="deleteimg(i)" class="close"><i class="material-icons">delete_sweep</i></a>
+                    </label>
+                  </li>
+                  <li class="w110 pr10">
+                    <div class="cs-file wp100">
+                      <label>
+                        <input type="file" (change)="insertImage($event)" style="display:none;" multiple>
+                        <i class="material-icons add-file-icon" >add</i>
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <div class="sm-table">
+                <table>
+                  <tr>
+                    <th class="text-right">Total Rental Exp.</th>
+                    <th class="w30 text-center">:</th>
+                    <td class="w100 text-right">&#x20B9; {{totalrentalExp}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">Total Food Exp.</th>
+                    <th class="text-center">:</th>
+                    <td class="text-right">&#x20B9; {{totalfoodExpense}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">Total AV Aids Exp.</th>
+                    <th class="w30 text-center">:</th>
+                    <td class="text-right">&#x20B9; {{totalavAidsExpense}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">Total Gifts Exp.</th>
+                    <th class="text-center">:</th>
+                    <td class="text-right">&#x20B9; {{totalgiftsExpense}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">Total Misc Exp.</th>
+                    <th class="text-center">:</th>
+                    <td class="text-right">&#x20B9; {{totalotherExpense}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">Total promational Exp.</th>
+                    <th class="text-center">:</th>
+                    <td class="text-right">&#x20B9; {{totalPromationalExp}}</td>
+                  </tr>
+                </table>
+                <table>
+                  <tr>
+                    <th class="text-right">Advance Amount </th>
+                    <th class="w30 text-center">:</th>
+                    <td class="w100 text-right">&#x20B9; {{allPromationExpense.advanceAmount}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">Claim Amount</th>
+                    <th class="text-center">:</th>
+                    <td class="text-right">&#x20B9; {{OutStationExpense.claimAmount}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12 mt15">
+              <div class="cs-btn text-right">
+                <div class="in-btn">
+                  <button mat-raised-button color="accent" (click)="allPromationExpense.status=1">Save</button>
+                  <button mat-raised-button color="accent" (click)="allPromationExpense.status=2">Save as Draft</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </form>
+      
+      <form *ngIf="expenseForm.form==4" (ngSubmit)="f3.form.valid && miscExpense()|| setFocus(f3.form)" #f3="ngForm" novalidate>
+        <div class="cs-bill" >
+          <div class="row">
+            <div class="col s12">
+              <div class="sprate-box pt0">
+                <div class="cs-heading">
+                  <h2>BASIC INFORMATION</h2>
+                </div>
+                <div class="from-fields">
+                  
+                  <div class="row">
+                    <div class="col s4 pl0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="Purpose Of Visit" type="text" id="purposeOfVisit" name="purposeOfVisit" #purposeOfVisit="ngModel" [(ngModel)]="misc_Expense.purposeOfVisit" [ngClass]="{'has-error' : purposeOfVisit.invalid }"  required >
+                        </mat-form-field>
+                        <mat-error *ngIf="f3.submitted && purposeOfVisit.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="purposeOfVisit.errors.required">Purpose of Visit required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                    <div class="col s4">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <input matInput placeholder="ADVANCE AMOUNT" type="number" id="advanceAmount" name="advanceAmount" #advanceAmount="ngModel" [(ngModel)]="misc_Expense.advanceAmount"  [ngClass]="{'has-error' : advanceAmount.invalid }" required>
+                        </mat-form-field>
+                        <mat-error *ngIf="f3.submitted && advanceAmount.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="advanceAmount.errors.required">Purpose Of Visit required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                    <div class="col s4 pl0">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input infix-bodr8">
+                          <mat-select placeholder="Select Senior For Approval" name="expenseSanctioner" #expenseSanctioner="ngModel" id="expenseSanctioner" [(ngModel)]="misc_Expense.expenseSanctioner" [ngClass]="{'has-error' : expenseSanctioner.invalid }" required >
+                            <mat-option *ngFor="let senior of seniorList" value={{senior.userId}}>{{senior.userName}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-error *ngIf="f3.submitted && expenseSanctioner.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="expenseSanctioner.errors.required">Advance Amount is required</mat-error>
+                        </mat-error>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+          
+          <div class="collaps flat-collaps mt15">
+            <div class="collaps-area">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header class="outer-panel form-collaps mb10">
+                    <mat-panel-title>
+                      MISC EXPENSE INFORMATION
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="inner-body">
+                    <div class="from-fields">
+                      <div class="row">
+                        <div class="col s6 pl0">
+                          <div class="row">
+                            <div class="col s6 pl0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <mat-select placeholder="Nature of expense" name="miscActivityType" #miscActivityType="ngModel" [(ngModel)]="miscExpenselist.miscActivityType" >
+                                    <mat-option value="1">Entertainment Expenses</mat-option>
+                                    <mat-option value="2">Gift To Dealers</mat-option>
+                                    <mat-option value="3">Lunch/Dinner With Team</mat-option>
+                                    <mat-option value="4">Training Program</mat-option>
+                                    <mat-option value="5">Other</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col s6 pr0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput [matDatepicker]="five" readonly [max]='currentDate' placeholder="Date" name="date" #date="ngModel" [(ngModel)]="miscExpenselist.date" readonly>
+                                  <mat-datepicker-toggle matSuffix [for]="five"></mat-datepicker-toggle>
+                                  <mat-datepicker #five></mat-datepicker>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col s6 pl0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Place Of Expense" name="placeOfExpense" #placeOfExpense="ngModel" [(ngModel)]="miscExpenselist.placeOfExpense">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            
+                            <div class="col s6 pr0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Name of Beneficiaries" name="nameOfBeneficiary" #nameOfBeneficiary="ngModel" [(ngModel)]="miscExpenselist.nameOfBeneficiary">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col s6 pr0">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input infix-bodr8">
+                                  <input matInput placeholder="Amount" name="amount" #amount="ngModel" [(ngModel)]="miscExpenselist.amount">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="col s6 pr0">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input infix-bodr8">
+                              <textarea matInput placeholder="Remark" class="h165" name="remarks" #remarks="ngModel" [(ngModel)]="miscExpenselist.remarks" ></textarea>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+                    
+                    <div class="col s12 mt15">
+                      <div class="cs-btn text-right">
+                        <div class="in-btn">
+                          <button mat-raised-button color="accent" [disabled]="!miscExpenselist.miscActivityType ||!miscExpenselist.date ||!miscExpenselist.placeOfExpense ||!miscExpenselist.nameOfBeneficiary ||!miscExpenselist.amount ||!miscExpenselist.remarks" (click)="addToMiscExpenseList()">Add To List</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+          
+          <div *ngIf="msExpArray.length!=0" class="row mt15">
+            <div class="cs-table left-right-20">
+              <div class="table-head">
+                <table> 
+                  <tr >
+                    <th class="w160">Date</th>
+                    <th class="w180">Nature Of Exp.</th>
+                    <th class="w170">Beneficiaries Name</th>
+                    <th class="w160">Place Of Expense</th>
+                    <th class="w100 text-right">amount</th>
+                    <th>Remark</th>
+                  </tr>
+                </table>
+              </div>
+              
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor="let misc of msExpArray;let index=index">
+                      <td class="w160">{{misc.date|date:'EEEE, MMMM d, y'}}</td>
+                      <!-- <td class="w200">{{misc.miscActivityType}}</td> -->
+                      <td *ngIf="misc.miscActivityType==1" class="w180">Entertainment Expenses</td>
+                      <td *ngIf="misc.miscActivityType==2" class="w180">Gift To Dealers</td>
+                      <td *ngIf="misc.miscActivityType==3" class="w180">Lunch/Dinner With Team</td>
+                      <td *ngIf="misc.miscActivityType==4" class="w180">Training Program</td>
+                      <td *ngIf="misc.miscActivityType==5" class="w180"> Other</td>
+                      <td class="w170">{{misc.nameOfBeneficiary}}</td>
+                      <td class="w160">{{misc.placeOfExpense}}</td>
+                      <td class="w100 text-right"> &#x20B9; {{misc.amount}}</td>
+                      <td> {{misc.remarks}}
+                        <div class="action-btns">
+                          <button mat-button class="delete" (click)="removeMiscExpenseList(index)"><i class="material-icons">delete_sweep</i> Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt15">
+            <div class="col s12">
+              <div class="cs-file-multiple scroll">
+                <ul>
+                  <li class="w110 pr10" *ngFor="let urlData of urls;let i=index">
+                    <label>
+                      <img src="{{urlData}}">
+                      <a (click)="deleteimg(i)" class="close"><i class="material-icons">delete_sweep</i></a>
+                    </label>
+                  </li>
+                  <li class="w110 pr10">
+                    <div class="cs-file wp100">
+                      <label>
+                        <input type="file" (change)="insertImage($event)" style="display:none;" multiple>
+                        <i class="material-icons add-file-icon" >add</i>
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <div class="sm-table">
+                <table>
+                  <tr>
+                    <th class="text-right">Total Misc Exp.</th>
+                    <th class="w30 text-center">:</th>
+                    <td class="w100 text-right">&#x20B9; {{totalMiscExp}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">Advance Amount</th>
+                    <th class="w30 text-center">:</th>
+                    <td class="w100 text-right">&#x20B9; {{misc_Expense.advanceAmount}}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-right">Claim Amount</th>
+                    <th class="w30 text-center">:</th>
+                    <td class="w100 text-right">&#x20B9; {{misc_Expense.claimAmount}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col s12">
+              <div class="cs-btn mt15 text-right">
+                <div class="in-btn">
+                  <button mat-raised-button color="accent" (click)="allmiscexpense('1')">Save as Draft</button>
+                  <button mat-raised-button color="accent" (click)="allmiscexpense('2')">Save For Approvel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+<div class="h50"></div>

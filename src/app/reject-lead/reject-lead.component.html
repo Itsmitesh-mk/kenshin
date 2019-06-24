@@ -1,0 +1,92 @@
+<div class="main-container">
+    <div *ngIf="loader"> 
+        <div class="cs-loader">
+          <img src="assets/img/loader.png" class="rotate"> 
+        </div>
+      </div>
+<div class="middle-container">
+  <div class="page-heading">
+      <img src="assets/img/leads_icon.svg" class="h-icon">
+      <div class="heading-text">
+          <h2>Reject Lead</h2>
+          <p></p>
+      </div>
+  </div>
+
+
+</div>
+
+<div class="container-outer">
+  <div class="container" >
+      <div class="row">
+          <div class="col s12">
+              <div class="cs-table left-right-20">
+                  <div class="table-head">
+                      <table  class="sno-border">
+                          <tr>
+                            <th class="w30">&nbsp;</th>
+                              <th class="w160">Date</th>
+                              <th class="w180">Company Name</th>
+                              <th class="w150">User's Name</th>
+                              <th>Description</th>
+                              <th class="w100">Task Type</th>
+                              <th class="w160">Rejected Date</th>
+                              <th class="w150">Rejected By</th>
+                          </tr>
+                      </table>
+                  </div>
+                 
+                  <div class="table-container">
+                      <div class="table-content">
+                          <table class="sno-border">
+                              <tr *ngFor="let task of rejectedList;let i=index">
+                                  <td class="w30">{{i+1}}</td>
+                                  <td class="w160">{{task.createdOn|date :'EEEE, MMMM d, y'}} </td>
+                                  <td class="w180">{{task.leadEstablishment}}</td>
+                                  <td  class="w150"> {{task.userName}} </td>
+                                  <td>{{task.remarks}}</td>
+                                  <td class="w100"> {{task.taskTypeName}}</td>
+                                  <td  class="w160">{{task.modifiedOn|date :'EEEE, MMMM d, y'}}</td>
+                                  <td class="w150">{{task.modifiedByName}}
+                                      <!-- <div class="action-btns">
+                                          <a mat-button class="view" (click)="goToDetail(task.taskId)"><i class="material-icons"  >remove_red_eye</i> View</a>
+                                             <button mat-button class="delete" (click)="deleteTask(task.taskId)"><i class="material-icons" >delete_sweep</i> Delete</button>
+                                      </div> -->
+                                  </td>
+                              </tr>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div *ngIf="div" class="data-not-available" >
+              <div class="outer">
+                  <div class="iinear">
+                      <div class="figure" matRipple>
+                          <div class="header">
+                              <img src="assets/img/data-not-available-header.svg" alt="">
+                          </div>
+                          
+                          <div class="description">
+                              <div class="cs-heading">
+                                  <h2>No Reject Lead</h2>
+                              </div>
+                              <div class="img">
+                                      <i class="material-icons">error_outline</i>
+                              </div>
+                              <div class="psc">
+                                  <p>data not available</p>
+                                  <!-- <p>Tap on <a href="">ADD NEW</a> for Service Plan</p> -->
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+  </div>
+</div>
+
+</div>

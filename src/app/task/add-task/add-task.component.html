@@ -1,0 +1,125 @@
+<div *ngIf="loader"> 
+  <div class="cs-loader">
+    <img src="assets/img/loader.png" class="rotate"> 
+  </div>
+</div>
+<form [formGroup]="addTask" (ngSubmit)="saveTask()" ngxScrollToFirstInvalid >
+  <div class="main-container">
+    <div class="middle-container">
+      <div class="page-heading">
+        <img src="assets/img/task.svg" class="h-icon">
+        <div class="heading-text">
+          <h2>Add New Task</h2>
+          <p>Assign new task </p>
+        </div>
+      </div>
+    </div>
+    <div class="container-outer">
+      <div class="container" >
+        <div class="row">
+          <div class="col s12">
+            <div class="sprate-box pt0">
+              <div class="cs-heading">
+                <h2>Creat New Task</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <div class="from-fields">
+                <div class="row">
+                  <div class="col s6">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="Select Role Type" formControlName="role" required >
+                          <mat-option (click)="userList(user.roleId)" *ngFor="let user of AllUserList " value={{user.roleId}}>{{user.roleName}}</mat-option>
+                          <!-- <mat-option (click)="oherUserDiv()" value=null>Other</mat-option> -->
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-error *ngIf="submitted && e.role.errors" >Network Type required</mat-error>
+                    </div>
+                  </div>
+                 <div class="col s6">
+                  <div *ngIf="other">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput type="text" placeholder="Other User Name" formControlName="other" required>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                 <div class="multi-all-select" *ngIf="other==false">
+                    <label>Sales User</label>
+                  <ng-multiselect-dropdown 
+                  [placeholder]="'Select'"
+                  [data]="saleslist"
+                  [settings]="dropdownSettings"
+                  formControlName="userId"
+                  >
+                </ng-multiselect-dropdown>
+                 </div>
+                 </div>
+                </div>
+                <div class="row">
+                  <div class="col s6">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput [matDatepicker]="days" [min]='currentDate' readonly placeholder="To Be Compelted By" formControlName="deadline"  required>
+                        <mat-datepicker-toggle matSuffix [for]="days"></mat-datepicker-toggle>
+                        <mat-datepicker #days></mat-datepicker>
+                      </mat-form-field>
+                      <mat-error *ngIf="submitted && e.deadline.errors" >Task Deadline is required</mat-error>
+                    </div>
+                  </div>
+                  <div class="col s6">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="Critical" formControlName="taskPriority"  >
+                          <mat-option value='1'>Currently Critical</mat-option>
+                          <mat-option value='2'>Potentially Critical</mat-option>
+                          <mat-option value='3'>Necessary</mat-option>
+                          <mat-option value='4'>Recommended </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      
+                      <mat-error *ngIf="submitted && e.taskPriority.errors" >Task Priority is required</mat-error>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <textarea matInput placeholder="Remark" class="h120" formControlName="remarks" required></textarea>
+                      </mat-form-field>
+                      <mat-error *ngIf="submitted && e.remarks.errors" >Remarks is required</mat-error>
+                    </div>
+                  </div>
+               </div>
+            </div>
+          <div>
+        </div>
+      </div>
+      <div class="col s8">
+        <div class="highlights">
+          <ul>
+            <!-- <li>Financial loss and Safety Related issues</li>
+            <li>Potential Financial or reputation loss, relationships with customer, statutory requirements</li> -->
+            <li *ngIf="addTask.value.taskPriority==1">Financial loss and Safety Related issues</li>
+                      <li *ngIf="addTask.value.taskPriority==2">Potential Financial or reputation loss, relationships with customer, statutory requirements</li>
+                      <li *ngIf="addTask.value.taskPriority==3">Policies and instructions from management</li>
+                      <li *ngIf="addTask.value.taskPriority==4">All others (no business impact)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col s4">
+        <div class="cs-btn fixedd mt15 text-right">
+          <div class="in-btn">
+            <button mat-raised-button color="accent">Save</button>
+          </div>
+        </div>
+      </div>
+      <div class="col s2">&nbsp;</div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="h50"></div>
+</div>
+</form>

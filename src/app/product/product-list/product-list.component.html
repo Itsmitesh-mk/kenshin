@@ -1,0 +1,212 @@
+<div class="main-container">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container pb15">
+    <div class="page-heading">
+      <img src="assets/img/product.svg" class="h-icon">
+      <div class="heading-text w250">
+        <h2>Product</h2>
+        <p>Total Product: {{totalrecord}}</p>
+      </div>
+    </div>
+    
+    <div *ngIf="filter.segment || filter.subsegment || filter.category || filter.prod || filter.oem || filter.model || filter.partNumber || filter.live" class="filter-container left-auto">
+      <div (click)="clearfilter()" class="filter-btn">
+        <button mat-button >CLEAR FILTER</button>
+      </div>
+    </div>
+    
+    <!-- <div class="top-pagination">
+      <ul>
+        <li class="refresh-area af-none">
+          <a class="refresh-btn" mat-raised-button matTooltip="Refresh" (click)="refresh()"><i class="material-icons"> refresh</i></a>
+        </li>
+        <li><p>Pages {{pagenumber}} Of {{totalpage}}</p></li>
+        <li><button mat-button class="left-btn" [disabled]="pagenumber == 1" (click)="pagination(currentPage,pageSize)"><i class="material-icons">keyboard_arrow_left</i></button></li>
+        <li><input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="pagination(pageSize,((pagenumber*pageSize)-pageSize))" [(ngModel)]="pagenumber"></li>
+        <li><button mat-button class="right-btn"  ng-disabled="true" [disabled]="pagenumber == totalpage" (click)="pagination((currentPage+1),pageSize)"><i class="material-icons">keyboard_arrow_right</i></button></li>
+      </ul>
+    </div> -->
+  </div>
+
+  
+  <div class="container-outer pt0">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            
+            <div class="sticky-head">
+              <div class="table-head ">
+                <table>
+                  <tr>
+                    <th class="w90">Segment</th>
+                    <th class="w180">SubSegment</th>
+                    <th class="w130">Category</th>
+                    <th >Product Name</th>
+                    <th class="w140">OEM</th>
+                    <th class="w160">Model</th>
+                    <th class="w110">PartNo.</th>
+                    <th *ngIf="userRole==1" class="w80">Live</th>
+                  </tr>
+                </table>
+              </div>
+              
+              <div class="table-head bdrt "  >
+                <table>
+                  <tr>
+                    <th class="w90">
+                      <div class="th-search-acmt" [ngClass]="{ 'clear-feilds' : removesegment == true}">
+                        <div class="th-search">
+                          <select #segment="ngModel" name="segment" [(ngModel)]="filter.segment" (change)="filterChangeHandler('segment')">
+                            <option value="" selected>All</option>
+                            <option value="{{list.text}}" *ngFor="let list of segmentlist">{{list.text}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </th>
+                    
+
+                    <th class="w180">
+                      <div class="th-search-acmt"  [ngClass]="{ 'clear-feilds' : removesubsegment == true}">
+                        <mat-form-field>
+                          <input type="text"  name="subsegment" [(ngModel)]="filter.subsegment" (ngModelChange)="subsegment_list()" matInput [matAutocomplete]="auto2">
+                          <mat-autocomplete #auto2="matAutocomplete" >
+                            <mat-option *ngFor="let subsegment of subsegmentlist; let i=index"  (click)="filterChangeHandler('subsegment')" value="{{subsegment.text}}">{{subsegment.text}}</mat-option>
+                          </mat-autocomplete>
+                          <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removesubsegmentfilter()"><i class="material-icons">clear</i></a>
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th class="w130">
+                      <div class="th-search-acmt"  [ngClass]="{ 'clear-feilds' : removecategory == true}">
+                        <mat-form-field>
+                          <input type="text" name="category" [(ngModel)]="filter.category" (ngModelChange)="category_list()" matInput [matAutocomplete]="auto3">
+                          <mat-autocomplete #auto3="matAutocomplete" >
+                            <mat-option *ngFor="let category of categorylist; let i=index"  (click)="filterChangeHandler('category')" value="{{category.text}}">{{category.text}}</mat-option>
+                          </mat-autocomplete>
+                          <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removecategoryfilter()"><i class="material-icons">clear</i></a>
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th>
+                      <div class="th-search-acmt"  [ngClass]="{ 'clear-feilds' : removeproductname == true}">
+                        <mat-form-field>
+                          <input type="text"  name="prod" [(ngModel)]="filter.prod" (ngModelChange)="productname_list()" matInput [matAutocomplete]="auto4">
+                          <mat-autocomplete #auto4="matAutocomplete" >
+                            <mat-option *ngFor='let prod of prodlist'  (click)="filterChangeHandler('productName')" value="{{prod.productName}}">{{prod.productName}}</mat-option>
+                          </mat-autocomplete>
+                          <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removeproductnamefilter()"><i class="material-icons">clear</i></a>
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th class="w140">
+                      <div class="th-search-acmt"  [ngClass]="{ 'clear-feilds' : removeoem==true}">
+                        <mat-form-field>
+                          <input type="text"   name="oem"  [(ngModel)]="filter.oem" (ngModelChange)="oem_list()" matInput [matAutocomplete]="auto5">
+                          <mat-autocomplete #auto5="matAutocomplete" >
+                            <mat-option *ngFor='let oem of  oemlist'   (click)="filterChangeHandler('oem')" value="{{oem.text}}">{{oem.text}}</mat-option>
+                          </mat-autocomplete>
+                          <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removeoemfilter()"><i class="material-icons">clear</i></a>
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w160">
+                      <div class="th-search-acmt"  [ngClass]="{ 'clear-feilds' : removemodel== true}">
+                        <mat-form-field>
+                          <input type="text"   name="model" [(ngModel)]="filter.model" (ngModelChange)="model_list()" matInput [matAutocomplete]="auto6">
+                          <mat-autocomplete #auto6="matAutocomplete" >
+                            <mat-option *ngFor='let model of  modellist'  (click)="filterChangeHandler('model')" value="{{model.text}}">{{model.text}}</mat-option>
+                          </mat-autocomplete>
+                          <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removemodelfilter()"><i class="material-icons">clear</i></a>
+                        </mat-form-field>
+                      </div>
+                    </th>
+                   
+                       <th class="w110">
+
+                          <div class="th-search-acmt"  [ngClass]="{ 'clear-feilds' : removepartnumber== true}">
+                            <mat-form-field>
+                                    <input type="text" name="partNumber" [(ngModel)]="filter.partNumber" (ngModelChange)="partNumberFilter()" matInput [matAutocomplete]="auto7">
+                                    <mat-autocomplete #auto7="matAutocomplete" >
+                                        <mat-option *ngFor='let list of partNumberList'  (click)="filterChangeHandler('partNumber')" value="{{list.partNumber}}">{{list.partNumber}}</mat-option>
+                                    </mat-autocomplete>
+                                    <a class="close-mat" matRipple  matTooltip="Clear" (click)=" removePartNumberFilter()"><i class="material-icons">clear</i></a>
+                            </mat-form-field>
+                          </div>
+                      </th>
+
+                      <th  *ngIf="userRole==1" class="w80">
+                          <div class="th-search">
+                              <select #live="ngModel" name="live" [(ngModel)]="filter.live" (change)="filterChangeHandler('live')">
+                                    <option value="" selected>Select Option</option>
+                                    <option [value]="true">Yes</option>
+                                    <option [value]="false">No</option>
+                              </select>
+                          </div>
+                      </th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let product of data">
+                    <td class="w90">{{product.segment}}</td>
+                    <td class="w180">{{product.subSegment}}</td>
+                    <td class="w130">{{product.category}}</td>
+                    <td><a class="link-btn" mat-button routerLink="/product-detail/{{product.productId}}" routerLinkActive="active" ><p>{{product.productName}}</p></a></td>
+                    <td class="w140">{{product.oem}}</td>
+                    <td class="w160"><p>{{product.model}}</p></td>
+                    <td class="w110">{{product.partNumber}}</td>
+                    <td *ngIf="product.isLive==true && userRole==1" class="w80 yes">Yes</td>
+                    <td *ngIf="product.isLive==false && userRole==1" class="w60 no">No</td>
+                    
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="data.length==0" class="data-not-available" >
+      <div class="outer">
+        <div class="iinear">
+          <div class="figure" matRipple>
+            <div class="header">
+              <img src="assets/img/data-not-available-header.svg" alt="">
+            </div>
+            <div class="description">
+
+              <div class="img">
+                  <i class="material-icons">error_outline</i>
+              </div>
+                
+              <div class="cs-heading">
+                <h2>Data Not Available</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div  class="fixed-multibtn-botm">
+    <ul>
+      <li *ngIf="userdata['userType'] == '1'"><a  matTooltip="Download Product Sheet" matRipple (click)="downloadFile()"><i class="material-icons">cloud_download</i></a></li>
+    </ul>
+  </div>
+  
+  <div class="h100"></div>
+</div>

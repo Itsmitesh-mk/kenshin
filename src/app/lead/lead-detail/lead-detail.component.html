@@ -1,0 +1,301 @@
+<div class="main-container">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/lead-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{lead.establishment}}</h2>
+        <p class="light">{{lead.role_name}}</p>
+      </div>
+    </div>
+    <div class="multi-btn">
+      <ul>
+        <!-- <li *ngIf="this.role==1 && lead.leadRole==12">
+          <a (click)="convert()" class="green-btn" matRipple>CONVERT TO CUSTOMER</a>
+        </li> -->
+      </ul>
+    </div>
+  </div>
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="profile-info">
+                <ul>
+
+                  <li  class="col s4">
+                      <div class="cs-box">
+                        <img src="assets/img/gst.svg" class="fix-img">
+                        <span>Mobile</span>
+                        <p>{{lead.mobile ? lead.mobile : '--'}}</p>
+                        <a *ngIf="role==1" class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEmail('mobile')"><i class="material-icons">create</i></a>
+                      </div>
+                  </li>
+
+                  <li class="col s4">
+                    <div class="cs-box">
+                      <img src="assets/img/gmail.svg" class="fix-img">
+                      <span>Email</span>
+                      <p class="link-clr">{{lead.email ? lead.email : '--'}}</p>
+                      <a  *ngIf="role==1" class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEmail('email')"><i class="material-icons">create</i></a>
+                    </div>
+                  </li>
+                  <li  class="col s4">
+                    <div class="cs-box">
+                      <img src="assets/img/phone.svg" class="fix-img">
+                      <span>Landline</span>
+                      <p>{{lead.landline ? lead.landline : '--'}}</p>
+                      <a class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEmail('landline')"><i class="material-icons">create</i></a>
+                    </div>
+                  </li>
+                  
+                </ul>
+
+                <ul class="mt15">
+
+                    <li  class="col s4">
+                        <div class="cs-box">
+                          <img src="assets/img/gst.svg" class="fix-img">
+                          <span>GST Number</span>
+                          <p>{{lead.gst ? lead.gst : '--'}}</p>
+                          <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEmail('gst')"><i class="material-icons">create</i></a>
+                        </div>
+                    </li>
+                    
+                   
+                    <li  class="col s4">
+                      <div class="cs-box">
+                        <img src="assets/img/gst.svg" class="fix-img">
+                        <span>Source</span>
+                        <p>{{lead.gst ? lead.sourceName : '--'}}</p>
+                        <!-- <a  *ngIf="role==1" class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEmail('gst')"><i class="material-icons">create</i></a> -->
+                      </div>
+                    </li>
+                    <li  class="col s4" *ngIf="role==1">
+                      <div class="cs-box">
+                        <img src="assets/img/gst.svg" class="fix-img">
+                        <span>Assigned To</span>
+                        <p>{{lead.salesUserName ? lead.salesUserName : '--'}}</p>
+                        <!-- <a  *ngIf="role==1" class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEmail('gst')"><i class="material-icons">create</i></a> -->
+                      </div>
+                    </li>
+                    
+                  </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col s8">
+          <div class="sprate-box padding0">
+            <div class="full-address">
+              <div class="top-heading">
+                <h2>ADDRESS</h2>
+              </div>
+              <a mat-button class="address-edit" matTooltip="EDIT" color="accent"  (click)="openEmail('address')"><i class="material-icons">edit</i></a>
+              <div class="nationality">
+                <img src="assets/img/india.svg" alt="">
+                <p>India</p>
+              </div>
+              <div class="ds-from-fields">
+                  <div class="cs-row">
+                      <div class="static-info">
+                        <p>address</p>
+                        <p>{{lead.street ? lead.street : '--'}}</p>
+                      </div>
+                    </div>
+                <div class="cs-row">
+                  <div class="static-info">
+                    <p>State</p>
+                    <p>{{lead.state}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>District</p>
+                    <p>{{lead.district}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>City</p>
+                    <p>{{lead.city}}</p>
+                  </div>
+                  <div class="static-info w100" style="min-width: 100px;">
+                    <p>Pincode</p>
+                    <p>{{lead.pin}}</p>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <div class="sprate-box padding0 mt20">
+            <div class="full-address">
+              <div class="top-heading">
+                <h2>CONTACT PERSONS</h2>
+              </div>
+              <a  mat-button class="address-edit" matTooltip="EDIT" color="accent" (click)="openEmail('contact')"><i class="material-icons">edit</i></a>
+              <div *ngIf="lead.leadContacts && lead.leadContacts.length>0" class="cs-table">
+                <div class="table-head">
+                  <table>
+                    <tr>
+                      <th>Name</th>
+                      <th class="w150">Mobile No 1</th>
+                      <th class="w150">Mobile No 2</th>
+                    </tr>
+                  </table>
+                </div>
+                <div class="table-container">
+                  <div class="table-content none-shadow">
+                    <table>
+                      <tr *ngFor="let contact of lead.leadContacts">
+                        <td>{{contact.name}}</td>
+                        <td class="w150">{{contact.mobile1}}</td>
+                        <td class="w150">{{contact.mobile2}}
+                          <!-- <div class="action-btns">
+                            <a mat-button class="edit"><i class="material-icons">create</i> Edit</a>
+                            <button mat-button class="delete"><i class="material-icons">delete_sweep</i> Delete</button>
+                          </div> -->
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+          <div class="sprate-box padding0 mt20">
+            <div class="top-heading" *ngIf="lead.userTasks!=''">
+              <h2>
+                Task History
+              </h2>
+            </div>
+            <div class="cs-table" *ngIf="lead.userTasks!=''">
+              <div class="table-head">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th class="w100">Date</th>
+                    <!-- <th class="w180">Created By</th> -->
+                    <th class="w180">Sales User</th>
+                    <th>Description</th>
+                    <th class="w100 text-center">Status</th>
+                  </tr>
+                </table>
+              </div>
+              
+              <div class="table-container">
+                <div class="table-content none-shadow">
+                  <table class="sno-border">
+                    <tr *ngFor=" let data of lead.userTasks;let i=index">
+                      <td class="w30">{{i+1}}</td>
+                      <td class="w100">{{data.createdOn |date:'d MMM y'}}</td>
+                      <!-- <td class="w180">{{data.createdByName}}</td> -->
+                      <td class="w180">{{data.userName}}</td>
+                      <td>{{data.remarks}}</td>
+
+                      
+                      <td *ngIf="data.taskStatusName == 'InProcess'" class="w100  text-center">InProcess</td>
+
+                      <td *ngIf="data.taskStatusName != 'InProcess'" class="w100  text-center">{{data.leadConverted ? 'Converted' : 'Not Converted'}}</td>
+                     
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        
+        <div class="col s4 right-sticky">
+
+
+          <div *ngIf="isSegmentEditClicked==false" class="sprate-box padding0">
+            <div class="top-heading">
+              <h2>Segments</h2>
+              <a *ngIf="role==1" (click)="isSegmentEditClicked = true;" mat-button class="address-edit" matTooltip="EDIT" color="accent"><i class="material-icons">edit</i></a>
+            </div>
+            <div class="territory-info bodr0">
+
+              <div *ngIf="lead.leadSegments?.length == 0" class="not-data">
+                <div  class="inner-data">
+                  <p>No Data</p>
+                </div>
+              </div>
+
+              <div *ngIf="lead.leadSegments?.length > 0" class="cs-checkbox">
+                <div class="checkbox-outer" >
+                  <section class="checkbox-inner bodr0" >
+
+                    <mat-checkbox *ngFor="let list of lead.leadSegments" class="check-list bg-none check-none check-none check-none check-none">
+                      <div class="name-outer">
+                        <div class="outer">
+                          <div class="inner">
+                            <div class="name-inner">
+                              S
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="text-box">
+                        <h2>{{list.segment}}</h2>
+                      </div>
+                    </mat-checkbox>
+
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="isSegmentEditClicked==true" class="sprate-box padding0">
+
+            <div class="top-heading">
+              <h2>Segments</h2>
+            </div>
+
+            <div class="territory-info bodr0">
+                <div class="cs-checkbox">
+                  <div class="checkbox-outer auto-height-scroll">
+                    <section class="checkbox-inner" >
+                      <ng-container *ngFor='let segment of segmentlist;let i=index' aria-required="true">
+                        <mat-checkbox class="check-list" [(ngModel)]='segment.check'>{{segment.text}}</mat-checkbox>
+                      </ng-container>
+                    </section>
+                  </div>
+                </div>
+            </div>
+
+            <div class="row mt15">
+                <div class="col s12">
+                  <div class="cs-btn mb15 text-right">
+                    <button (click)="isSegmentEditClicked=false"  mat-raised-button color="warn" class="mr15" >Cancel</button>
+                    <button mat-raised-button color="accent" (click)="updateSegment()">Update</button>
+                  </div>
+                </div>
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="h50"></div>
+

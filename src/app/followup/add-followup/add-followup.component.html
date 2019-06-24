@@ -1,0 +1,143 @@
+<form #f="ngForm" (ngSubmit)="f.valid && onSubmit()">
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+<div class="main-container">
+  <div class="middle-container">
+    <div class="page-heading">
+      <img src="assets/img/leads_icon.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>{{lead_data.establishment}}</h2>
+        <p>{{lead_data.city}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s2">&nbsp;</div>
+        <div class="col s8">
+          <div class="sprate-box">
+            <div class="cs-heading">
+              <h2>Create Follow-up</h2>
+              <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+            </div>
+            <mat-divider class="left-right-15 mt10"></mat-divider>
+            <div class="from-fields">
+              <div class="row mb0">
+                <div class="col s6 pl0">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input infix-bodr8">
+                      <mat-select  placeholder="Select Network" id="role" name="role" [(ngModel)]="activitydata.role" #role="ngModel"  [ngClass]="{ 'is-invalid': f.submitted && role.invalid }" required>
+                        <mat-option  (click)="getnetworklist(role.roleId)" *ngFor="let role of client1" value="{{role.roleId}}">{{role.roleName}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-error *ngIf="f.submitted && role.invalid" class="invalid-feedback">
+                      <mat-error *ngIf="role.errors.required">Network  is required</mat-error>
+                    </mat-error>
+                  </div>
+                </div>
+                <div class="col s6 pr0">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input infix-bodr8">
+                      <mat-select  placeholder="Select Company"  id="networkId" name="networkId" #networkId="ngModel" [(ngModel)]="activitydata.networkId" [ngClass]="{ 'is-invalid': f.submitted && networkId.invalid }" required>
+                        <mat-option *ngFor="let netdata of distributionList" value="{{netdata.networkId}}">{{netdata.establishment}}</mat-option>
+                        <!-- <mat-option value="OtherCustomerType">Other User</mat-option> -->
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-error *ngIf="f.submitted && networkId.invalid" class="invalid-feedback">
+                      <mat-error *ngIf="networkId.errors.required">Company is required</mat-error>
+                    </mat-error>
+                  </div>
+                </div>
+                <div *ngIf="activitydata.networkId=='OtherCustomerType'" class="row">
+                  <div  class="col s6 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput placeholder="Name" id="OtherCustomer" name="OtherCustomer" #OtherCustomer="ngModel" [(ngModel)]="activitydata.OtherCustomer" [ngClass]="{ 'is-invalid': f.submitted && OtherCustomer.invalid }" required>
+                      </mat-form-field>
+                      <mat-error *ngIf="f.submitted && OtherCustomer.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="OtherCustomer.errors.required">Name is required</mat-error>
+                        
+                      </mat-error>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col s6">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-select placeholder="Activity Type" name="activityType" #activityType="ngModel" [(ngModel)]="activitydata.activityType"  [ngClass]="{ 'is-invalid': f.submitted && activityType.invalid }" required>
+                        <mat-option value="1">Call </mat-option>
+                        <mat-option value="2">Metting </mat-option>
+                        <mat-option value="3">Email </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-error *ngIf="f.submitted && activityType.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="activityType.errors.required">Activity Type is required</mat-error>
+                      </mat-error>
+                  </div>
+                </div> -->
+              </div>
+              <div class="row mb0">
+                <div class="col s6">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <input matInput [matDatepicker]="picker"  [min]='currentDate' placeholder="Choose a date" name="followUpDate" #followUpDate="ngModel" [(ngModel)]="activitydata.followUpDate" [ngClass]="{ 'is-invalid': f.submitted && followUpDate.invalid }" readonly required>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-error *ngIf="f.submitted && followUpDate.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="followUpDate.errors.required">Date is required</mat-error>
+                      </mat-error>
+                  </div>
+                </div>
+                <div class="col s6">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-select placeholder="Next Follow-up Type" name="followUpType" #followUpType="ngModel" [(ngModel)]="activitydata.followUpType" [ngClass]="{ 'is-invalid': f.submitted && followUpType.invalid }" required >
+                        <mat-option value="1">Call </mat-option>
+                        <mat-option value="2">Metting </mat-option>
+                        <mat-option value="3">Email </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-error *ngIf="f.submitted && followUpType.invalid" class="invalid-feedback">
+                        <mat-error *ngIf="followUpType.errors.required">Follow-up Type is required</mat-error>
+                      </mat-error>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb0">
+                <div class="col s12">
+                  <div class="from-fields">
+                    <div class="control-field" >
+                      <mat-form-field class="cs-input wp100 h-input">
+                        <textarea matInput placeholder="Remark" name="remarks" #remarks="ngModel" [(ngModel)]="activitydata.remarks" [ngClass]="{ 'is-invalid': f.submitted && remarks.invalid }" required  ></textarea>
+                      </mat-form-field>
+                      <mat-error *ngIf="f.submitted && remarks.invalid" class="invalid-feedback">
+                          <mat-error *ngIf="remarks.errors.required">Remarks is required</mat-error>
+                        </mat-error>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col s2">&nbsp;</div>
+          <div class="col s2">&nbsp;</div>
+          <div class="col s8">
+            <div class="cs-btn fixedd mt32 text-right">
+              <div class="in-btn">
+                <button mat-raised-button color="accent" >Save</button>
+              </div>
+            </div>
+          </div>
+          <div class="col s2">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="h50"></div>
+</div>
+</form>

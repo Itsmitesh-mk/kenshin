@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 21.785">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ff7058;
+      }
+    </style>
+  </defs>
+  <g id="security-code" transform="translate(-12.145)">
+    <path id="Path_528" data-name="Path 528" class="cls-1" d="M121.208,64.6a2.436,2.436,0,0,0-2.471-2.3,1.589,1.589,0,0,0-.187.009,1.914,1.914,0,0,0-1.785-1.19,2.632,2.632,0,0,0-1.07.238,1.937,1.937,0,0,0-1.811-1.19,2.723,2.723,0,0,0-1.089.238V57.893a1.434,1.434,0,1,0-2.867,0V64.22c-3.308.807-.294,5.774.662,7.268v1.834a.834.834,0,0,0,.807.772h7.572a.712.712,0,0,0,.664-.772v-1.74A9.587,9.587,0,0,0,121.208,64.6Z" transform="translate(-89.193 -52.308)"/>
+    <circle id="Ellipse_11" data-name="Ellipse 11" class="cls-1" cx="1.441" cy="1.441" r="1.441" transform="translate(20.706 0)"/>
+    <circle id="Ellipse_12" data-name="Ellipse 12" class="cls-1" cx="1.441" cy="1.441" r="1.441" transform="translate(16.382 4.151)"/>
+    <circle id="Ellipse_13" data-name="Ellipse 13" class="cls-1" cx="1.441" cy="1.441" r="1.441" transform="translate(16.382 0)"/>
+    <circle id="Ellipse_14" data-name="Ellipse 14" class="cls-1" cx="1.441" cy="1.441" r="1.441" transform="translate(12.145 4.151)"/>
+    <circle id="Ellipse_15" data-name="Ellipse 15" class="cls-1" cx="1.441" cy="1.441" r="1.441" transform="translate(12.145 0)"/>
+    <circle id="Ellipse_16" data-name="Ellipse 16" class="cls-1" cx="1.441" cy="1.441" r="1.441" transform="translate(16.382 8.301)"/>
+    <circle id="Ellipse_17" data-name="Ellipse 17" class="cls-1" cx="1.441" cy="1.441" r="1.441" transform="translate(12.145 8.301)"/>
+  </g>
+</svg>

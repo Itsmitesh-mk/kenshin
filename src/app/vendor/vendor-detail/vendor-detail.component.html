@@ -1,0 +1,375 @@
+<div class="main-container" >
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/vendor-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{vendordetail.vendorName}}</h2>
+        <p class="light">Vendor</p>
+      </div>
+    </div>
+    
+  </div>
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="profile-info">
+                <ul class="flex-start">
+                    <li>
+                        <div class="cs-box">
+                          <img src="assets/img/code.svg" class="fix-img">
+                          <span>Vendor Code</span>
+                          <p class="link-clr">#{{vendordetail.vendorCode}}</p>
+                          <!-- <a class="edit-icon" color="accent" matRipple matTooltip="EDIT">
+                            <i class="material-icons">create</i>
+                          </a> -->
+                        </div>
+                      </li>
+                      <li>
+                          <div class="cs-box">
+                            <img src="assets/img/phone.svg" class="fix-img">
+                            <span>GST No</span>
+                            <p>{{vendordetail.gstNo}}</p>
+                            <a *ngIf="userType==1" class="edit-icon" color="accent" (click)="openEmail('gstNo')" matRipple matTooltip="EDIT">
+                              <i class="material-icons">create</i>
+                            </a>
+                          </div>
+                        </li>
+                      <li>
+                          <div class="cs-box">
+                            <img src="assets/img/phone.svg" class="fix-img">
+                            <span>Landline</span>
+                            <p>{{vendordetail.landline}}</p>
+                            <a *ngIf="userType==1" class="edit-icon" color="accent" (click)="openEmail('landline')" matRipple matTooltip="EDIT">
+                              <i class="material-icons">create</i>
+                            </a>
+                          </div>
+                        </li>
+                </ul>
+                <ul class="flex-start">
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/applicant.svg" class="fix-img">
+                      <span>Contact Person</span>
+                      <p class="link-clr">{{vendordetail.contactPersonName}}</p>
+                      <a *ngIf="userType==1" class="edit-icon" (click)="openEmail('contact_person')" color="accent" matRipple matTooltip="EDIT">
+                        <i class="material-icons">create</i>
+                      </a>
+                    </div>
+                  </li>
+                  
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/mobile.svg" class="fix-img">
+                      <span>Mobile 1</span>
+                      <p>{{vendordetail.mobile1}}</p>
+                      <a *ngIf="userType==1" class="edit-icon" (click)="openEmail('mobile')" color="accent" matRipple matTooltip="EDIT">
+                        <i class="material-icons">create</i>
+                      </a>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/mobile.svg" class="fix-img">
+                      <span>Mobile 2</span>
+                      <p>{{vendordetail.mobile2}}</p>
+                      <a *ngIf="userType==1" class="edit-icon" (click)="openEmail('mobile2')" color="accent" matRipple matTooltip="EDIT">
+                        <i class="material-icons">create</i>
+                      </a>
+                    </div>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/gmail.svg" class="fix-img">
+                      <span>Email</span>
+                      <p>{{vendordetail.emailid}}</p>
+                      <a *ngIf="userType==1" class="edit-icon" color="accent" (click)="openEmail('email')" matRipple matTooltip="EDIT">
+                        <i class="material-icons">create</i>
+                      </a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div  class="row">
+        <div class="col s8">
+          <div class="sprate-box padding0">
+            <div class="full-address">
+              <div class="top-heading">
+                <h2>ADDRESS</h2>
+              </div>
+              <a *ngIf="userType==1"  mat-button class="address-edit" (click)="openEmail('address')" matTooltip="EDIT"><i class="material-icons">edit</i></a>
+              <div class="nationality">
+                <img src="assets/img/india.svg" alt="">
+                <p>India</p>
+              </div>
+              <div class="ds-from-fields">
+                  <div class="cs-row">
+                      <div class="static-info">
+                        <p>Street</p>
+                        <p>{{vendordetail.street}} </p>
+                      </div>
+                    </div>
+                <div class="cs-row">
+                  <div class="static-info">
+                    <p>State</p>
+                    <p>{{vendordetail.vendorState}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>District</p>
+                    <p>{{vendordetail.district}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>City</p>
+                    <p>{{vendordetail.city}}</p>
+                  </div>
+                  <div class="static-info w100" style="min-width: 100px;">
+                    <p>Pin Code</p>
+                    <p>{{vendordetail.pincode}}</p>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col s4">
+          <div class="sprate-box padding0">
+            <div class="cs-logs">
+              <div class="top-heading">
+                <h2>ACCOUNT INFO</h2>
+              </div>
+              <div class="logs-outer">
+                <div class="logs-list">
+                  <div class="account-details">
+                    <ul>
+                      <!-- <li>
+                        <div class="outer">
+                          <div class="inner">
+                            <div class="cs-account">
+                              <p>User Name</p>
+                              <h5>{{vendordetail.emailid}}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </li> -->
+                      <!-- <li>
+                        <div class="outer">
+                          <div class="inner">
+                            <div class="cs-account">
+                              <p>Password</p>
+                              <input type="password" placeholder="********">
+                              <i class="material-icons pass-icon pass-show">visibility</i>
+                              <i class="material-icons pass-icon pass-hide">visibility_off</i>
+                            </div>
+                          </div>
+                        </div>
+                      </li> -->
+                      <li class="status-bg">
+                        <div class="outer">
+                          <div class="inner">
+                            <div class="cs-account">
+                              <p>Status</p>
+                              <h5 *ngIf="vendordetail.vendorStatus==true">Active</h5>
+                              <h5 *ngIf="vendordetail.vendorStatus==false">Inactive</h5>
+                              <mat-slide-toggle class="status-toogle" [checked]="vendordetail.vendorStatus" (change)="checkstatus(vendordetail.vendorStatus)" [(ngModel)]="vendordetail.vendorStatus" color="warn">&nbsp;</mat-slide-toggle>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- <div class="row">
+        <div class="col s12">
+          <div class="sprate-box pt0 mt15">
+            <div class="cs-heading">
+              <h2>PURCHASE ORDER</h2>
+            </div>
+            <div class="cs-table left-right-15">
+              <div class="table-head">
+                <table class="sno-border"> 
+                  <tr >
+                    <th class="w40">&nbsp;</th>
+                    <th class="w270">Date & Created By </th>  
+                    <th>P.O No</th>  
+                    <th class="w150">Total Item</th>  
+                    <th class="w150">QR Code Generat</th> 
+                  </tr>
+                </table>
+              </div>
+              
+              <div class="table-container">
+                <div class="table-content none-shadow">
+                  <table class="sno-border">
+                    <tr>
+                      <td class="w40">1</td>
+                      <td class="w270">1 12 Aug 2018, Pankaj</td>  
+                      <td>
+                        <a class="link-btn"  mat-button>#PO2458458</a>
+                      </td>  
+                      <td class="w150">25</td>  
+                      <td class="w150 inactive">24</td> 
+                      
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>1 12 Aug 2018, Pankaj</td>  
+                      <td>
+                        <a class="link-btn"  mat-button>#PO2458458</a>
+                      </td>  
+                      <td>25</td>  
+                      <td class="actives">20</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>1 12 Aug 2018, Pankaj</td>  
+                      <td>
+                        <a class="link-btn"  mat-button>#PO2458458</a>
+                      </td>  
+                      <td>25</td>  
+                      <td class="actives">20</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="row">
+          <div class="col s12">
+            <div class="sprate-box pt0 mt15">
+              <div class="cs-heading">
+                <h2>QR CODE REQUEST</h2>
+              </div>
+              <div class="cs-table left-right-15">
+                <div class="table-head">
+                  <table class="sno-border"> 
+                    <tr >
+                      <th class="w40">&nbsp;</th>
+                      <th class="w110">Date</th>  
+                      <th class="w150">P.O No</th>  
+                      <th>Item Description</th>  
+                      <th class="w80">QTY.</th> 
+                      <th class="w110">Status</th>
+                      <th class="w280">Action</th>
+                    </tr>
+                  </table>
+                </div>
+                
+                <div class="table-container">
+                  <div class="table-content none-shadow">
+                    <table class="sno-border">
+                      <tr>
+                        <td class="w40">1</td>
+                        <td class="w110">12 June 2019</td>  
+                        <td class="w150">#PO12345</td>
+                        <td>Lorem Ipsum is simply text.</td> 
+                        <td class="w80">20</td>
+                        <td class="w110 actives">Generated</td>
+                        <td class="w280">
+                          <a class="link-btn underline"  mat-button routerLink="/qr-code-detail" routerLinkActive="active">VIEW QR CODE</a>
+                        </td> 
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td>12 June 2019</td>  
+                        <td>#PO12345</td>
+                        <td>Lorem Ipsum is simply text.</td> 
+                        <td>20</td>
+                        <td class="inactive">Pending</td>
+                        <td>
+                          <div class="cs-btn">
+                            <div class="in-btn qr-btn">
+                              <button mat-raised-button color="warn" >Reject</button>
+                              <button mat-raised-button color="accent" >Generate QR Code</button>
+                            </div>
+                          </div>
+                        </td> 
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>12 June 2019</td>  
+                        <td>#PO12345</td>
+                        <td>Lorem Ipsum is simply text.</td> 
+                        <td>20</td>
+                        <td class="inactive">Pending</td>
+                        <td>
+                          <div class="cs-btn">
+                            <div class="in-btn qr-btn">
+                              <button mat-raised-button color="warn" >Reject</button>
+                              <button mat-raised-button color="accent" >Generate QR Code</button>
+                            </div>
+                          </div>
+                        </td> 
+                      </tr>
+                      <tr>
+                        <td>4</td>
+                        <td>12 June 2019</td>  
+                        <td>#PO12345</td>
+                        <td>Lorem Ipsum is simply text.</td> 
+                        <td>20</td>
+                        <td class="actives">Generated</td>
+                        <td><a class="link-btn underline"  mat-button routerLink="/qr-code-detail" routerLinkActive="active">VIEW QR CODE</a></td> 
+                      </tr>
+                      <tr>
+                        <td>5</td>
+                        <td>12 June 2019</td>  
+                        <td>#PO12345</td>
+                        <td>Lorem Ipsum is simply text.</td> 
+                        <td>20</td>
+                        <td class="inactive">Pending</td>
+                        <td>
+                          <div class="cs-btn">
+                            <div class="in-btn qr-btn">
+                              <button mat-raised-button color="warn" >Reject</button>
+                              <button mat-raised-button color="accent" >Generate QR Code</button>
+                            </div>
+                          </div>
+                        </td> 
+                      </tr>
+                      <tr>
+                        <td>6</td>
+                        <td>12 June 2019</td>  
+                        <td>#PO12345</td>
+                        <td>Lorem Ipsum is simply text.</td> 
+                        <td>20</td>
+                        <td class="actives">Generated</td>
+                        <td><a class="link-btn underline"  mat-button routerLink="/qr-code-detail" routerLinkActive="active">VIEW QR CODE</a></td> 
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        
+      
+    </div>
+  </div>
+</div>
+<div class="h50"></div>

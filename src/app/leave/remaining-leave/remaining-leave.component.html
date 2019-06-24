@@ -1,0 +1,25 @@
+<div class="col s4 pr0">
+  <div class="role-leave li-border">
+    <h2> Leave Info 
+    </h2>
+    <ul>
+        <li style ="text-align: right">
+
+            <span>Total</span>
+            <span>Used</span>
+            <span>Pending</span>
+        </li>
+
+      <li *ngFor="let a of leaveList">                          
+        <p   >{{a.leaveType}}</p>
+        <span  class="counter">{{a.totalLeaves}}</span>
+        <span  class="counter">{{ a.totalLeaves - a.remainingLeaves}}</span>
+        <span  class="counter">{{a.remainingLeaves}}  </span>
+      </li>
+     
+    </ul>
+  </div>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-raised-button [mat-dialog-close]="false" color="warn">Close</button>
+</mat-dialog-actions>

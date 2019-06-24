@@ -1,0 +1,1180 @@
+<div class="main-container" >
+  <div *ngIf="loader"> 
+    <div class="cs-loader">
+      <img src="assets/img/loader.png" class="rotate"> 
+    </div>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/sale-user-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{salesdata.userName}}  
+          
+          <a *ngIf="this.role==1" class="edit-icon" color="accent" matRipple matTooltip="EDIT" name="userName" (click)="openEmail('userName')"><i class="material-icons">create</i></a>
+        
+        </h2>
+        <p class="light">{{salesdata.roleName}}</p>
+      </div>
+    </div>
+
+    <div *ngIf="userdata.role ==1 && userdata.superAdmin" class="tabs right-tab">
+      
+        <ul>
+            <li><a class="{{currentActiveTab==1 ? 'tab-active' : ''}}" (click)='currentActiveTab=1' routerLinkActive="active">Details</a></li>
+  
+            <li><a  class="{{currentActiveTab==2 ? 'tab-active' : ''}}" (click)='currentActiveTab=2 ; lead_list()' routerLinkActive="active">Leads</a></li>
+  
+            <li><a class="{{currentActiveTab==3 ? 'tab-active' : ''}}" (click)="currentActiveTab=3; getOrderList()" routerLinkActive="active">Orders</a></li>
+
+            <li><a class="{{currentActiveTab==4 ? 'tab-active' : ''}}" (click)="currentActiveTab=4; getConcernList()" routerLinkActive="active">Concern List</a></li>
+
+            <li><a class="{{currentActiveTab==5 ? 'tab-active' : ''}}" (click)='currentActiveTab=5; getTravelList()' routerLinkActive="active">Travel Plans</a></li>
+
+            <li><a class="{{currentActiveTab==6 ? 'tab-active' : ''}}" (click)="currentActiveTab=6; getExpenseList()" routerLinkActive="active">Expenses</a></li>
+              
+            <li><a class="{{currentActiveTab==7 ? 'tab-active' : ''}}" (click)='currentActiveTab=7;getCheckinList()' routerLinkActive="active">DVR</a></li>
+
+  
+          </ul>
+
+      </div>
+    <!-- <div class="tabs right-tab">
+      <ul>
+        <li><a  routerLink="/sale-user-detail/{{id}}" routerLinkActive="active">DETAIL</a></li>
+        <li><a>ORDERS</a></li>
+        <li><a>LEADS</a></li>
+        <li><a>FOLLOWUP</a></li>
+        <li><a>TARGETS</a></li>
+        <li><a>TRAVEL PLAN</a></li>
+      </ul>
+    </div> -->
+  </div>
+
+  <div class="container-outer">
+    <div class="container" >
+      <div *ngIf="currentActiveTab==1" class="row">
+        <div class="col s12">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="profile-info">
+                <ul class="flex-start">
+
+
+                  <li>
+                      <div class="cs-box">
+                        <img src="assets/img/gmail.svg" class="fix-img">
+                        <span>Designation</span>
+                        <p class="link-clr">{{salesdata.designationName}}</p>
+                        <a *ngIf="this.role==1" class="edit-icon" color="accent" matRipple matTooltip="EDIT" [(ngModel)]="salesdata.designationName" #designationName="ngModel" name="designationName"  (click)="openEmail('designationName')" ><i class="material-icons">create</i></a>
+                      </div>
+                    </li>
+
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/gmail.svg" class="fix-img">
+                      <span>Email</span>
+                      <p class="link-clr">{{salesdata.email}}</p>
+                      <a *ngIf="this.role==1" class="edit-icon" color="accent" matRipple matTooltip="EDIT" [(ngModel)]="salesdata.email"  name="email" (click)="openEmail('email')"><i class="material-icons">create</i></a>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/phone.svg" class="fix-img">
+                      <span>Mobile</span>
+                      <p>{{salesdata.mobile}}</p>
+                      <a *ngIf="this.role==1" class="edit-icon"  color="accent" matRipple matTooltip="EDIT" (click)="openEmail('mobile')"><i class="material-icons">create</i></a>
+                    </div>
+                  </li>
+                  <li *ngIf="salesdata.role == '10'">
+                    <div class="cs-box">
+                      <!-- <img src="assets/img/phone.svg" class="fix-img"> -->
+                      <span>Concern Right</span>
+                      <p *ngIf="salesdata.concernApprovalAccess">Yes</p>
+                      <p *ngIf="!salesdata.concernApprovalAccess">No</p>
+
+                      <!-- <a *ngIf="this.role==1" class="edit-icon"  color="accent" matRipple matTooltip="EDIT" (click)="openEmail('concern_approval')"><i class="material-icons">create</i></a> -->
+
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <mat-divider class="mt15 mb15"></mat-divider>
+              
+              <div class="col s10 cs-figure space-li pl0">
+                <ul>
+                  <li *ngIf="salesdata.role==6">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Regional Manager</span>
+                        <p class="counter">{{TotalRSM.length}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li *ngIf="salesdata.role==7">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Area Manager</span>
+                        <p class="counter">{{TotalASM.length}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li *ngIf="salesdata.role==8">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Territory Incharge</span>
+                        <p class="counter">{{TotalTI.length}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Territory</span>
+                        <p class="counter">{{TotalTerritoy.length}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Distributor</span>
+                        <p class="counter">{{TotalDistributor.length}}</p>
+                      </div>
+                    </div>
+                  </li>
+
+
+                  <li>
+                      <div class="outer">
+                        <div class="inner">
+                          <span>Target</span>
+                          <p class="counter">&#8377; {{salesdata.totalTarget}}</p>
+                        </div>
+
+                        <a *ngIf="this.role==1" class="edit-icon"  color="accent" matRipple matTooltip="EDIT" (click)="openEmail('target')"><i class="material-icons">create</i></a>
+                   
+                      </div>
+                    </li>
+                  
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="currentActiveTab==1"  class="row">
+        <div class="col s8">
+          <div class="sprate-box padding0">
+            <div class="full-address">
+              <div class="top-heading">
+                <h2>ADDRESS</h2>
+              </div>
+              <a  *ngIf="this.role==1" mat-button class="address-edit" matTooltip="EDIT" color="accent" (click)="openDialog()"><i class="material-icons">edit</i></a>
+              <div class="nationality">
+                <img src="assets/img/india.svg" alt="">
+                <p>India</p>
+              </div>
+              <div class="ds-from-fields">
+                <div class="cs-row">
+                  <div class="static-info">
+                    <p>State</p>
+                    <p>{{salesdata.state}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>District</p>
+                    <p>{{salesdata.district}}</p>
+                  </div>
+                  <div class="static-info">
+                    <p>City</p>
+                    <p>{{salesdata.city}}</p>
+                  </div>
+                  <div class="static-info w100" style="min-width: 100px;">
+                    <p>Pin Code</p>
+                    <p>{{salesdata.pin}}</p>
+                  </div>
+                </div>
+                <div class="cs-row">
+                  <div class="static-info">
+                    <p>address</p>
+                    <p>{{salesdata.street}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s4">
+          <div class="sprate-box padding0">
+            <div class="cs-logs">
+              <div class="top-heading">
+                <h2>ACCOUNT INFO</h2>
+              </div>
+              <div class="logs-outer">
+                <div class="logs-list">
+                  <div class="account-details">
+                    <ul>
+                      <li>
+                        <div class="outer">
+                          <div class="inner">
+                            <div class="cs-account">
+                              <p>User Name</p>
+                              <h5>{{salesdata.email}}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      
+                      <li *ngIf="this.role==1" class="active" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                        <div class="outer">
+                          <div class="inner">
+                            <div class="cs-account">
+                              <!-- <p>Password</p> -->
+                              <form name="form" (ngSubmit)="f.form.valid && updatepassword()"  #f="ngForm" novalidate>
+                                <div class="from-fields">
+                                  <div class="control-field pr80">
+                                    <mat-form-field class="cs-input infix-bodr">
+                                      <input matInput type="text" placeholder="Change password" name="password" [(ngModel)]="account_form.password" #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required>
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                                <mat-error *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+                                  <mat-error *ngIf="password.errors.required">Password is required</mat-error>
+                                </mat-error>
+                                <button style="color: #fff;" mat-raised-button color="accent" class="material-icons pass-icon">Save</button>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div *ngIf="currentActiveTab==1"  class="row">
+          
+
+                
+          <div class="col s12">
+              <div class="sprate-box padding0 mt15">
+                <div class="full-address">
+                  <div class="top-heading">
+                    <h2>OFFICE ADDRESS</h2>
+                  </div>
+                  <!-- <a  *ngIf="this.role==1" mat-button class="address-edit" matTooltip="EDIT" color="accent" (click)="openDialog()"><i class="material-icons">edit</i></a> -->
+                  <div class="nationality">
+                    <img src="assets/img/india.svg" alt="">
+                    <p>India</p>
+                  </div>
+                  <div class="ds-from-fields">
+                    <div class="cs-row">
+                      <div class="static-info">
+                        <p>State</p>
+                        <p>{{salesdata.stateOffice}}</p>
+                      </div>
+                      <div class="static-info">
+                        <p>District</p>
+                        <p>{{salesdata.districtOffice}}</p>
+                      </div>
+                      <div class="static-info">
+                        <p>City</p>
+                        <p>{{salesdata.cityOffice}}</p>
+                      </div>
+                      <div class="static-info w100" style="min-width: 100px;">
+                        <p>Pin Code</p>
+                        <p>{{salesdata.pinOffice}}</p>
+                      </div>
+                    </div>
+                    <div class="cs-row">
+                      <div class="static-info">
+                        <p>address</p>
+                        <p>{{salesdata.streetOffice}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+         
+        </div>
+      
+      
+      <div *ngIf="currentActiveTab==1 && salesdata.seniors && salesdata.seniors.length > 0" class="sprate-box mt20 padding0">
+        <div class="full-address">
+          <div class="top-heading">
+            <h2>Team Detail</h2>
+          </div>
+          <div class="cs-table">
+            <div class="table-head">
+              <table>
+                <tr>
+                  <th>Name</th>
+                  <th>Role</th>
+                </tr>
+              </table>
+            </div>
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let list of salesdata.seniors">
+                    <td>{{list.userName}}</td>
+                    <td>
+                      <span *ngIf="salesdata.role==10">ASM</span>
+                      <span *ngIf="salesdata.role==8">RSM</span>
+                      <span *ngIf="salesdata.role==7">NSM</span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <!-- Only View Assigned Detail Start -->
+      <div *ngIf="currentActiveTab==1 && this.role==1 && !editAssignedDiv" class="sprate-box pt0 mt20 mb15">
+        <div  class="top-heading left-right-15">
+          <h2>ASSIGNED INFORMATION</h2>
+          <a  *ngIf="this.role==1 && !editAssignedDiv" mat-button class="address-edit" matTooltip="EDIT" color="accent"  (click)="editAssign();getSegmentRelatedData()"><i class="material-icons">edit</i></a>
+        </div>
+        <div *ngIf="this.role==1 && !editAssignedDiv" class="row mt15" >
+          
+          <div class="col s3 pl0">
+            
+            <div class="territory-info">
+              <div class="head" [ngClass]="{'active':active.one==true}">
+                <h2>Segment</h2>
+                <!-- <i class="material-icons search-icon" (click)="toggleterritory('one','open')"  matRipple>search</i>
+                  <input type="text" placeholder="search..." class="fix-search">
+                  <i class="material-icons close-icon" (click)="toggleterritory('one','close')" matRipple>clear</i> -->
+                </div>
+                
+                <div  *ngIf="!salesdata.staffSegments || salesdata.staffSegments.length == 0" class="not-data">
+                  <div class="inner-data">
+                    <p>No Data</p>
+                  </div>
+                </div>
+                
+                <div *ngIf="salesdata.staffSegments.length > 0" class="cs-checkbox">
+                  <div class="checkbox-outer" >
+                    <section class="checkbox-inner bodr0" >
+                      <mat-checkbox  *ngFor="let list of salesdata.staffSegments" class="check-list bg-none check-none check-none check-none check-none" value="1">
+                        <div class="name-outer">
+                          <div class="outer">
+                            <div class="inner">
+                              <div class="name-inner">
+                                S
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="text-box">
+                          <h2>{{list.segment}}</h2>
+                        </div>
+                      </mat-checkbox>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div> 
+            
+            
+            <div *ngIf="salesdata.role==8" class="col s3">
+              
+              <div class="territory-info">
+                <div class="head" [ngClass]="{'active':active.one==true}">
+                  <h2>Territory Incharge</h2>
+                  <!-- <i class="material-icons search-icon" (click)="toggleterritory('one','open')"  matRipple>search</i>
+                    <input type="text" placeholder="search..." class="fix-search">
+                    <i class="material-icons close-icon" (click)="toggleterritory('one','close')" matRipple>clear</i> -->
+                  </div>
+                  
+                  <div  *ngIf="!TotalTI || TotalTI.length == 0" class="not-data">
+                    <div class="inner-data">
+                      <p>No Data</p>
+                    </div>
+                  </div>
+                  
+                  <div *ngIf="TotalTI.length > 0" class="cs-checkbox">
+                    <div class="checkbox-outer" >
+                      <section class="checkbox-inner bodr0" >
+                        <mat-checkbox class="check-list bg-none check-none check-none check-none check-hover check-hover" value="1" *ngFor="let user of TotalTI">
+                          <a routerLink="/sale-user-detail/{{user.userId}}" routerLinkActive="active">
+                            <div class="name-outer">
+                              <div class="outer">
+                                <div class="inner">
+                                  <div *ngIf="user.userName" class="name-inner">
+                                    {{user.userName[0]}}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="text-box">
+                              <h2>{{user.userName}}</h2>
+                            </div>
+                          </a>
+                        </mat-checkbox>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+              
+              
+              <div *ngIf="salesdata.role==7" class="col s3">
+                
+                <div class="territory-info">
+                  <div class="head" [ngClass]="{'active':active.one==true}">
+                    <h2>Area Manager</h2>
+                    <!-- <i class="material-icons search-icon" (click)="toggleterritory('one','open')"  matRipple>search</i>
+                      <input type="text" placeholder="search..." class="fix-search">
+                      <i class="material-icons close-icon" (click)="toggleterritory('one','close')" matRipple>clear</i> -->
+                    </div>
+                    
+                    <div  *ngIf="!TotalASM || TotalASM.length == 0" class="not-data">
+                      <div class="inner-data">
+                        <p>No Data</p>
+                      </div>
+                    </div>
+                    
+                    
+                    <div *ngIf="TotalASM.length > 0" class="cs-checkbox">
+                      <div class="checkbox-outer">
+                        <section class="checkbox-inner bodr0" >
+                          <mat-checkbox class="check-list bg-none check-none check-none check-none check-hover " value="1" *ngFor="let asm of TotalASM">
+                            <a routerLink="/sale-user-detail/{{asm.userId}}" routerLinkActive="active">
+                              <div class="name-outer">
+                                <div class="outer">
+                                  <div class="inner">
+                                    <div class="name-inner">
+                                      {{asm.userName[0]}}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="text-box">
+                                
+                                
+                                <h2>{{asm.userName}}</h2>
+                                
+                              </div>
+                            </a>
+                          </mat-checkbox>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+                
+                <div *ngIf="salesdata.role==6" class="col s3">
+                  
+                  <div class="territory-info">
+                    <div class="head" [ngClass]="{'active':active.one==true}">
+                      <h2>Regional Manager</h2>
+                      <!-- <i class="material-icons search-icon" (click)="toggleterritory('one','open')"  matRipple>search</i>
+                        <input type="text" placeholder="search..." class="fix-search">
+                        <i class="material-icons close-icon" (click)="toggleterritory('one','close')" matRipple>clear</i> -->
+                      </div>
+                      
+                      <div  *ngIf="!TotalRSM || TotalRSM.length == 0" class="not-data">
+                        <div class="inner-data">
+                          <p>No Data</p>
+                        </div>
+                      </div>
+                      
+                      <div  *ngIf="TotalRSM.length > 0" class="cs-checkbox">
+                        <div class="checkbox-outer">
+                          <section class="checkbox-inner bodr0" >
+                            <mat-checkbox class="check-list bg-none check-none check-none check-none check-hover" value="1" *ngFor="let rsm of TotalRSM">
+                              <a  routerLink="/sale-user-detail/{{rsm.userId}}" routerLinkActive="active" >
+                                <div class="name-outer">
+                                  <div class="outer">
+                                    <div class="inner">
+                                      <div class="name-inner">
+                                        {{rsm.userName[0]}}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="text-box">
+                                  <h2> {{rsm.userName}}</h2>
+                                </div>
+                              </a>
+                            </mat-checkbox>
+                          </section>
+                        </div>
+                      </div>
+                    </div>
+                  </div> 
+                  
+                  <div class="col s3">
+                    
+                    <div class="territory-info">
+                      <div class="head" [ngClass]="{'active':active.two==true}">
+                        <h2>Territory</h2>
+                        <!-- <i class="material-icons search-icon" (click)="toggleterritory('two','open')"  matRipple>search</i>
+                          <input type="text" placeholder="search..." class="fix-search">
+                          <i class="material-icons close-icon" (click)="toggleterritory('two','close')" matRipple>clear</i> -->
+                        </div>
+                        
+                        <div  *ngIf="!TotalTerritoy || TotalTerritoy.length == 0" class="not-data">
+                          <div class="inner-data">
+                            <p>No Data</p>
+                          </div>
+                        </div>
+                        
+                        <div *ngIf="TotalTerritoy.length > 0" class="cs-checkbox">
+                          <div class="checkbox-outer" >
+                            <section class="checkbox-inner bodr0" >
+                              
+                              <mat-checkbox class="check-list bg-none check-none check-none check-hover check-none" *ngFor="let list of TotalTerritoy">
+                                <a routerLink="/territory-add/{{list.territoryId}}" routerLinkActive="active" >
+                                  <div class="name-outer">
+                                    <div class="outer">
+                                      <div class="inner">
+                                        <div class="name-inner">
+                                          {{list.territoryName[0]}}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="text-box">
+                                    <h2>{{list.territoryName}}</h2>
+                                  </div>
+                                </a>
+                              </mat-checkbox>
+                            </section>  
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                    
+                    <div class="col s3" >
+                      
+                      <div class="territory-info">
+                        <div class="head" [ngClass]="{'active':active.three==true}">
+                          <h2>DISTRIBUTOR</h2>
+                          <!-- <i class="material-icons search-icon" (click)="toggleterritory('three','open')"  matRipple>search</i>
+                            <input type="text" placeholder="search..." class="fix-search">
+                            <i class="material-icons close-icon" (click)="toggleterritory('three','close')" matRipple>clear</i> -->
+                          </div>
+                          
+                          
+                          <div  *ngIf="!TotalDistributor || TotalDistributor.length == 0" class="not-data">
+                            <div class="inner-data">
+                              <p>No Data</p>
+                            </div>
+                          </div>
+                          
+                          
+                          <div *ngIf="TotalDistributor && TotalDistributor.length > 0"  class="cs-checkbox">
+                            
+                            <div class="checkbox-outer" >
+                              <section class="checkbox-inner bodr0" >
+                                <mat-checkbox class="check-list bg-none check-none check-none check-hover check-hover" value="1" *ngFor="let list of TotalDistributor">
+                                  <a class="link-btn" mat-button routerLink="/distribution-detail/{{list.networkId}}" routerLinkActive="active">
+                                    <div class="name-outer">
+                                      <div class="outer">
+                                        <div class="inner">
+                                          <div class="name-inner">
+                                            {{list.establishment[0]}}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="text-box">
+                                      <h2>{{list.establishment}}</h2>
+                                      <!-- <h2>{{list.establishment}} <span>(Territory Incharge)</span></h2> -->
+                                      <!-- <p>Territory</p> -->
+                                    </div>
+                                  </a>
+                                </mat-checkbox>
+                              </section>
+                            </div>
+                          </div>
+                        </div>
+                        
+                      </div>
+                      
+                    </div>
+                  </div>
+                  
+                  <!-- Only View Assigned Detail End -->
+                  
+                  
+                  <!-- Edit assigned Detail Start -->
+                  <div *ngIf="currentActiveTab==1 &&  editAssignedDiv"  class="sprate-box pt0  mt20 mb15">
+                    <div  class="top-heading left-right-15">
+                      <h2>UPDATE INFORMATION</h2>
+                    </div>
+                    <div class="row mt15">                     
+                      <div class="col s4">
+                        <div class="territory-info">
+                          <div class="head" >
+                            <h2>SEGMENT</h2>
+                          </div>
+                          
+                          <div  *ngIf="!segmentlist || segmentlist.length == 0" class="not-data">
+                            <div class="inner-data">
+                              <p>No Data</p>
+                            </div>
+                          </div>
+                          
+                          <div *ngIf="segmentlist.length > 0" class="cs-checkbox">
+                            <div class="checkbox-outer">
+                              <section class="checkbox-inner" >
+                                <ng-container *ngFor="let row of segmentlist;let index=index" aria-required="true">
+                                  <mat-checkbox class="check-list" [(ngModel)]="row.checked" (change)="getSegmentRelatedData()">{{row.value}}</mat-checkbox>
+                                </ng-container>
+                              </section>
+                            </div>
+                          </div>
+                        </div>
+                      </div> 
+                      
+                      <div *ngIf="salesdata.role==6 || salesdata.role==7 || salesdata.role==8" class="col s4">
+                        
+                        <div class="territory-info">
+                          <div class="head" >
+                            <h2 *ngIf="salesdata.role==6">Regional Manager</h2>
+                            <h2 *ngIf="salesdata.role==7">Area Manager</h2>
+                            <h2 *ngIf="salesdata.role==8">Territory Incharge</h2>
+                          </div>
+                          
+                          <div  *ngIf="juniorList.length == 0" class="not-data">
+                            <div class="inner-data">
+                              <p>No Data</p>
+                            </div>
+                          </div>
+                          
+                          <div *ngIf="juniorList.length > 0" class="cs-checkbox">
+                            <div class="checkbox-outer">
+                              <section class="checkbox-inner" >
+                                
+                                <ng-container *ngFor="let junior of juniorList;let index1=index" aria-required="true">
+                                  <mat-checkbox class="check-list" (change)="select_territory(junior.userTerritories, junior.check, 'junior')"  [(ngModel)]="junior.check" value="{{junior.userId}}">{{junior.userName}}</mat-checkbox>
+                                </ng-container>
+                                
+                                
+                              </section>
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div> 
+                      
+                      <div  class="col s4">
+                        
+                        <div class="territory-info">
+                          <div class="head" >
+                            <h2>Territories</h2>
+                          </div>
+
+                          <div  *ngIf="territorylist.length == 0" class="not-data">
+                            <div class="inner-data">
+                              <p>No Data</p>
+                            </div>
+                          </div>
+                          
+                          <div *ngIf="territorylist.length != 0" class="cs-checkbox">
+                            <div class="checkbox-outer">
+                              <section class="checkbox-inner" >
+                                <ng-container *ngFor="let list of territorylist;">
+                                  <mat-checkbox class="check-list" (change)="select_territory(list.territoryID, list.check1, 'territory')"  [(ngModel)]="list.check1" [disabled]="list.disabled" name="{{list.territoryID}}">{{list.territoryName}}</mat-checkbox>
+                                </ng-container>
+                              </section>
+                            </div>
+                          </div>
+                        </div>
+                      </div> 
+                      
+                      <div *ngIf="role > 6"  class="col s4">
+                        <div class="territory-info">
+                          <div class="head" >
+                            <h2>Distributor</h2>
+                          </div>
+                          
+                          <div  *ngIf="distributionList.length == 0" class="not-data">
+                            <div class="inner-data">
+                              <p>No Data</p>
+                            </div>
+                          </div>
+                          
+                          
+                          
+                          <div *ngIf="distributionList.length > 0" class="cs-checkbox">
+                            <div class="checkbox-outer">
+                              <section class="checkbox-inner" >
+                                <ng-container *ngFor="let list of distributionList;let index1=index" aria-required="true">
+                                  <mat-checkbox class="check-list" [(ngModel)]='list.checked' [disabled]="list.disabled" value="{{list.networkId}}">{{list.establishment}} / {{list.territoryName}}</mat-checkbox>
+                                </ng-container>
+                              </section>
+                            </div>
+                          </div>
+                        </div>
+                      </div> 
+                      
+                      
+                    </div>
+                  </div>
+                  
+                  
+                  <div class="row" *ngIf="currentActiveTab==1 &&  editAssignedDiv">
+                    <div class="col s12">
+                      <div class="cs-btn mt15 text-right">
+                        <button mat-raised-button color="warn" class="mr15" (click)="editAssignedDiv=false">Cancel</button>
+                        <button mat-raised-button color="accent" (click)="updateSalesUser()" style="color:#fff;">Update</button>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="row" *ngIf="currentActiveTab==2">
+                      <div class="col s12">
+                        <div class="cs-table left-right-20">
+                          <div class="table-head tab-sticky-head">
+                            <table class="sno-border"> 
+                              <tr>
+                                <th class="w120"> Lead Name</th>
+                                <th class="w70 text-center">Mobile</th>
+                                <th class="w120 text-right">Segment</th>
+                                <th class="w180">Address</th>
+                                <th class="w180">Action</th>
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="table-container">
+                            <div class="table-content">
+                              <table class="sno-border">
+                                <tr *ngFor="let list of leadlist; let index = index">
+                                  <td class="w120">{{list.establishment}}</td>
+                                  <td class="w70 text-center">{{list.mobile}}</td>
+                                  <td class="w120 text-center">{{list.segmentStr}}</td>
+                                  <td class="w180 text-right">{{list.state}} {{list.district}} {{list.city}} {{list.pin}}</td>
+
+                                  <td class="w180">
+
+                                      <div class="action-btns default-action">
+
+                                          <a mat-button class="view" routerLink="/lead-detail/{{list.leadId}}" routerLinkActive="active">
+                                            <i class="material-icons">remove_red_eye</i> View</a> 
+                                    </div> 
+                                  </td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                          
+                        </div>
+                        <div class="data-not-available" *ngIf="div">
+                          <div class="outer">
+                            <div class="iinear">
+                              <div class="figure" matRipple>
+                                <div class="header">
+                                  <img src="assets/img/data-not-available-header.svg" alt="">
+                                </div>
+                                
+                                <div class="description">
+                                  <div class="cs-heading">
+                                    <!-- <h2 *ngIf="cartActive=='active'">Nothing In Draft</h2> -->
+                                    <h2 *ngIf="orderActive=='active'">No Data List</h2>
+                                    
+                                  </div>
+                                  <div class="img">
+                                    <i class="material-icons">error_outline</i>
+                                  </div>
+                                  <div class="psc">
+                                    <p>data not available</p>
+                                    <!-- <p>Tap on <a href="">ADD NEW</a> for Service Plan</p> -->
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+        
+                    <div class="row" *ngIf="currentActiveTab==3">
+        
+                      <div class="col s12 padding0">
+                        <div class="cs-table left-right-20">
+                          <div class="table-head">
+                            <table>
+                              <tr >
+
+                                  <th class="w30">&nbsp;</th>
+                                  <th class="w150"> Date</th>
+                                  <th>Company Name</th>
+                                  <th class="w115"> Order No</th>
+                                  <th class="w70 text-center">QTY.</th>
+                                  <th class="w100 text-right">Amount</th>
+                                  <th  class="w110"> Dist. Status</th>
+                                  <th  class="w130"> Comp. Status</th>
+                                  <th  class="w130"> Action</th>
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="table-container">
+                            <div class="table-content">
+                              <table>
+
+                                <tr *ngFor="let list of orderList; let index= index">
+                                  <td class="w30">&nbsp;</td>
+                                  <td class="w150"> {{list.createdOn | date: 'dd-MMM-yyyy'}}</td>
+                                  <td>{{list.establishment}}</td>
+                                  <td class="w115"> {{list.orderNumber}}</td>
+                                  <td class="w70 text-center">{{list.quantity}}</td>
+                                  <td class="w100 text-right">{{list.totalAmount}}</td>
+                                  <td  class="w110"> 
+
+                                      <span *ngIf="list.dealerStatus==1">Draft</span>
+                                      <span *ngIf="list.dealerStatus==2">Pending</span>
+                                      <span *ngIf="list.dealerStatus==3">Approved</span>
+                                  </td>
+
+                                  <td  class="w130"> 
+                                      <span *ngIf="list.companyStatus==1">Pending</span>
+                                      <span *ngIf="list.companyStatus==2">Approved</span>
+                                      <span *ngIf="list.companyStatus==3">Hold</span>
+                                  </td>
+
+                                  <td class="w130">
+
+                                      <a mat-button class="view" (click)="orderDetail(index)">
+                                        <i class="material-icons">remove_red_eye</i> View</a> 
+
+                                      
+                                  </td>
+
+                                  </tr>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div *ngIf="orderList.length==0" class="data-not-available" >
+                          <div class="outer">
+                            <div class="iinear">
+                              <div class="figure" matRipple>
+                                <div class="header">
+                                  <img src="assets/img/data-not-available-header.svg" alt="">
+                                </div>
+                                
+                                <div class="description">
+                                  <div class="cs-heading">
+                                  </div>
+                                  <div class="img">
+                                    <i class="material-icons">error_outline</i>
+                                  </div>
+                                  <div class="psc">
+                                    <p>data not available</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row" *ngIf="currentActiveTab==4">
+        
+                        <div class="col s12 padding0">
+                          <div class="cs-table left-right-20">
+                            <div class="table-head">
+                              <table>
+                                <tr>
+                                  <th class="w150">Date</th>
+                                  <th>Company Name</th>
+                                  <th class="w150 text-center">Concern No</th>
+                                  <th class="w150 text-center">Concern Type</th>
+                                  <th class="w150 text-center">Total Item</th>
+                                  <th class="w150 text-center">Total Qty</th>
+                                  <th class="w150 text-center">Amount</th>
+                                  <th class="w150">Action</th>
+                                </tr>
+                              </table>
+                            </div>
+                            <div class="table-container">
+                              <div class="table-content">
+                                <table>
+                                 <tr *ngFor="let list of concernList">
+        
+                                    <td class="w150">{{list.createdOn | date: 'dd-MMM-yyyy'}}</td>
+        
+                                    <td>{{list.networkEstablishment}}</td>
+        
+                                    <td class="w150"> <a mat-button class="link-btn" routerLink="/concern-detail/{{list.concernId}}" routerLinkActive="active">
+                                      {{list.claimNo}}
+                                    </a></td>
+
+                                    <td class="w150">{{list.concernTypeName}}</td>
+
+                                    <td class="w150">{{list.productConcerns.length}}</td>
+
+                                    <td class="w150">{{list.totalQty}}</td>
+
+                                    <td class="w150">{{list.totalAmount}}</td>
+        
+                                    <td class="w150">
+                                        <div class="action-btns default-action">
+
+                                            <a mat-button class="view" routerLink="/concern-detail/{{list.concernId}}" routerLinkActive="active">
+                                              <i class="material-icons">remove_red_eye</i> View</a>
+                                           
+                                      </div> 
+                                    </td> 
+        
+                                   </tr> 
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+        
+                          <div *ngIf="concernList?.length==0 && !loader" class="data-not-available" >
+                            <div class="outer">
+                              <div class="iinear">
+                                <div class="figure" matRipple>
+                                  <div class="header">
+                                    <img src="assets/img/data-not-available-header.svg" alt="">
+                                  </div>
+                                  
+                                  <div class="description">
+                                    <div class="cs-heading">
+                                    </div>
+                                    <div class="img">
+                                      <i class="material-icons">error_outline</i>
+                                    </div>
+                                    <div class="psc">
+                                      <p>data not available</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+        
+        
+        
+                      <div class="row" *ngIf="currentActiveTab==5">
+        
+                          <div class="col s12 padding0">
+                            <div class="cs-table left-right-20">
+                              <div class="table-head">
+                                <table>
+                                  <tr >
+                                    <th class="w150">Date</th>
+                                    <th class="w150">Travel Month </th>
+                                    <th class="w150">Travel Year </th>
+                                    <th class="w150">Amount</th>
+                                    <th class="w150">Status</th>
+                                    <th class="w150">Action</th>
+                                  </tr>
+                                </table>
+                              </div>
+                              <div class="table-container">
+                                <div class="table-content">
+                                  <table>
+
+                                      <tr *ngFor="let list of trvelPlanLIst">
+                                          <td class="w150">{{list.createdOn  | date: 'dd-MMM-yyyy'}}</td>
+                                          <td class="w150">{{list.monthName}}</td>
+                                          <td class="w150">{{list.year}} </td>
+                                          <td class="w150">&#8377; {{list.budget}}</td>
+                                          <td class="w150">
+                                            <span *ngIf="list.status==2">Pending</span>
+                                            <span *ngIf="list.status==3">Approved</span>
+                                            <span *ngIf="list.status==4">Reject</span>
+                                          </td>
+                                          <td class="w150"> 
+                                            <a mat-button class="view" routerLink="/detail-travel/{{list.travelPlanID}}" routerLinkActive="active">
+                                            <i class="material-icons">remove_red_eye</i> View</a></td>
+                                        </tr>
+                                    
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+        
+                            <div *ngIf="trvelPlanLIst.length==0" class="data-not-available" >
+                              <div class="outer">
+                                <div class="iinear">
+                                  <div class="figure" matRipple>
+                                    <div class="header">
+                                      <img src="assets/img/data-not-available-header.svg" alt="">
+                                    </div>
+                                    
+                                    <div class="description">
+                                      <div class="cs-heading">
+                                      </div>
+                                      <div class="img">
+                                        <i class="material-icons">error_outline</i>
+                                      </div>
+                                      <div class="psc">
+                                        <p>data not available</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="row" *ngIf="currentActiveTab==6">
+                            <div class="col s12 padding0">
+                              <div class="cs-table left-right-20">
+                                <div class="table-head">
+                                  <table>
+                                    <tr >
+                                      <th class="w150">Date</th>
+                                      <th>Expense Type</th>
+                                      <th>Expense Amount</th>
+                                      <th class="w150">Status</th>
+                                    </tr>
+                                  </table>
+                                </div>
+                                <div class="table-container">
+                                  <div class="table-content">
+                                    <table>
+
+                                        <tr *ngFor="let list of expenseList">
+                                            <td class="w150">{{list.createdOn | date: 'dd-MMM-yyyy'}}</td>
+                                            <td>{{list.expenseTypeName}}</td>
+                                            <td>&#8377; {{list.actualExpenseAmount}}</td>
+                                            <td class="w150">
+                                             <span *ngIf="list.status==1">Draft </span>
+                                             <span *ngIf="list.status==2">Pending </span>
+                                             <span *ngIf="list.status==3">Approved </span>
+                                             <span *ngIf="list.status==4">Reject </span>
+                                            </td>
+                                          </tr>
+                                      
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+          
+                              <div *ngIf="expenseList?.length==0 && !loader"  class="data-not-available" >
+                                <div class="outer">
+                                  <div class="iinear">
+                                    <div class="figure" matRipple>
+                                      <div class="header">
+                                        <img src="assets/img/data-not-available-header.svg" alt="">
+                                      </div>
+                                      
+                                      <div class="description">
+                                        <div class="cs-heading">
+                                        </div>
+                                        <div class="img">
+                                          <i class="material-icons">error_outline</i>
+                                        </div>
+                                        <div class="psc">
+                                          <p>data not available</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+                  <!-- Edit assigned Detail End -->
+
+
+                  <div class="row" *ngIf="currentActiveTab==7">
+        
+                      <div class="col s12 padding0">
+                        <div class="cs-table left-right-20">
+                          <div class="table-head">
+                            <table>
+                              <tr >
+                                <th class="w150">Date</th>
+                                <th class="w150 text-center">Company Name</th>
+                                <th class="w150 text-center">Type</th>
+                                <th class="w150 text-center">Checkin Time</th>
+                                <th class="w150 text-center">Checkout Time</th>
+                                <th class="w150">Action</th>
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="table-container">
+                            <div class="table-content">
+                              <table>
+                               <tr *ngFor="let list of checkInList">
+      
+                                  <td class="w150">{{list.createdOn | date: 'dd-MMM-yyyy'}}</td>
+      
+                                  <td class="w150">{{list.establishment ? list.establishment : list.establishmentName}}</td>
+      
+                                  <td class="w150">{{list.activityModuleName}}</td>
+
+                                  <td class="w150">{{list.checkInTime|date :'d, MMMM , y, h:mm:ss a'}}</td>
+
+                                  <td class="w150">{{list.checkOutTime|date :'d, MMMM , y, h:mm:ss a'}}</td>
+      
+      
+                                  <td class="w150">
+                                      <div class="action-btns default-action">
+
+                                          <a mat-button class="view" routerLink="/checkin-detail/{{list.activityId}}" routerLinkActive="active">
+                                            <i class="material-icons">remove_red_eye</i> View</a>
+                                    </div> 
+                                  </td> 
+      
+                                 </tr> 
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+      
+                        <div *ngIf="checkInList?.length==0 && !loader" class="data-not-available" >
+                          <div class="outer">
+                            <div class="iinear">
+                              <div class="figure" matRipple>
+                                <div class="header">
+                                  <img src="assets/img/data-not-available-header.svg" alt="">
+                                </div>
+                                
+                                <div class="description">
+                                  <div class="cs-heading">
+                                  </div>
+                                  <div class="img">
+                                    <i class="material-icons">error_outline</i>
+                                  </div>
+                                  <div class="psc">
+                                    <p>data not available</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                </div>
+              </div>
+            </div>
+            <div class="h50"></div>
+            
+            
