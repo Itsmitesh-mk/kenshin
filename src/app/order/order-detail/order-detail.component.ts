@@ -199,10 +199,6 @@ export class OrderDetailComponent implements OnInit {
             'Contact Person Name':this.network_data.networkContacts[0].name,
             'Contact Person Mobile no':this.network_data.networkContacts[0].mobile1})
 
-            this.xLXSArray.push({});
-            this.xLXSArray.push({});
-            this.xLXSArray.push({});
-
           this.xLXSArray.push({
             
             'Order date':this.order_data.createdOn,
