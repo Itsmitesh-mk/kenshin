@@ -7,8 +7,8 @@
   <div class="middle-container pb15">
     <div class="page-heading">
       <img src="assets/img/activity.svg" class="h-icon">
-      <div class="heading-text" style="display: flex; align-items: center; flex-direction: row;">
-        <div>
+      <div class="heading-text flex-heading">
+        <div class="content">
           <h2>DVRs</h2>
           <p>Total DVR {{checkInList.length}}</p>
         </div>
@@ -20,143 +20,219 @@
             </mat-select>
           </mat-form-field>
         </div>
+        
+        <div class="item-filter flex-item-filter">
+          <div class="multi-all-select top-multi-select w250" style="background: #f5f5f5">
+            <ng-multiselect-dropdown
+            [placeholder]="'Select User'"
+            [data]="userList"
+            name="userNames"
+            #userNames="ngModel"
+            [(ngModel)]="data.userNames"
+            [settings]="dropdownSettings"
+            >
+          </ng-multiselect-dropdown>
+        </div>
+        
+        <mat-form-field class="date-filter ml10">
+          <input matInput [matDatepicker]="picker1" placeholder="Date From" (dateChange)="maxDate()" [max]="currentDate" name="fromCheckInDate" [(ngModel)]="data.fromCheckInDate" readonly>
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        
+        <mat-form-field class="date-filter">
+          <input matInput [matDatepicker]="one" placeholder="Date To" [min]="data.fromCheckInDate" [max]="dvrMaxDate" name="toCheckInDate" [(ngModel)]="data.toCheckInDate" readonly>
+          <mat-datepicker-toggle matSuffix [for]="one"></mat-datepicker-toggle>
+          <mat-datepicker #one></mat-datepicker>
+        </mat-form-field>
+        
+        <div class="cs-btn">
+          <div class="in-btn">
+            <button mat-raised-button color="accent" (click)="getMultiUserArray()" class="h35-btn">Go</button>
+          </div>
+        </div>
       </div>
       
     </div>
-    <div  *ngIf="filter.companyname || filter.role || filter.module || filter.userName || filter.date" class="filter-container left-auto">
-      <div (click)="clearfilter()" class="filter-btn">
-        <button mat-button >CLEAR FILTER</button>
+    
+  </div>
+  <!-- <div class="row">
+    <div class="col s8">
+      <div class="form-fields">
+        <div class="row">
+          <div class="col s4 pl0">
+            <div class="multi-all-select">
+              <label>Distributor</label>
+              <ng-multiselect-dropdown
+              [placeholder]="'Select User'"
+              [data]="userList"
+              name="user"
+              [settings]="dropdownSettings"
+              (onSelect)="selectedDistributor(schemeDistributors.schemeDistributors)"
+              (onSelectAll)="selectedDistributor($event)"
+              (onDeSelect)="selectedDistributor(schemeDistributors.schemeDistributors)"
+              (onDeSelectAll)="selectedDistributor($event)"
+              >
+            </ng-multiselect-dropdown>
+          </div>
+        </div>
+        <div class="col s4">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr8">
+              <input matInput [matDatepicker]="picker" placeholder="Check In From" name="validFrom">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col s4 pr0">
+          <div class="control-field">
+            <mat-form-field class="cs-input infix-bodr8">
+              <input matInput [matDatepicker]="pickers" placeholder="Check In To" name="validTill">
+              <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+              <mat-datepicker #pickers></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  
-  <div class="container-outer pt0">
-    <div class="container" >
-      <div class="row">
-        <div class="col s12">
-          <div class="cs-table left-right-20">
-            <div class="sticky-head">
-              <div class="table-head">
-                <table>
-                  <tr>
-                    <th  class="w150">Check-In Date</th>
-                    <th  class="w140">Sales User</th>
-                    <th  class="w140">Role</th>
-                    <th *ngIf="userRole==1" class="w140">No. of Check-In</th>
-                    <th *ngIf="userRole!=1" >Company Name</th>
-                    <th class="w110" *ngIf="userRole!=1">Type</th>
-                    <th  class="w180" *ngIf="userRole!=1">Check-In Time</th>
-                    <th  class="w180" *ngIf="userRole!=1">Check-Out Time</th>
-                    <!-- <th  class="w150">Obejective Of Visit</th> -->
-                  </tr>
-                </table>
-              </div>
-              <div class="table-head bdrt">
-                <table>
-                  <tr>
-                    <th class="w150"><div class="th-search padding0" >
-                      <mat-form-field class="wp100 toggle-date-picker">
-                        <input matInput [matDatepicker]="picker" (dateChange)="checkin_list()" #date="ngModel" [(ngModel)]="filter.date"  readonly>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker  #picker></mat-datepicker>
-                      </mat-form-field>
-                    </div>
-                  </th>
-                  <th *ngIf="userRole==1" class="w140"><div class="th-search"  [ngClass]="{ 'clear-feilds' : removename == true}">
-                    <input type="text" (keyup)="checkin_list()" name="userName" #userName="ngModel" [(ngModel)]="filter.userName"  placeholder="Search....">
-                    <a class="close-mat" matRipple  matTooltip="Clear" (click)="removenamefilter()"></a>
-                  </div>
-                </th>
-                <th *ngIf="userRole!=1" class="w140">&nbsp;</th>
-                <th *ngIf="userRole!=1" class="w140">&nbsp;</th>
-                  <th *ngIf="userRole==1" class="w140">
-                    <div class="th-search" >
-                      <select class="pr0" (change)="checkin_list()" name="module" #module="ngModel" [(ngModel)]="filter.role">
-                        <option [value]="0">All</option>
-                        <option [value]="role.roleId" *ngFor="let role of sales">{{role.roleName}}</option>
-                      </select>
-                    </div>
-                  </th>
-                  <!-- <th class="w140">&nbsp;</th> -->
-                  <th *ngIf="userRole!=1">
-                    <div class="th-search"  [ngClass]="{ 'clear-feilds' : removename == true}">
-                      <input type="text" (keyup)="checkin_list()" name="companyname" #companyname="ngModel" [(ngModel)]="filter.companyname"  placeholder="Search....">
-                      <a class="close-mat" matRipple  matTooltip="Clear" (click)="removenamefilter()"></a>
-                    </div>
-                    
-                  </th>
-                  <th class="w110" *ngIf="userRole!=1">
-                    <div class="th-search" >
-                      <select class="pr0" (change)="checkin_list()" name="module" #module="ngModel" [(ngModel)]="filter.module">
-                        <option value="0">All</option>
-                        <option value="1">Distributor</option>
-                        <option value="2">Wholesaler</option>
-                        <option value="3">Retailer</option>
-                        <option value="4">Reconditioner</option>
-                        <option value="5">Mechanic</option>
-                      </select>
-                    </div>
-                  </th>
-                  <th class="w180" *ngIf="userRole!=1">&nbsp;</th>
-                  <th class="w180" *ngIf="userRole!=1">&nbsp;</th>
-                  <th class="w140" *ngIf="userRole==1">&nbsp;</th>
+</div> -->
+<div  *ngIf="filter.companyname || filter.role || filter.module || filter.userName || filter.date || data.userNames" class="filter-container left-auto">
+  <div (click)="clearfilter()" class="filter-btn">
+    <button mat-button >CLEAR FILTER</button>
+  </div>
+</div>
+</div>
+
+<div class="container-outer pt0">
+  <div class="container" >
+    <div class="row">
+      <div class="col s12">
+        <div class="cs-table left-right-20">
+          <div class="sticky-head">
+            <div class="table-head">
+              <table>
+                <tr>
+                  <th  class="w150">Check-In Date</th>
+                  <th  class="w140">Sales User</th>
+                  <th  class="w140">Role</th>
+                  <th *ngIf="userRole==1" class="w140">No. of Check-In</th>
+                  <th *ngIf="userRole!=1" >Company Name</th>
+                  <th class="w110" *ngIf="userRole!=1">Type</th>
+                  <th  class="w180" *ngIf="userRole!=1">Check-In Time</th>
+                  <th  class="w180" *ngIf="userRole!=1">Check-Out Time</th>
+                  <!-- <th  class="w150">Obejective Of Visit</th> -->
                 </tr>
               </table>
             </div>
-          </div>
-          <div class="table-container">
-            <div class="table-content">
+            <div class="table-head bdrt">
               <table>
-                <tr *ngFor="let checkin of checkInList">  
-                  <td *ngIf="userRole!=1" class="w150">{{checkin.checkInTime|date :'d, MMMM , y'}}</td>
-                  <td *ngIf="userRole==1" class="w150">{{checkin.activity[0].checkInTime|date :'d, MMMM , y'}}</td>
-                  <td  class="w140">{{checkin.userName}}</td>
-                  <td  class="w140">{{checkin.roleName}}</td>
-                  <td *ngIf="userRole==1" class="w140">{{checkin.count}}
-                    <div class="action-btns">
-                      <a mat-button class="view" mat-button routerLink="/checkin-detail/{{checkin.userId}}/{{checkin.activity[0].checkInTime|date:'y-MM-d'}}" routerLinkActive="active"  ><i class="material-icons">remove_red_eye</i> View</a></div>
-                    </td>
-                    <td *ngIf="userRole!=1"><a  class="link-btn" mat-button routerLink="/checkin-detail/{{checkin.activityId}}" routerLinkActive="active" ><span *ngIf="checkin.referenceId!=0">{{checkin.establishment}}</span><span *ngIf="checkin.referenceId!=0">{{checkin.establishmentName}}</span></a></td>
-                    <td class="w110" *ngIf="userRole!=1">{{checkin.activityModuleName}}</td>
-                    <td  class="w180" *ngIf="userRole!=1">
-                      {{checkin.checkInTime|date :'d, MMMM , y, h:mm:ss a'}}
-                    </td>
-                    <td class="w180" *ngIf="userRole!=1">{{checkin.checkOutTime|date :'d, MMMM , y, h:mm:ss a'}}
-                      <div class="action-btns">
-                        <a mat-button *ngIf="userRole!=1" class="view" mat-button routerLink="/checkin-detail/{{checkin.activityId}}" routerLinkActive="active"  ><i class="material-icons"  >remove_red_eye</i> View</a>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
+                <tr>
+                  <th class="w150"><div class="th-search padding0" >
+                    <mat-form-field class="wp100 toggle-date-picker">
+                      <input matInput [matDatepicker]="picker" (dateChange)="checkin_list()" #date="ngModel" [(ngModel)]="filter.date"  readonly>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker  #picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th *ngIf="userRole==1" class="w140"><div class="th-search"  [ngClass]="{ 'clear-feilds' : removename == true}">
+                  <input type="text" (keyup)="checkin_list()" name="userName" #userName="ngModel" [(ngModel)]="filter.userName"  placeholder="Search....">
+                  <a class="close-mat" matRipple  matTooltip="Clear" (click)="removenamefilter()"></a>
+                </div>
+              </th>
+              <th *ngIf="userRole!=1" class="w140">&nbsp;</th>
+              <th *ngIf="userRole!=1" class="w140">&nbsp;</th>
+              <th *ngIf="userRole==1" class="w140">
+                <div class="th-search" >
+                  <select class="pr0" (change)="checkin_list()" name="module" #module="ngModel" [(ngModel)]="filter.role">
+                    <option [value]="0">All</option>
+                    <option [value]="role.roleId" *ngFor="let role of sales">{{role.roleName}}</option>
+                  </select>
+                </div>
+              </th>
+              <!-- <th class="w140">&nbsp;</th> -->
+              <th *ngIf="userRole!=1">
+                <div class="th-search"  [ngClass]="{ 'clear-feilds' : removename == true}">
+                  <input type="text" (keyup)="checkin_list()" name="companyname" #companyname="ngModel" [(ngModel)]="filter.companyname"  placeholder="Search....">
+                  <a class="close-mat" matRipple  matTooltip="Clear" (click)="removenamefilter()"></a>
+                </div>
+                
+              </th>
+              <th class="w110" *ngIf="userRole!=1">
+                <div class="th-search" >
+                  <select class="pr0" (change)="checkin_list()" name="module" #module="ngModel" [(ngModel)]="filter.module">
+                    <option value="0">All</option>
+                    <option value="1">Distributor</option>
+                    <option value="2">Wholesaler</option>
+                    <option value="3">Retailer</option>
+                    <option value="4">Reconditioner</option>
+                    <option value="5">Mechanic</option>
+                  </select>
+                </div>
+              </th>
+              <th class="w180" *ngIf="userRole!=1">&nbsp;</th>
+              <th class="w180" *ngIf="userRole!=1">&nbsp;</th>
+              <th class="w140" *ngIf="userRole==1">&nbsp;</th>
+            </tr>
+          </table>
         </div>
       </div>
-    </div>
-    <div *ngIf="div" class="data-not-available" >
-      <div class="outer">
-        <div class="iinear">
-          <div class="figure" matRipple>
-            <div class="header">
-              <img src="assets/img/data-not-available-header.svg" alt="">
-            </div>
-            
-            <div class="description">
-              <div class="img">
-                <i class="material-icons">error_outline</i>
-              </div>
-              <div class="psc">
-                <p>data not available</p>
-              </div>
-            </div>
+      <div class="table-container">
+        <div class="table-content">
+          <table>
+            <tr *ngFor="let checkin of checkInList">  
+              <td *ngIf="userRole!=1" class="w150">{{checkin.checkInTime|date :'d, MMMM , y'}}</td>
+              <td *ngIf="userRole==1" class="w150">{{checkin.activity[0].checkInTime|date :'d, MMMM , y'}}</td>
+              <td  class="w140">{{checkin.userName}}</td>
+              <td  class="w140">{{checkin.roleName}}</td>
+              <td *ngIf="userRole==1" class="w140">{{checkin.count}}
+                <div class="action-btns">
+                  <a mat-button class="view" mat-button routerLink="/checkin-detail/{{checkin.userId}}/{{checkin.activity[0].checkInTime|date:'y-MM-d'}}" routerLinkActive="active"  ><i class="material-icons">remove_red_eye</i> View</a></div>
+                </td>
+                <td *ngIf="userRole!=1"><a  class="link-btn" mat-button routerLink="/checkin-detail/{{checkin.activityId}}" routerLinkActive="active" ><span *ngIf="checkin.referenceId!=0">{{checkin.establishment}}</span><span *ngIf="checkin.referenceId!=0">{{checkin.establishmentName}}</span></a></td>
+                <td class="w110" *ngIf="userRole!=1">{{checkin.activityModuleName}}</td>
+                <td  class="w180" *ngIf="userRole!=1">
+                  {{checkin.checkInTime|date :'d, MMMM , y, h:mm:ss a'}}
+                </td>
+                <td class="w180" *ngIf="userRole!=1">{{checkin.checkOutTime|date :'d, MMMM , y, h:mm:ss a'}}
+                  <div class="action-btns">
+                    <a mat-button *ngIf="userRole!=1" class="view" mat-button routerLink="/checkin-detail/{{checkin.activityId}}" routerLinkActive="active"  ><i class="material-icons"  >remove_red_eye</i> View</a>
+                  </div>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div  class="fixed-multibtn-botm">
+</div>
+<div *ngIf="div" class="data-not-available" >
+  <div class="outer">
+    <div class="iinear">
+      <div class="figure" matRipple>
+        <div class="header">
+          <img src="assets/img/data-not-available-header.svg" alt="">
+        </div>
+        
+        <div class="description">
+          <div class="img">
+            <i class="material-icons">error_outline</i>
+          </div>
+          <div class="psc">
+            <p>data not available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div  class="fixed-multibtn-botm">
     <ul>
+      <li><a  matTooltip="Download Product Sheet" matRipple (click)="exportAsXLSX()"><i class="material-icons">cloud_download</i></a></li>
       <li><a  matTooltip="Add New" routerLink="/add-activity" routerLinkActive="active" matRipple><i class="material-icons">add</i></a></li>
     </ul>
   </div>

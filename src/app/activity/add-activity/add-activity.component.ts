@@ -65,23 +65,10 @@ export class AddActivityComponent implements OnInit {
     console.log(roleId);
     console.log(this.activityData);
     this.clientrole=roleId;
-    // if(this.activityData.lead){
-    //   this.activityData.activityModule=2;
-    //   this.activityData.leadrole=this.clientrole;
-    //   console.log("get lead based on leadrole"+this.activityData.leadrole);
-    //   this.getleadlist();
-    // }else{
     this.activityData.role=this.clientrole;
     this.activityData.activityModule=1;
     console.log("get network based on role"+this.activityData.role);
-    // this.getnetworklist();
-    // }
   }
-  
-  
-  
-  
-  
   
   getleadlist(){
     this.loader=true;
@@ -129,6 +116,8 @@ export class AddActivityComponent implements OnInit {
     this.loader=true;
     if(role==12)
     {
+      console.log(role);
+      
       if(this.userdata['userType']==2){
         this.senddata={"role":this.activityData.role,"salesUserId":this.userdata['userId']};
         console.log(this.senddata);
@@ -152,9 +141,11 @@ export class AddActivityComponent implements OnInit {
       }
     }
     else{
+      console.log(role);
       if(this.userdata['usreType']==2)
       {
-        this.db.fetchData({'createdBy':this.userdata['userId'],"currentPage": 1,"pageSize": 500,'leadType':role,'isActive':1},"lead/list").subscribe((result)=>{
+        
+        this.db.fetchData({'createdBy':this.userdata['userId'],'filterOnAssignTo': false,"currentPage": 1,"pageSize": 500,'leadType':role,'isActive':1},"lead/list").subscribe((result)=>{
           console.log(result);
           if(result['status']=='Success')
           {
@@ -164,7 +155,7 @@ export class AddActivityComponent implements OnInit {
         })
       }
       else{
-        this.db.fetchData({"currentPage": 1,"pageSize": 500,'leadType':role,'isActive':1},"lead/list").subscribe((result)=>{
+        this.db.fetchData({"currentPage": 1,'filterOnAssignTo': false,"pageSize": 500,'leadType':role,'isActive':1},"lead/list").subscribe((result)=>{
           console.log(result);
           if(result['status']=='Success')
           {

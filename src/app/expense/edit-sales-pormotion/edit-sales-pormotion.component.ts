@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConstantService } from 'src/app/constant.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { SnackBarOverview } from 'src/app/toast';
+import { DialogComponent } from 'src/app/dialog';
 
 @Component({
   selector: 'app-edit-sales-pormotion',
@@ -30,7 +31,7 @@ export class EditSalesPormotionComponent implements OnInit {
   totalPromationalExp:any=0;
   currentDate:any = new Date().toJSON().split('T')[0];
 
-  constructor(public route:ActivatedRoute,public service:ConstantService,public router:Router,public toast:SnackBarOverview) {
+  constructor(public route:ActivatedRoute,public service:ConstantService,public router:Router,public toast:SnackBarOverview,public dialog:DialogComponent) {
     this.user = JSON.parse(localStorage.getItem('user')) || [];
     console.log(this.user);
     this.userType = this.user.data.userType;
@@ -123,6 +124,104 @@ export class EditSalesPormotionComponent implements OnInit {
         this.router.navigate(['/expense-list']);
       }
     })
+  }
+
+  picdata:any={}
+  picvalue:any=[];
+  deleteimg(picid,filename)
+  {
+    console.log(picid,filename);
+    this.picdata.documentId=picid;
+    this.picdata.action=2;
+    this.picdata.fileName=filename;
+    this.picdata.documentType=4;
+    this.picdata.referenceId=this.expenseId;
+    this.picvalue.push(this.picdata);
+    console.log(this.picvalue);
+    this.dialog.delete("Document").then((result) => {
+      console.log(result);
+      if(result)
+      {
+        this.loader=true;
+        this.service.fetchData(this.picvalue,"document/update").subscribe((resp)=>
+        { 
+          console.log(resp);
+          if(resp['status']=='Success')
+          {
+            this.toast.openSucess('Image Deleted Sucessfully','');
+            this.loader=false;
+            this.getExpenseList(this.expenseId);
+            this.picvalue=[];
+          }
+          
+        });
+      }
+    });
+  }
+
+  selectedFile:any=[];
+  documentUrl:any=[];
+  insertImage(data)
+  {
+    this.selectedFile=[];
+    let files = data.target.files;
+    if (files) {
+      for (let file of files) {
+        let reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.documentUrl.push(e.target.result);
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+    console.log(this.documentUrl);
+    console.log(data.target.files.length);
+    for(var i=0; i<data.target.files.length; i++)
+    {
+      this.selectedFile.push(data.target.files[i]);
+    }
+    
+    setTimeout(() => {
+      this.Insert_Image();
+    }, 500);
+  }
+  misc_Expense_Document;
+  Insert_Image()
+  {
+    this.misc_Expense_Document=new FormData;
+    this.misc_Expense_Document.action=1;
+    this.misc_Expense_Document.binaryData=this.documentUrl[this.documentUrl.length - 1];
+    this.misc_Expense_Document.documentType=4;
+    this.misc_Expense_Document['documentName'] = this.selectedFile[0].name;
+    this.misc_Expense_Document.referenceId=this.expenseId;
+    this.loader=true;
+    for(var i=0; i<this.selectedFile.length; i++)
+    {
+      console.log(this.selectedFile[i]);
+      
+      if(this.selectedFile[i].type == 'application/pdf') {
+        this.misc_Expense_Document['fileName'] = "document"+i+".pdf",this.selectedFile[i];
+      } else {
+        this.misc_Expense_Document['fileName'] = "document"+i+".jpg",this.selectedFile[i];
+      }
+      // this.misc_Expense_Document.fileName = "image"+i+".jpg",this.selectedFile[i];
+    }
+    console.log(this.misc_Expense_Document);
+    let value=[];
+    value[0]=this.misc_Expense_Document;
+    console.log(value);
+    
+    this.service.fetchData(value,"document/update").subscribe((resp)=>
+    {
+      console.log(resp);
+      if(resp)
+      {
+        this.loader=false;
+        this.getExpenseList(this.expenseId);
+        this.toast.openSucess('Document Added Sucessfully','');
+        
+      }
+    });
   }
 
 }

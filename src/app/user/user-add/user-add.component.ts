@@ -110,7 +110,7 @@ export class UserAddComponent implements OnInit {
         {name: 'Edit', checked: false},
         {name: 'Delete', checked: false}]
     },
-    { moduleId: '8', moduleName: 'Checkin', view: false, moduleRights: [
+    { moduleId: '8', moduleName: 'DVR', view: false, moduleRights: [
         {name: 'Add', checked: false},
         {name: 'Edit', checked: false},
         {name: 'Delete', checked: false}]
@@ -137,6 +137,11 @@ export class UserAddComponent implements OnInit {
         {name: 'Delete', checked: false}]
     },
     { moduleId: '14', moduleName: 'Vendors', view: false, moduleRights: [ 
+        {name: 'Add', checked: false},
+        {name: 'Edit', checked: false},
+        {name: 'Delete', checked: false}]
+    },
+    { moduleId: '23', moduleName: 'Purchase Order', view: false, moduleRights: [
         {name: 'Add', checked: false},
         {name: 'Edit', checked: false},
         {name: 'Delete', checked: false}]
@@ -358,8 +363,8 @@ constructor(public db:ConstantService,
                     }
                     console.log(this.rolelistsales1);
                     console.log(this.rolelistsystem1);
-            }
-            
+                }
+                
             });
         }
         
@@ -1186,7 +1191,7 @@ constructor(public db:ConstantService,
                             });
                         }
                     }
-
+                    
                     for (let index = 0; index < this.masterArray.length; index++) {
                         
                         if(this.masterArray[index].view) {

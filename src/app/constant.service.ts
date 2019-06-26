@@ -11,8 +11,8 @@ const EXCEL_EXTENSION = '.xlsx';
   providedIn: 'root',
 })
 export class ConstantService {
-  dburl:string = 'http://13.234.72.162/api/';
-  // dburl:string = 'http://13.234.72.162:8084/api/';
+  // dburl:string = 'http://13.234.72.162/api/';
+  dburl:string = 'http://13.234.72.162:8084/api/';
   
   constructor(public http: HttpClient) { }
   header: any = new HttpHeaders();

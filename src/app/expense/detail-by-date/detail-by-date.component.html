@@ -191,7 +191,8 @@
                   <div *ngIf="expenseDetailList.documents?.length > 0" class="vertical-img {{expenseDetailList.documents.length == 2 ? 'double-img' : (expenseDetailList.documents.length > 2 ? 'multiple-img' : '')}}"class="vertical-img">
                     <ul>
                       <li *ngFor="let expenseImage of expenseDetailList.documents;let i=index" class="overlay-content" >
-                        <img src="{{api+expenseImage.documentId+'/'+'2'}}">
+                        <img *ngIf="expenseImage.extension=='.jpg'" src="{{api+expenseImage.documentId+'/'+'2'}}">
+                        <img *ngIf="expenseImage.extension=='.pdf'" src="assets/img/pdf.png">
                         <a class="close dowload" matRipple matTooltip="Download Bill" href="{{api+expenseImage.documentId+'/'+'2'}}" ><i class="material-icons">cloud_download</i></a>
                       </ul>
                     </div>
@@ -236,7 +237,7 @@
                     <td class="w110">{{expense.to}}</td>
                     <td  class="w150">
                       <span *ngIf="expense.modeType==1"> SELF</span>
-                      <span *ngIf="expense.modeType==1"> PUBLIC TRANSPORT</span>
+                      <span *ngIf="expense.modeType==2"> PUBLIC TRANSPORT</span>
                     </td>
                     <td  class="w150">
                       <span *ngIf="expense.mode==10">AUTO</span>

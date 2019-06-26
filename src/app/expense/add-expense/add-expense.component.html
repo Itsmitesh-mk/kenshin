@@ -224,15 +224,17 @@
                       <td class="w160"> {{Localexpense.visitDate |date:'EEEE, MMMM d, y'}}</td>
                       <td class="w110">{{Localexpense.from}}</td>
                       <td class="w110">{{Localexpense.to}}</td>
-                      <td *ngIf="Localexpense.modeType==1" class="w150">SELF</td>
-                      <td *ngIf="Localexpense.modeType==2"class="w150">PUBLIC TRANSPORT</td>
-                      <td *ngIf="Localexpense.mode==10" class="w150">AUTO</td>
-                      <td *ngIf="Localexpense.mode==1" class="w150">BUS</td>
-                      <td *ngIf="Localexpense.mode==6" class="w150">AC-TAXI</td>
-                      <td *ngIf="Localexpense.mode==7" class="w150">NON AC-TAXI</td>
-                      <td *ngIf="Localexpense.mode==5" class="w150">METRO</td>
-                      <td *ngIf="Localexpense.mode==9" class="w150">CAR</td>
-                      <td *ngIf="Localexpense.mode==8" class="w150">BIKE</td>
+                      <td class="w150">
+                          <span *ngIf="Localexpense.modeType==1">SELF</span>
+                          <span *ngIf="Localexpense.modeType==2">PUBLIC TRANSPORT</span>
+                          <span *ngIf="Localexpense.mode==10">AUTO</span>
+                          <span *ngIf="Localexpense.mode==1">BUS</span>
+                          <span *ngIf="Localexpense.mode==6">AC-TAXI</span>
+                          <span *ngIf="Localexpense.mode==7">NON AC-TAXI</span>
+                          <span *ngIf="Localexpense.mode==5">METRO</span>
+                          <span *ngIf="Localexpense.mode==9">CAR</span>
+                          <span *ngIf="Localexpense.mode==8">BIKE</span>
+                      </td>
                       <td class="w130 ">{{Localexpense.distanceKMS}}</td>
                       <td class="w110 text-right"> &#x20B9; {{Localexpense.amount}}</td>
                       <td class="w130 text-right"> &#x20B9; {{Localexpense.otherExpense}}</td>
@@ -254,7 +256,8 @@
                 <ul>
                   <li class="w110 pr10" *ngFor="let urlData of urls;let i=index">
                     <label>
-                      <img src="{{urlData}}">
+                        <img *ngIf="selectedFile[i].type=='image/jpeg'" src="{{urlData}}">
+                        <img  *ngIf="selectedFile[i].type=='application/pdf'" src="assets/img/pdf.png">
                       <a (click)="deleteimg(i)" class="close"><i class="material-icons">delete_sweep</i></a>
                     </label>
                   </li>
@@ -1141,7 +1144,8 @@
                 <ul>
                   <li class="w110 pr10" *ngFor="let urlData of urls;let i=index">
                     <label>
-                      <img src="{{urlData}}">
+                        <img *ngIf="selectedFile[i].type=='image/jpeg'" src="{{urlData}}">
+                        <img  *ngIf="selectedFile[i].type=='application/pdf'" src="assets/img/pdf.png">
                       <a (click)="deleteimg(i)" class="close"><i class="material-icons">delete_sweep</i></a>
                     </label>
                   </li>
@@ -1468,7 +1472,9 @@
                 <ul>
                   <li class="w110 pr10" *ngFor="let urlData of urls;let i=index">
                     <label>
-                      <img src="{{urlData}}">
+                        <img *ngIf="selectedFile[i].type=='image/jpeg'" src="{{urlData}}">
+                        <img  *ngIf="selectedFile[i].type=='application/pdf'" src="assets/img/pdf.png">
+                      <!-- <img src="{{urlData}}"> -->
                       <a (click)="deleteimg(i)" class="close"><i class="material-icons">delete_sweep</i></a>
                     </label>
                   </li>
@@ -1538,8 +1544,8 @@
             <div class="col s12 mt15">
               <div class="cs-btn text-right">
                 <div class="in-btn">
-                  <button mat-raised-button color="accent" (click)="allPromationExpense.status=1">Save</button>
-                  <button mat-raised-button color="accent" (click)="allPromationExpense.status=2">Save as Draft</button>
+                  <button mat-raised-button color="accent" (click)="allPromationExpense.status=2">Save</button>
+                  <button mat-raised-button color="accent" (click)="allPromationExpense.status=1">Save as Draft</button>
                 </div>
               </div>
             </div>
@@ -1736,7 +1742,8 @@
                 <ul>
                   <li class="w110 pr10" *ngFor="let urlData of urls;let i=index">
                     <label>
-                      <img src="{{urlData}}">
+                        <img *ngIf="selectedFile[i].type=='image/jpeg'" src="{{urlData}}">
+                        <img  *ngIf="selectedFile[i].type=='application/pdf'" src="assets/img/pdf.png">
                       <a (click)="deleteimg(i)" class="close"><i class="material-icons">delete_sweep</i></a>
                     </label>
                   </li>

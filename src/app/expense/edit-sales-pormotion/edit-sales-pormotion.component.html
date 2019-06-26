@@ -35,7 +35,7 @@
               </div>
               <div class="from-fields">
                 <div class="row">
-                  <div class="col s4 ">
+                  <!-- <div class="col s4 ">
                     <div class="control-field">
                       <mat-form-field class="cs-input infix-bodr8">
                         <input matInput placeholder="Purpose Of Visit" type="text" id="purposeOfVisit" name="purposeOfVisit" #purposeOfVisit="ngModel" [(ngModel)]="salesExpense.purposeOfVisit" [ngClass]="{'has-error' : purposeOfVisit.invalid }" required>
@@ -44,14 +44,14 @@
                         <mat-error *ngIf="purposeOfVisit.errors.required">Purpose of Visit required</mat-error>
                       </mat-error>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="col s4">
                       <div class="control-field">
                         <mat-form-field class="cs-input infix-bodr8">
                           <input matInput placeholder="ADVANCE AMOUNT" type="number" id="advanceAmount" name="advanceAmount" #advanceAmount="ngModel" [(ngModel)]="salesExpense.advanceAmount"  [ngClass]="{'has-error' : advanceAmount.invalid }" required>
                         </mat-form-field>
                         <mat-error *ngIf="f2.submitted && advanceAmount.invalid" class="invalid-feedback">
-                          <mat-error *ngIf="advanceAmount.errors.required">Purpose Of Visit required</mat-error>
+                          <mat-error *ngIf="advanceAmount.errors.required">Advance Amount is required</mat-error>
                         </mat-error>
                       </div>
                     </div>
@@ -257,9 +257,10 @@
                 <div class="col s12">
                     <div class="cs-file-multiple scroll">
                       <ul>
-                        <li class="w110 pr10" *ngFor="let urlData of SalesExpenseList.documents;let i=index">
+                        <li class="w110 pr10" *ngFor="let urlData of OutStationExpense.documents;let i=index">
                           <label>
-                            <img src="{{api+urlData.documentId+'/'+'2'}}">
+                            <img *ngIf="urlData.extension=='.jpg'" src="{{api+urlData.documentId+'/'+'2'}}">
+                            <img *ngIf="urlData.extension=='.pdf'" src="assets/img/pdf.png">
                             <a (click)="deleteimg(urlData.documentId,urlData.fileName)" class="close"><i class="material-icons">delete_sweep</i></a>
                           </label>
                         </li>

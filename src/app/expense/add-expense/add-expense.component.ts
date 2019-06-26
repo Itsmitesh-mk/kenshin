@@ -422,13 +422,57 @@ export class AddExpenseComponent implements OnInit {
       }
     }) 
   }
+  // uploadBillAttechment(id)
+  // {
+  //   let documentData = {};
+  //   console.log(this.urls);
+    
+  //   let value:any = [];
+
+  //   for(let j=0;j<this.urls.length;j++)
+  //   {  
+  //     documentData = new FormData;
+  //     documentData['action']=1;
+  //     documentData['binaryData']=this.urls[j];
+  //     documentData['documentType']=4;
+  //     documentData['documentName'] = this.selectedFile[0].name;
+  //     documentData['referenceId']=id;
+  //     this.loader=true;
+      
+  //     for(var i=0; i<this.selectedFile.length; i++)
+  //     {
+        
+  //       if(this.selectedFile[i].type == 'application/pdf') {
+  //         documentData['fileName'] = "document"+i+".pdf",this.selectedFile[i];
+  //       } else {
+  //         documentData['fileName'] = "document"+i+".jpg",this.selectedFile[i];
+  //       }
+  //     }
+
+  //     value.push(documentData);
+  //   }
+  //   console.log(documentData);
+
+  //   console.log(value);
+    
+  //   this.service.fetchData(value,"document/update").subscribe((resp)=>
+  //   {
+  //     console.log(resp);
+  //     if(resp)
+  //     {
+  //       this.loader=false;
+  //       this.toast.openSucess('Document Added Sucessfully','');
+  //     }
+  //   });
+    
+  // }
   uploadBillAttechment(id)
   {
     let documentData = {};
     console.log(this.urls);
     
     let value:any = [];
-
+    
     for(let j=0;j<this.urls.length;j++)
     {  
       documentData = new FormData;
@@ -437,30 +481,23 @@ export class AddExpenseComponent implements OnInit {
       documentData['documentType']=4;
       documentData['documentName'] = this.selectedFile[0].name;
       documentData['referenceId']=id;
-      this.loader=true;
-      
-      for(var i=0; i<this.selectedFile.length; i++)
-      {
-        
-        if(this.selectedFile[i].type == 'application/pdf') {
-          documentData['fileName'] = "document"+i+".pdf",this.selectedFile[i];
-        } else {
-          documentData['fileName'] = "document"+i+".jpg",this.selectedFile[i];
-        }
+      if(this.selectedFile[j].type == 'application/pdf') {
+        documentData['fileName'] = "document"+j+".pdf",this.selectedFile[j];
+      } else {
+        documentData['fileName'] = "document"+j+".jpg",this.selectedFile[j];
       }
-
-      value.push(documentData);
+        value.push(documentData);
+      // this.loader=true;
     }
-    console.log(documentData);
-
-    console.log(value);
     
-    this.service.fetchData(value,"document/update").subscribe((resp)=>
+    this.data.file=value;
+    console.log(this.data);
+    this.loader=true;
+    this.service.fetchData(value, 'document/update').subscribe((resp)=>
     {
       console.log(resp);
-      if(resp)
+      if(resp['status']=='Success')
       {
-        this.loader=false;
         this.toast.openSucess('Document Added Sucessfully','');
       }
     });

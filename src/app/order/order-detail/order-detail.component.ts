@@ -186,54 +186,59 @@ export class OrderDetailComponent implements OnInit {
             console.log('The dialog was closed');
           });
         }
- 
+        
         dealerDetail:any={}
         orderDetail:any={}
         xLXSArray:any=[];
         convertArrayToExcel()
         {
-
-          this.xLXSArray.push({
-            'Company Name':this.network_data.establishment,
-            'Dealer Code':this.network_data.networkCode,
-            'Contact Person Name':this.network_data.networkContacts[0].name,
-            'Contact Person Mobile no':this.network_data.networkContacts[0].mobile1})
-
-          this.xLXSArray.push({
-            
-            'Order date':this.order_data.createdOn,
-            'Created By':this.order_data.userName,
-            'Order No.':this.order_data.orderNumber,
-            'Order Quantity':this.order_data.quantity,
-            'GST Amount':this.order_data.gstAmount,
-            'Order Amount':this.order_data.amount,
-            'Total Order Amount':this.order_data.totalAmount,
-            'Company Status':(this.order_data.companyStatus==1?'Pending':(this.order_data.companyStatus==2?'Approved':'Hold')),
-            'Distributor Status':(this.order_data.dealerStatus==2?'Pending':(this.order_data.dealerStatus==3?'Approved':'Reject')),
-          })
-
-          this.xLXSArray.push({});
-          this.xLXSArray.push({});
-          this.xLXSArray.push({});
-
+          
+          // this.xLXSArray.push({
+          //   'Dist Name':this.network_data.establishment,
+          //   'Dist Code':this.network_data.networkCode,
+          //   'Contact Person Name':this.network_data.networkContacts[0].name,
+          //   'Contact Person Mobile no':this.network_data.networkContacts[0].mobile1})
+          
+          // this.xLXSArray.push({
+          
+          //   'Order date':this.order_data.createdOn,
+          //   'Created By':this.order_data.userName,
+          //   'Order No.':this.order_data.orderNumber,
+          //   'Order Quantity':this.order_data.quantity,
+          //   'GST Amount':this.order_data.gstAmount,
+          //   'Order Amount':this.order_data.amount,
+          //   'Total Order Amount':this.order_data.totalAmount,
+          //   'Company Status':(this.order_data.companyStatus==1?'Pending':(this.order_data.companyStatus==2?'Approved':'Hold')),
+          //   'Distributor Status':(this.order_data.dealerStatus==2?'Pending':(this.order_data.dealerStatus==3?'Approved':'Reject')),
+          // })
           for(let i=0;i<this.order_data.orderDetail.length;i++)
           {
             this.xLXSArray.push({
+              'Dist Name':this.network_data.establishment,
+              'Dist Code':this.network_data.networkCode,
+              'Created By':this.order_data.createdByName,
+              'Order date':this.order_data.createdOn,
+              'Order No.':this.order_data.orderNumber,
+              'Contact Person Name':this.network_data.networkContacts[0].name,
+              'Contact Person Mobile no':this.network_data.networkContacts[0].mobile1,
               'Part Number':this.order_data.orderDetail[i].partNumberCode,
               'Product Name':this.order_data.orderDetail[i].productName,
               'OEM Code':this.order_data.orderDetail[i].oem,
               'Quantity':this.order_data.orderDetail[i].quantity,
               'Unit Price':this.order_data.orderDetail[i].price,
               'Amount':parseInt(this.order_data.orderDetail[i].price)*parseInt(this.order_data.orderDetail[i].quantity),
-              'GST %':this.order_data.orderDetail[i].gstPercentage
+              'GST %':this.order_data.orderDetail[i].gstPercentage,
+              'Total Order Amount':this.order_data.totalAmount,
+              'Company Status':(this.order_data.companyStatus==1?'Pending':(this.order_data.companyStatus==2?'Approved':'Hold')),
+              'Distributor Status':(this.order_data.dealerStatus==2?'Pending':(this.order_data.dealerStatus==3?'Approved':'Reject'))
             })
           }
-
+          
         }
-
+        
         exportAsXLSX():void {
           console.log(this.xLXSArray);
           this.db.exportAsExcelFile(this.xLXSArray, 'ORDER SHEET');
         }
- }
+      }
       
