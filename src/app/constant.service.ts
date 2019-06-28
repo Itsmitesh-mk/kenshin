@@ -1,7 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-// import { Injectable } from '@angular/core';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -11,8 +10,8 @@ const EXCEL_EXTENSION = '.xlsx';
   providedIn: 'root',
 })
 export class ConstantService {
-  // dburl:string = 'http://13.234.72.162/api/';
-  dburl:string = 'http://13.234.72.162:8084/api/';
+  dburl:string = 'http://13.234.72.162/api/';
+  // dburl:string = 'http://13.234.72.162:8084/api/';
   
   constructor(public http: HttpClient) { }
   header: any = new HttpHeaders();
@@ -163,8 +162,8 @@ export class ConstantService {
       }
     });
     
-    // return this.counterArray;
   }
+ 
 
   
   

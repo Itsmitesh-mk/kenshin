@@ -1,0 +1,33 @@
+<div class="edit-modal">
+  <p class="heading">Update User Detail</p>
+  <div  mat-dialog-content>
+      <div class="row mt15">
+          <div class="col s12">
+            <div class="cs-file-multiple scroll">
+              <ul>
+                <li class="w110 pr10" *ngFor="let urlData of urls;let i=index">
+                  <label>
+                    <img *ngIf="selectedFile[i].type=='image/jpeg'" src="{{urlData}}">
+                   <img  *ngIf="selectedFile[i].type=='application/pdf'" src="assets/img/pdf.png">
+                    <a (click)="deleteimg(i)" class="close"><i class="material-icons">delete_sweep</i></a>
+                  </label>
+                </li>
+                <li class="w110 pr10">
+                  <div class="cs-file wp100">
+                    <label>
+                      <input type="file" (change)="insertImage($event)" style="display:none;" multiple>
+                      <i class="material-icons add-file-icon" >add</i>
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+  </div>
+  
+  <div mat-dialog-actions>
+    <button mat-raised-button  color="warn" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button color="accent"(click)="uploadBillAttechment()" >Save</button>
+  </div>
+</div>

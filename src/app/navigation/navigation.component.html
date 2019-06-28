@@ -74,7 +74,7 @@
                 </a>
             </li>
             <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][4].show) )">
-                <a routerLink="/list-travel" routerLinkActive="active" >Travel Plans <img src="assets/img/travel.svg" class="nav-icon h22"><span class="nav-counter green-count">{{service.counterArray.travelPlanCount}}</span></a>
+                <a routerLink="/list-travel" routerLinkActive="active" >{{userRole==17?'Sales Promotion':'Travel Plans' }}<img src="assets/img/travel.svg" class="nav-icon h22"><span class="nav-counter green-count">{{service.counterArray.travelPlanCount}}</span></a>
             </li>
             <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][6].show))" >
                 <a  routerLink="/concern-list" routerLinkActive="active" >Customer Concerns <img src="assets/img/concern.svg" class="nav-icon h23"> <span class="nav-counter orange-count">{{service.counterArray.concernCount}}</span></a>

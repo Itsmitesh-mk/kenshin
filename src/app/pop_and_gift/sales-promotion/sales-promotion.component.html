@@ -1,0 +1,230 @@
+<div class="main-container" >
+    <div *ngIf="loader==true"> 
+        <div class="cs-loader">
+            <img src="assets/img/loader.png" class="rotate"> 
+        </div>
+    </div>
+    <div class="middle-container">
+        <div class="page-heading">
+            <div class="heading-text pl10">
+                <h2>JAIN ENTERPRISES</h2>
+                <p class="light">Retailer</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-outer">
+        <div class="container" >
+            <div class="row">
+                <div class="col s12">
+                    <div class="details-info">
+                        <div class="basic-details">
+                            <div class="profile-info">
+                                <ul class="flex-start">
+                                    <li>
+                                        <div class="cs-box">
+                                            <img src="assets/img/travel.svg" class="fix-img">
+                                            <span>Travel Month</span>
+                                            <p>{{promotionMonth}}  {{travelDetail.year}}</p>
+                                        </div>
+                                    </li>
+                                    
+                                    <li>
+                                        <div class="cs-box">
+                                            <img src="assets/img/gmail.svg" class="fix-img">
+                                            <span>No Of Activites</span>
+                                            <p>{{totalPromotionLength}}</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="cs-box">
+                                            <img src="assets/img/phone.svg" class="fix-img">
+                                            <span>Total Budget</span>
+                                            <p>{{travelDetail.salesBudget}}</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col s12">
+                    <div class="zone-tab">
+                        <ul>
+                            <li >Zone</li>
+                            <li [ngClass]="{'active':northActive==true}">North</li>
+                            <li [ngClass]="{'active':eastActiveA==true}">East</li>
+                            <li [ngClass]="{'active':westActive==true}">West</li>
+                            <li [ngClass]="{'active':southActive==true}">South</li>
+                            <li [ngClass]="{'active':centralActive==true}">Centerl</li>
+                            <li [ngClass]="{'active':northEastActive==true}">North East</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt15">
+                <div class="col s4">
+                    <div class="cs-calender">
+                        <div class="calendar">
+                            <div class="calendar-navs">
+                                <div class="outer">
+                                    <div class="innear">
+                                        <div class="cal-header">
+                                            <div class="month-nav ">
+                                                <p>{{ promotionMonth }}  {{ travelDetail.year }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="month-grid">
+                                <div class="day-names">
+                                    <div *ngFor="let name of dayNames" class="day-name p9">
+                                        {{ name }}
+                                    </div>
+                                </div>
+                                <div class="weeks">
+                                    <div *ngFor="let week of weeks" class="week">
+                                        <ng-container *ngFor="let day of week">
+                                            <div  class="week-date enabled" (click)="selectDate(day.mDate)"
+                                            [ngClass]="{ 'activity': (day.existPlan && day.mDate.format('YYYY-MM-DD') != selectedDate ), 'today': (day.mDate.format('YYYY-MM-DD') == selectedDate && day.existPlan),   selected: day.selected,'disabled':!day.existPlan }">
+                                           <div  class="date-text">
+                                                <p>{{ day.mDate.date() }}</p>
+                                                <!-- <span *ngIf="day.existPlan" >2 Activity</span> -->
+                                           </div>
+                                        
+                                        </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s8">
+                    <div class="cs-table left-right-15">
+                        <div class="table-head">
+                            <table>
+                                <tr>
+                                    <!-- <th class="w140">Date</th> -->
+                                    <th class="padding0">
+                                        <table class="inner-table">
+                                            <tr>
+                                                <th class="w150">State</th>
+                                                <th class="w150">District</th>
+                                                <th class="w150">City</th>
+                                                <th>Activity Type & Budget</th>
+                                                <th class="w130">&nbsp;</th>
+                                            </tr>
+                                        </table>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="table-container ">
+                            <div class="table-content">
+                                <table>
+                                    <tr>
+                                        <td class="padding0">
+                                            <table class="inner-table">
+                                                <tr *ngFor="let p of selectedDateArray.plandDetail">
+                                                    <td class="w150">{{p.state}}</td>
+                                                    <td class="w150">{{p.district}}</td>
+                                                    <td class="w150">{{p.city}}</td>
+                                                    <td>
+                                                        <div class="desc">
+                                                            <p>
+                                                                <span *ngIf="p.activityType==1" value="1">Mechanic get together</span>
+                                                                <span *ngIf="p.activityType==2" value="2">Retailer get together</span>
+                                                                <span *ngIf="p.activityType==3" value="3">van Campaign</span>
+                                                                <span *ngIf="p.activityType==4" value="4">Stall Campaign</span>
+                                                                <span *ngIf="p.activityType==5" value="5">Exhibition Participation</span>
+                                                                <span *ngIf="p.activityType==6" value="6">Signboard</span>
+                                                                <span *ngIf="p.activityType==7" value="7">Wall/Shop Painting</span>
+                                                                <span *ngIf="p.activityType==8" value="8">GiveAways</span>
+                                                                <span *ngIf="p.activityType==9" value="9">Printing Of Lesafelts,banners, posters etc.</span>
+                                                            </p>
+                                                            <p>Rs . {{p.salesBudget}}</p>
+                                                        </div>
+                                                    </td>
+                                                    <td class="w130">
+                                                        <div class="desc">
+                                                            <a class="link-btn" (click)="viewGallery=true">View Gallery</a>
+                                                            <a class="add-item"  (click)="openDialog(p)"><i class="material-icons">add</i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="right-modal" [ngClass]="{'active':viewGallery}">
+    <div class="modal-head">
+        <h2>Gallery Section</h2>
+        <a mat-button class="close" (click)="viewGallery=false"><i class="material-icons">clear</i></a>
+    </div>
+    
+    <div class="modal-body">
+        <div class="container-outer padding0">
+            <div class="container">
+                <div class="cs-figure">
+                    <ul>
+                        <li>
+                            <div class="outer">
+                                <div class="inner">
+                                    <span>Activity Type</span>
+                                    <p>Mechanic get together</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="outer">
+                                <div class="inner">
+                                    <span>Budget</span>
+                                    <p class="counter">Rs. 985000/-</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sm-gallery">
+                    <ul>
+                        <li><a><img src="assets/img/1.png"></a></li>
+                        <li><a><img src="assets/img/2.png"></a></li>
+                        <li><a><img src="assets/img/3.png"></a></li>
+                        <li><a><img src="assets/img/4.png"></a></li>
+                        <li><a><img src="assets/img/5.png"></a></li>
+                        <li><a><img src="assets/img/5.png"></a></li>
+                        <li><a><img src="assets/img/5.png"></a></li>
+                        <li><a><img src="assets/img/5.png"></a></li>
+                    </ul>
+                </div>
+                
+                <div class="upload-gl"  (click)="openDialog()">
+                    <div>
+                        <i class="material-icons">cloud_upload</i>
+                        <p>Upload Gallery Images</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="h50"></div>
+
