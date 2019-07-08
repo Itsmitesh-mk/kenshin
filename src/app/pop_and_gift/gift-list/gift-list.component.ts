@@ -176,5 +176,17 @@ deletePop(id)
           });
     }
 
+    salesPromotionData:any=[];
+    salesPromotionList()
+    {
+      this.db.fetchData({currentPage:1,pageSize:500,status:5},"travelplan/list").subscribe((result)=>{
+        console.log(result);
+        if(result['status']=='Success')
+        {
+          this.salesPromotionData=result['data'];
+        }
+      })
+    }
+
 
 }

@@ -222,6 +222,7 @@
                         <th>District</th>
                         <th>City</th>
                         <th class="w130 text-center">Sales Activity</th>
+                        <th class="w130 text-center">Activity Type</th>
                         <th class="w120 text-right">Sales Budget</th>
                         <th *ngIf="travelDetail.status!=5 && userId==travelDetail.createBy && travelDetail.status!=3" class="w110 text-center">Action</th>
                         <th *ngIf="travelDetail.status!=5 && userId==travelDetail.createBy && travelDetail.status!=3"class="w80 text-center">ADD</th>
@@ -257,53 +258,66 @@
                           <td>{{detail.district}}</td>
                           <td>{{detail.city}}</td>
                           <td class="w130 text-center">{{detail.salesActivity?'Yes':'No'}}</td>
-                          <td class="w120 text-right">&#x20B9; {{detail.salesBudget?detail.salesBudget:'NA'}}</td>
-                          <td *ngIf="travelDetail.status!=5 && userId==travelDetail.createBy && travelDetail.status!=3" class="w110">
-                            <div class="action-btns default-action" style="right: 3px;">
-                              <a mat-button class="edit" (click)="updateTravel(detail)"><i class="material-icons">create</i></a>
-                              <button  mat-button class="delete" (click)="deleteTravelPlan(detail.travelDetailId)"><i class="material-icons">delete_sweep</i></button>
-                            </div>
+                          <td *ngIf="detail.salesActivity" class="w130 text-center">
+                              <span *ngIf="detail.activityType==1" value="1">Mechanic get together</span>
+                              <span *ngIf="detail.activityType==2" value="2">Retailer get together</span>
+                              <span *ngIf="detail.activityType==3" value="3">van Campaign</span>
+                              <span *ngIf="detail.activityType==4" value="4">Stall Campaign</span>
+                              <span *ngIf="detail.activityType==5" value="5">Exhibition Participation</span>
+                              <span *ngIf="detail.activityType==6" value="6">Signboard</span>
+                              <span *ngIf="detail.activityType==7" value="7">Wall/Shop Painting</span>
+                              <span *ngIf="detail.activityType==8" value="8">GiveAways</span>
+                              <span *ngIf="detail.activityType==9" value="9">Printing Of Lesafelts,banners, posters etc.</span>
                           </td>
+                          <td *ngIf="detail.salesActivity==false">&nbsp;</td>
+                            <td class="w120 text-right">&#x20B9; {{detail.salesBudget?detail.salesBudget:'NA'}}</td>
+                            <td *ngIf="travelDetail.status!=5 && userId==travelDetail.createBy && travelDetail.status!=3" class="w110">
+                              <div class="action-btns default-action" style="right: 3px;">
+                                <a mat-button class="edit" (click)="updateTravel(detail)"><i class="material-icons">create</i></a>
+                                <button  mat-button class="delete" (click)="deleteTravelPlan(detail.travelDetailId)"><i class="material-icons">delete_sweep</i></button>
+                              </div>
+                            </td>
+                            
+                          </tr>
                           
-                        </tr>
-                        
-                      </table>
-                    </td>
-                    <td *ngIf="travelDetail.status!=5 && userId==travelDetail.createBy && travelDetail.status!=3" class="w80 text-center">
-                      <div class="in-btn">
-                        <a mat-button color="accent" matTooltip="Add Plan" (click)="addOnDetail(plan.planDate)"><i class="material-icons">
-                          add_circle
-                        </i></a>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
+                        </table>
+                      </td>
+                      <td *ngIf="travelDetail.status!=5 && userId==travelDetail.createBy && travelDetail.status!=3" class="w80 text-center">
+                        <div class="in-btn">
+                          <a mat-button color="accent" matTooltip="Add Plan" (click)="addOnDetail(plan.planDate)"><i class="material-icons">
+                            add_circle
+                          </i></a>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col s12 padding0" *ngIf="travelDetail.status==1">
+          <div class="cs-btn fixedd mt15 text-right">
+            <div class="in-btn">
+              <button mat-raised-button color="accent"(click)="updatedstatus(travelDetail.travelPlanID,2)" >Submit</button>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 padding0" *ngIf="travelDetail.status==4||travelDetail.status==6" >
+          <div class="cs-btn mt15 text-right">
+            <div class="in-btn">
+              <button mat-raised-button color="accent"(click)="updatedstatus(travelDetail.travelPlanID,2)">Re-submit</button>
             </div>
           </div>
         </div>
       </div>
     </div>
     
-    <div class="row">
-      <div class="col s12 padding0" *ngIf="travelDetail.status==1">
-        <div class="cs-btn fixedd mt15 text-right">
-          <div class="in-btn">
-            <button mat-raised-button color="accent"(click)="updatedstatus(travelDetail.travelPlanID,2)" >Submit</button>
-          </div>
-        </div>
-      </div>
-      <div class="col s12 padding0" *ngIf="travelDetail.status==4||travelDetail.status==6" >
-        <div class="cs-btn mt15 text-right">
-          <div class="in-btn">
-            <button mat-raised-button color="accent"(click)="updatedstatus(travelDetail.travelPlanID,2)">Re-submit</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
   
-</div>
-
-<div class="h50"></div>
-
+  <div class="h50"></div>
+  
+  

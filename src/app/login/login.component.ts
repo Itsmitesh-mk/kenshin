@@ -38,7 +38,7 @@ constructor(public service: ConstantService, public ses:sessionStorage, private 
     this.loading = true;
     console.log(this.data);
 
-    this.nexturl = this.route.snapshot.queryParams['returnUrl'] || '/lead-list';
+    this.nexturl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
 
     this.service.login( this.data ,'login')
     .subscribe((data:any)=> {
@@ -88,15 +88,6 @@ constructor(public service: ConstantService, public ses:sessionStorage, private 
                               
                              this.router.navigate(['/lead-list']);
                           }
-                        //   else if(this.userdata)
-                        //   {
-                        //       this.router.navigate(['/lead-list']);
-                        //   }
-
-                          // this.dbModuleData = responseData['data'];
-                          // this.moduleAssignedEdit = false;
-                          // this.system_detail = response;
-                          // this.systemdata=this.system_detail.data;
                           
                       }, error => {
                           console.log(error);
@@ -106,7 +97,7 @@ constructor(public service: ConstantService, public ses:sessionStorage, private 
 
                       localStorage.setItem('accessModuleData', '');
 
-                      this.router.navigate(['/lead-list']);
+                      this.router.navigate(['/dashboard/']);
               }
 
         } else {

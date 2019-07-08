@@ -37,20 +37,6 @@
                       </mat-error>
                     </div>
                   </div>
-                  <!-- <div class="col s4" *ngIf="activityData.activitydate">
-                    <div class="control-field mt14">
-                      <div class="cs-input">
-                        <input placeholder="Check In Time" #activityInTime="ngModel" name="activityInTime" [(ngModel)]="activityData.activityInTime" id="activityInTime" [format]="12" [ngxTimepicker]="default" [ngClass]="{ 'is-invalid': (f.submitted && activityInTime.invalid) && (activityData.activityInTime < timecheckinfirst || timecheckinlast < activityData.activityInTime)}" readonly required>
-                      </div>
-                    </div>
-                    <ngx-material-timepicker #default (click)="check1()"></ngx-material-timepicker>
-                    <mat-error *ngIf="f.submitted && activityInTime.invalid" class="invalid-feedback">
-                      <mat-error *ngIf="activityInTime.errors.required">Check In Time is required</mat-error>
-                    </mat-error>
-                    <mat-error *ngIf="activityData.activityInTime < timecheckinfirst || timecheckinlast < activityData.activityInTime" class="invalid-feedback">
-                      <mat-error *ngIf="activityData.activityInTime < timecheckinfirst || timecheckinlast < activityData.activityInTime">Check-In time must be between 06:00 AM to 10:00 PM</mat-error>
-                    </mat-error>
-                  </div> -->
                   <div class="col s4"  *ngIf="activityData.activitydate">
                     <div class="control-field mt14">
                       <div class="cs-input">
@@ -65,24 +51,6 @@
                       <mat-error *ngIf="datenotvalid==true">Check-In time must be between 06:00 AM to 10:00 PM</mat-error>
                     </mat-error>
                   </div>
-                  
-                  <!-- <div class="col s4 pr0"  *ngIf="activityData.activitydate">
-                    <div class="control-field mt14">
-                      <div class="cs-input">
-                        <input placeholder="Check Out Time" #activityOutTime="ngModel" name="activityOutTime" [(ngModel)]="activityData.activityOutTime"  id="activityOutTime" [format]="12" [ngxTimepicker]="default1" [ngClass]="{ 'is-invalid': (f.submitted && activityOutTime.invalid)  && (activityData.activityOutTime < timecheckoutfirst || timecheckoutlast < activityData.activityOutTime) && (activityData.activityInTime > this.activityData.activityOutTime)}" readonly required>
-                      </div>
-                    </div>
-                    <ngx-material-timepicker #default1 (click)="check2()"></ngx-material-timepicker>
-                    <mat-error *ngIf="f.submitted && activityOutTime.invalid" class="invalid-feedback">
-                      <mat-error *ngIf="activityOutTime.errors.required">Check Out Time is required</mat-error>
-                    </mat-error>
-                    <mat-error *ngIf="activityData.activityOutTime < timecheckoutfirst || timecheckoutlast < activityData.activityOutTime" class="invalid-feedback">
-                      <mat-error *ngIf="activityData.activityOutTime < timecheckoutfirst || timecheckoutlast < activityData.activityOutTime">Check-Out time must be between 07:00 AM to 11:00 PM</mat-error>
-                    </mat-error>
-                    <mat-error *ngIf="f.submitted && activityData.activityInTime > this.activityData.activityOutTime" class="invalid-feedback">
-                      Check-Out time should be greater then Check-In time....
-                    </mat-error>
-                  </div> -->
                   <div class="col s4"  *ngIf="activityData.activitydate">
                     <div class="control-field mt14">
                       <div class="cs-input">
@@ -104,19 +72,6 @@
                 
                 <div class="row">
                   <div class="col s4 pl0" *ngIf="activityData.activityInTime && activityData.activityOutTime">
-                    <!-- <div class="control-field">
-                      <mat-form-field class="cs-input">
-                        <mat-select placeholder="Select Location" name="locationId" #locationId="ngModel" [(ngModel)]="activityData.locationId" id="locationId" [ngClass]="{ 'is-invalid': f.submitted && locationId.invalid }" required>
-                          <mat-option value="1">agra</mat-option>
-                          <mat-option value="2">kanpur</mat-option>
-                          <mat-option value="3">delhi</mat-option>
-                          <mat-option value="4">faridabad</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                      <mat-error *ngIf="f.submitted && locationId.invalid" class="invalid-feedback">
-                        <mat-error *ngIf="locationId.errors.required">Location is required</mat-error>
-                      </mat-error>
-                    </div> -->
                     <div class="control-field">
                       <mat-form-field class="cs-input">
                           <textarea matInput placeholder="Location" name="location" #location="ngModel"  id="location"  [(ngModel)]="activityData.location" [ngClass]="{ 'is-invalid': f.submitted && location.invalid }" required ></textarea>

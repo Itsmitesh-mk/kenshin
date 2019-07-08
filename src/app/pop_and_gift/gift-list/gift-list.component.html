@@ -24,7 +24,7 @@
         <ul>
           <li (click)="isTabActive=1"><a [ngClass]="{'active': isTabActive==1}" >Pop & Gift</a></li>
           <li (click)="isTabActive=2; eVersionList()"><a [ngClass]="{'active': isTabActive==2}" >E-Version</a></li>
-          <!-- <li (click)="isTabActive=3"><a [ngClass]="{'active': isTabActive==3}">E-Version</a></li> -->
+          <li (click)="isTabActive=3; salesPromotionList()"><a [ngClass]="{'active': isTabActive==3}">Sales Promotion</a></li>
           <!-- <li (click)="downloadPriceList()"><a>Download Price List</a></li> -->
         </ul>
       </div>
@@ -164,6 +164,99 @@
         </div>
       </div>
 
+      <div *ngIf="isTabActive==3" class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table class="sno-border">
+                  <tr>
+                    <th class="w30">&nbsp;</th>
+                    <th class="w200">Date</th>
+                    <th>User Name</th>
+                    <th class="w170">Designation Name</th>
+                    <th class="w130">Travel Month</th>
+                    <th class="w100 text-center">Year</th>
+                    <th class="w130 text-right">Budget</th>
+                    <th class="w120">Status</th>
+                  </tr>
+                </table>
+              </div>
+              <!-- <div class="table-head bdrt">
+                <form>
+                  <table class="sno-border">
+                    <tr>
+                      <th class="w30">&nbsp;</th>
+                      <th class="w200">&nbsp;
+                      </th>
+                      <th *ngIf="forApprovel==2">
+                        <div class="th-search" >
+                          <input type="text" (input)="getTravelList(forApprovel,travelStatus)" name="createdByName" #createdByName="ngModel" [(ngModel)]="filterData.createdByName" placeholder="Search....">
+                          <a class="close-mat" matRipple  matTooltip="Clear"></a>
+                          
+                        </div>
+                      </th>
+                      <th  class="w170" *ngIf="forApprovel==2">&nbsp;
+                      </th>
+                      <th class="w130">
+                        <div class="th-search">
+                          <mat-select placeholder="Select" name="month" #month="ngModel" [(ngModel)]="filterData.month" >
+                            <mat-option  value={{i+1}} (click)="getTravelList(forApprovel,travelStatus)" *ngFor="let month of monthArray;let i=index">{{month}}</mat-option>
+                          </mat-select>
+                          
+                        </div>
+                      </th>
+                      <th class="w100">&nbsp;</th>
+                      <th class="w130">&nbsp;</th>
+                      <th class="w120">&nbsp;</th>
+                    </tr>
+                  </table>
+                </form>
+              </div> -->
+            </div>
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let list of salesPromotionData;let i=index">
+                    <td class="w30">{{i+1}}</td>
+                    <td class="w200">{{list.createdOn|date :'EEEE, MMMM d, y'}}</td>
+                    <td ><a class="link-btn" routerLink="/sales-promotion/{{list.travelPlanID}}" routerLinkActive="active" mat-button>{{list.userName}}</a></td>
+                    <td class="w170">
+                      <span >{{list.designationName}}</span>
+                    </td>
+                    <td class="w130">
+                      <span *ngIf="list.month==1" >January</span>
+                      <span *ngIf="list.month==2">February</span>
+                      <span *ngIf="list.month==3">March</span>
+                      <span *ngIf="list.month==4">April</span>
+                      <span *ngIf="list.month==5">May</span>
+                      <span *ngIf="list.month==6">June</span>
+                      <span *ngIf="list.month==7">July</span>
+                      <span *ngIf="list.month==8">August</span>
+                      <span *ngIf="list.month==9">September</span>
+                      <span *ngIf="list.month==10">October</span>
+                      <span *ngIf="list.month==11">November</span>
+                      <span *ngIf="list.month==12">December</span>
+                    </td>
+                    <td class="w100 text-center">{{list.year}}</td>
+                    <td class="w130 text-right">&#x20B9; {{list.budget}}</td>
+                    <td [ngClass]="{'pending':list.status==2||list.status==3,'approved':list.status==5,'reject':list.status==4||list.status==6,'draft':list.status==1}" class="w120">
+                      <span *ngIf="list.status==2||list.status==3" >PENDING</span>
+                      <span *ngIf="list.status==5" >APPROVED</span>
+                      <span *ngIf="list.status==4||list.status==6">REJECT</span>
+                      <span *ngIf="list.status==1" >DRAFT</span>                          
+                      <div class="action-btns">
+                        <a mat-button class="view" a class="link-btn" routerLink="/sales-promotion/{{list.travelPlanID}}" routerLinkActive="active" mat-button><i class="material-icons">remove_red_eye</i> View</a>
+                      </div>
+                    </td>
+                  </tr>
+                  
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
 

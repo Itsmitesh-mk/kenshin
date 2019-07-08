@@ -27,43 +27,6 @@
     </div>
     <form (ngSubmit)="f.form.valid && LocalConvenseExpense()" #f="ngForm" novalidate>
       <div class="cs-bill" >
-        <!-- <div class="row">
-          <div class="col s12">
-            <div class="sprate-box pt0">
-              <div class="cs-heading">
-                <h2>BASIC INFORMATION</h2>
-              </div>
-              <div class="from-fields">
-                <div class="row">
-                  <div class="col s4 pr0">
-                    <div class="control-field">
-                      <mat-form-field class="cs-input infix-bodr8">
-                        <input matInput placeholder="Purpose Of Visit" id="purposeOfVisit" type="number" name="purposeOfVisit" #purposeOfVisit="ngModel" [(ngModel)]="localConvense.purposeOfVisit"  [ngClass]="{'has-error' : purposeOfVisit.invalid }" required>
-                      </mat-form-field>
-                      <mat-error *ngIf="f.submitted && purposeOfVisit.invalid" class="invalid-feedback">
-                        <mat-error *ngIf="purposeOfVisit.errors.required">Purpose Of Visit required</mat-error>
-                      </mat-error>
-                    </div>
-                  </div>
-                  <div class="col s4">
-                      <div class="control-field">
-                        <mat-form-field class="cs-input infix-bodr8">
-                          <input matInput placeholder="ADVANCE AMOUNT" type="number" id="advanceAmount" name="advanceAmount" #advanceAmount="ngModel" [(ngModel)]="localConvense.advanceAmount"  [ngClass]="{'has-error' : advanceAmount.invalid }" required>
-                        </mat-form-field>
-                        <mat-error *ngIf="f3.submitted && advanceAmount.invalid" class="invalid-feedback">
-                          <mat-error *ngIf="advanceAmount.errors.required">Advance Amount is required</mat-error>
-                        </mat-error>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div>
-            </div>
-          </div>
-        </div>
-         -->
-        
         <div class="collaps flat-collaps mt15">
           <div class="collaps-area">
             <mat-accordion>
@@ -73,89 +36,6 @@
                     TRAVEL ENTITLEMENT
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-                <!-- <div class="inner-body">
-                  <div class="from-fields">
-                    <div class="row">
-                      <div class="col s3 pl0">
-                        <div class="control-field">
-                          <mat-form-field class="cs-input infix-bodr8">
-                            <input matInput [matDatepicker]="days" [max]='currentDate' readonly placeholder="Date Of Visit" name="visitDate" #visitDate="ngModel" [(ngModel)]="localHQExpense.visitDate" >
-                            <mat-datepicker-toggle matSuffix [for]="days"></mat-datepicker-toggle>
-                            <mat-datepicker #days></mat-datepicker>
-                          </mat-form-field>
-                        </div>
-                      </div>
-                      <div class="col s3 ">
-                        <div class="control-field">
-                          <mat-form-field class="cs-input infix-bodr8">
-                            <input matInput placeholder="From" name="from" #from="ngModel" [(ngModel)]="localHQExpense.from" >
-                          </mat-form-field>
-                        </div>
-                      </div>
-                      <div class="col s3 ">
-                        <div class="control-field">
-                          <mat-form-field class="cs-input infix-bodr8">
-                            <input matInput placeholder="To" name="to" #to="ngModel" [(ngModel)]="localHQExpense.to" >
-                          </mat-form-field>
-                        </div>
-                      </div>
-                      <div class="col s3 pr0">
-                        <div class="control-field">
-                          <mat-form-field class="cs-input infix-bodr8">
-                            <mat-select placeholder="Mode Of Travel" name="mode" #mode="ngModel" [(ngModel)]="localHQExpense.mode" >
-                              <mat-option value=1>BUS</mat-option>
-                              <mat-option value=2>TRAIN</mat-option>
-                              <mat-option value=3>AIRLINE</mat-option>
-                              <mat-option value=4>PRIVATEVEHICLE </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col s6 pl0">
-                        <div class="row">
-                          <div class="col s6 pl0">
-                            <div class="control-field">
-                              <mat-form-field class="cs-input infix-bodr8">
-                                <input matInput placeholder="KMs Covered" type="number" name="distanceKMS" #distanceKMS="ngModel" [(ngModel)]="localHQExpense.distanceKMS">
-                              </mat-form-field>
-                            </div>
-                          </div>
-                          <div class="col s6 pr0">
-                            <div class="control-field">
-                              <mat-form-field class="cs-input infix-bodr8">
-                                <input matInput placeholder="Amount" type="number" name="amount" #amount="ngModel" [(ngModel)]="localHQExpense.amount">
-                              </mat-form-field>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col s12 padding0">
-                          <div class="control-field">
-                            <mat-form-field class="cs-input infix-bodr8">
-                              <input matInput placeholder="Other Exp." type="number" name="otherExpense" #otherExpense="ngModel" [(ngModel)]="localHQExpense.otherExpense" >
-                            </mat-form-field>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div class="col s6 pr0">
-                        <div class="control-field">
-                          <mat-form-field class="cs-input infix-bodr8">
-                            <textarea matInput placeholder="Remark" class="h105" name="remarks" #remarks="ngModel" [(ngModel)]="localHQExpense.remarks"></textarea>
-                          </mat-form-field>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col s12 padding0 mt15">
-                    <div class="cs-btn text-right">
-                      <div class="in-btn">
-                        <button mat-raised-button color="accent" [disabled]="!localHQExpense.remarks || !localHQExpense.visitDate|| !localHQExpense.from || !localHQExpense.to ||!localHQExpense.mode ||!localHQExpense.otherExpense " (click)="addToLocalConvenseList()" type="button">Add To List</button>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
                 <div class="inner-body">
                     <div class="from-fields">
                       
@@ -192,7 +72,7 @@
                               <div class="control-field">
                                 <mat-form-field class="cs-input infix-bodr8">
                                   <mat-select placeholder="Type of Mode" name="modeType" #modeType="ngModel" [(ngModel)]="localHQExpense.modeType" >
-                                    <mat-option (click)="readonlyValue(localHQExpense.modeType)" value=1>SELF VEHICLE</mat-option>
+                                    <mat-option *ngIf="allowanceList.length!=0 && (allowanceList.selfCarPerKM!=0 ||allowanceList.selfBikePerKM!=0 )" (click)="readonlyValue(localHQExpense.modeType)" value=1>SELF VEHICLE</mat-option>
                                     <mat-option (click)="readonlyValue(localHQExpense.modeType)" value=2>PUBLIC TRANSPORT</mat-option>
                                   </mat-select>
                                 </mat-form-field>
@@ -270,47 +150,6 @@
           </div>
         </div>
         
-        
-        <!-- <div class="row mt15">
-          <div class="cs-table left-right-20">
-            <div class="table-head">
-              <table> 
-                <tr>
-                  <th class="w160">Date Of Visit</th>
-                  <th class="w110">From</th>
-                  <th class="w110">To</th>
-                  <th class="w150">Modal Of Travel</th>
-                  <th class="w130">KMs Covered</th>
-                  <th class="w110 text-right">Amount</th>
-                  <th class="w110 text-right">Other Exp.</th>
-                  <th>Remark</th>
-                </tr>
-              </table>
-            </div>
-            
-            <div class="table-container">
-              <div class="table-content">
-                <table>
-                  <tr *ngFor="let Localexpense of localConveyances">
-                    <td class="w160"> {{Localexpense.visitDate |date:'EEEE, MMMM d, y'}}</td>
-                    <td class="w110">{{Localexpense.from}}</td>
-                    <td class="w110">{{Localexpense.to}}</td>
-                    <td *ngIf="Localexpense.mode==1" class="w150">BUS</td>
-                    <td *ngIf="Localexpense.mode==2" class="w150">TRAIN</td>
-                    <td *ngIf="Localexpense.mode==3" class="w150">AIRLINE</td>
-                    <td *ngIf="Localexpense.mode==4" class="w150">PRIVATEVEHICLE</td>
-                    <td class="w130 ">{{Localexpense.distanceKMS}}</td>
-                    <td class="w110 text-right"> &#x20B9; {{Localexpense.amount}}</td>
-                    <td class="w130 text-right"> &#x20B9; {{Localexpense.otherExpense}}</td>
-                    <td>{{Localexpense.remarks}}</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-            
-          </div>
-        </div> -->
-        
         <div *ngIf="localConveyances.length!=0" class="row mt15">
             <div class="cs-table left-right-20">
               <div class="table-head">
@@ -335,15 +174,17 @@
                       <td class="w160"> {{Localexpense.visitDate |date:'EEEE, MMMM d, y'}}</td>
                       <td class="w110">{{Localexpense.from}}</td>
                       <td class="w110">{{Localexpense.to}}</td>
-                      <td *ngIf="Localexpense.modeType==1" class="w150">SELF</td>
-                      <td *ngIf="Localexpense.modeType==2"class="w150">PUBLIC TRANSPORT</td>
-                      <td *ngIf="Localexpense.mode==10" class="w150">AUTO</td>
-                      <td *ngIf="Localexpense.mode==1" class="w150">BUS</td>
-                      <td *ngIf="Localexpense.mode==6" class="w150">AC-TAXI</td>
-                      <td *ngIf="Localexpense.mode==7" class="w150">NON AC-TAXI</td>
-                      <td *ngIf="Localexpense.mode==5" class="w150">METRO</td>
-                      <td *ngIf="Localexpense.mode==9" class="w150">CAR</td>
-                      <td *ngIf="Localexpense.mode==8" class="w150">BIKE</td>
+                      <td class="w150">
+                          <span *ngIf="Localexpense.modeType==1">SELF</span>
+                          <span *ngIf="Localexpense.modeType==2">PUBLIC TRANSPORT</span>
+                          <span *ngIf="Localexpense.mode==10">AUTO</span>
+                          <span *ngIf="Localexpense.mode==1">BUS</span>
+                          <span *ngIf="Localexpense.mode==6">AC-TAXI</span>
+                          <span *ngIf="Localexpense.mode==7">NON AC-TAXI</span>
+                          <span *ngIf="Localexpense.mode==5">METRO</span>
+                          <span *ngIf="Localexpense.mode==9">CAR</span>
+                          <span *ngIf="Localexpense.mode==8">BIKE</span>
+                      </td>
                       <td class="w130 ">{{Localexpense.distanceKMS}}</td>
                       <td class="w110 text-right"> &#x20B9; {{Localexpense.amount}}</td>
                       <td class="w130 text-right"> &#x20B9; {{Localexpense.otherExpense}}</td>
@@ -365,7 +206,8 @@
                 <ul>
                   <li class="w110 pr10" *ngFor="let urlData of localExpense.documents;let i=index">
                     <label>
-                      <img src="{{api+urlData.documentId+'/'+'2'}}">
+                        <img *ngIf="urlData.extension=='.jpg'" src="{{api+urlData.documentId+'/'+'2'}}">
+                        <img *ngIf="urlData.extension=='.pdf'" src="assets/img/pdf.png">
                       <a (click)="deleteimg(urlData.documentId,urlData.fileName)" class="close"><i class="material-icons">delete_sweep</i></a>
                     </label>
                   </li>

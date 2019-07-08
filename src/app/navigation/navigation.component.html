@@ -65,43 +65,43 @@
                     <span class="nav-counter blue-count">{{service.counterArray.taskCount}}</span> 
                 </a>
             </li>
-            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][7].show) || (userType==2) || (userType==1))" >
+            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][7].show))" >
                 <a routerLink="/checkin-list" routerLinkActive="active">DVR<img src="assets/img/activity.svg" class="nav-icon h19"></a>
             </li>
-            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][8].show) || (userType==2))">
+            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][8].show))">
                 <a routerLink="/followup-list" routerLinkActive="active" >Follow Ups<img src="assets/img/folowup.svg" class="nav-icon h23">
                     <span class="nav-counter green-count">{{service.counterArray.followUpCount}}</span> 
                 </a>
             </li>
-            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][4].show) || (userType==2))">
-                <a routerLink="/list-travel" routerLinkActive="active" >Travel Plans <img src="assets/img/travel.svg" class="nav-icon h22"><span class="nav-counter green-count">{{service.counterArray.travelPlanCount}}</span></a>
+            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][4].show) )">
+                <a routerLink="/list-travel" routerLinkActive="active" >{{userRole==17?'Sales Promotion':'Travel Plans' }}<img src="assets/img/travel.svg" class="nav-icon h22"><span class="nav-counter green-count">{{service.counterArray.travelPlanCount}}</span></a>
             </li>
-            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][6].show) || (userType==2) || (userType==3))" >
+            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][6].show))" >
                 <a  routerLink="/concern-list" routerLinkActive="active" >Customer Concerns <img src="assets/img/concern.svg" class="nav-icon h23"> <span class="nav-counter orange-count">{{service.counterArray.concernCount}}</span></a>
             </li>
-            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][5].show) || (userType==2))">
+            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][5].show))">
                 <a routerLink="/expense-list" routerLinkActive="active" >Expenses <img src="assets/img/payment_icon.svg" class="nav-icon h23"><span class="nav-counter blue-count">{{service.counterArray.expenseCount}}</span></a>
             </li>
-            <li *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][12].show) || (userType==2))">
+            <li *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][12].show))">
                 <a routerLink="/pop-and-gift-distributor-list" routerLinkActive="active">
                     Pop & Gift Orders
                     <img src="assets/img/gift.svg" class="nav-icon h20">
                     <span class="nav-counter orange-count">{{service.counterArray.popOrderCount}}</span>
                 </a>
             </li>
-            <li *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][11].show) || (userType==2))">
+            <li *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][11].show))">
                 <a routerLink="/leave-list" routerLinkActive="active" >Leave Application<img src="assets/img/leave.svg" class="nav-icon  h20"></a>
             </li>
             
-            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][14].show) || (userType==2))">
+            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][22].show))">
                 <a routerLink="/vendor-list" routerLinkActive="active" >Vendor<img src="assets/img/vendor.svg" class="nav-icon  h20"></a>
             </li>
             
-            <li (click)="navBarModuleHandler()" >
+            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][14].show))" >
                 <a routerLink="/purchase-order-list" routerLinkActive="active" >Purchase Order<img src="assets/img/order_icon.svg" class="nav-icon  h24"></a>
             </li>
             
-            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][12].show) || (userType==2))">
+            <li (click)="navBarModuleHandler()" *ngIf="((user.data.role == 1 && user.data?.superAdmin) || (!user.data.superAdmin && accessModuleData['moduleAccesses'][12].show))">
                 <a routerLink="/scheme-list" routerLinkActive="active" >Schemes<img src="assets/img/scheme.svg" class="nav-icon  h23"></a>
             </li>
 

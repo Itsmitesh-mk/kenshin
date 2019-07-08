@@ -221,7 +221,8 @@
                       <ul>
                         <li class="w110 pr10" *ngFor="let urlData of misc_Expense.documents;let i=index">
                           <label>
-                            <img src="{{api+urlData.documentId+'/'+'2'}}">
+                              <img *ngIf="urlData.extension=='.jpg'" src="{{api+urlData.documentId+'/'+'2'}}">
+                              <img *ngIf="urlData.extension=='.pdf'" src="assets/img/pdf.png">
                             <a (click)="deleteimg(urlData.documentId,urlData.fileName)" class="close"><i class="material-icons">delete_sweep</i></a>
                           </label>
                         </li>

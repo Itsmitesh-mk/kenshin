@@ -152,6 +152,9 @@ import { QrCodeDetailComponent } from './vendor/qr-code-detail/qr-code-detail.co
 import { VendorUpdateComponent } from './vendor/vendor-update/vendor-update.component';
 import { EditmodelComponent } from './product/editmodel/editmodel.component';
 import { RemainingLeaveComponent } from './leave/remaining-leave/remaining-leave.component';
+import { PromotionListComponent } from './pop_and_gift/promotion-list/promotion-list.component';
+import { SalesPromotionComponent } from './pop_and_gift/sales-promotion/sales-promotion.component';
+import { UploadImgModalComponent } from './pop_and_gift/upload-img-modal/upload-img-modal.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -279,7 +282,10 @@ import { RemainingLeaveComponent } from './leave/remaining-leave/remaining-leave
     QrCodeDetailComponent,
     VendorUpdateComponent,
     EditmodelComponent,
-    RemainingLeaveComponent
+    RemainingLeaveComponent,
+    PromotionListComponent,
+    SalesPromotionComponent,
+    UploadImgModalComponent
     
     
   ],
@@ -337,7 +343,8 @@ import { RemainingLeaveComponent } from './leave/remaining-leave/remaining-leave
     ImageModalComponent,
     EditmodelComponent,
     RemainingLeaveComponent,
-    WalletDetailModalComponent
+    WalletDetailModalComponent,
+    UploadImgModalComponent
   ],
   
   providers: [

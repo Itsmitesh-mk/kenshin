@@ -84,6 +84,7 @@ import { VendorAddComponent } from './vendor/vendor-add/vendor-add.component';
 import { VendorListComponent } from './vendor/vendor-list/vendor-list.component';
 import { VendorDetailComponent } from './vendor/vendor-detail/vendor-detail.component';
 import { QrCodeDetailComponent } from './vendor/qr-code-detail/qr-code-detail.component';
+import { SalesPromotionComponent } from './pop_and_gift/sales-promotion/sales-promotion.component';
 
 const routes: Routes = [
   { path: "", component: LoginComponent, canActivate:[AuthGuardLog]},
@@ -169,6 +170,7 @@ const routes: Routes = [
   { path: "vendor-list", component: VendorListComponent, canActivate:[AuthGuard] },
   { path: "vendor-detail/:id", component: VendorDetailComponent, canActivate:[AuthGuard] },
   { path: "qr-code-detail", component: QrCodeDetailComponent, canActivate:[AuthGuard] },
+  { path: "sales-promotion/:id", component: SalesPromotionComponent, canActivate:[AuthGuard] },
   
 ];
 

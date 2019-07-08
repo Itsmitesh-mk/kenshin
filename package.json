@@ -32,6 +32,7 @@
     "jspdf": "^1.5.3",
     "luxon": "^1.15.0",
     "moment": "^2.24.0",
+    "ng-connection-service": "^1.0.4",
     "ng-multiselect-dropdown": "^0.2.3",
     "ng-pick-datetime": "^7.0.0",
     "ng2-select": "^2.0.0",

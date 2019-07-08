@@ -212,7 +212,12 @@ export class EditLocalExpenseComponent implements OnInit {
           this.loader=true;
           for(var i=0; i<this.selectedFile.length; i++)
           {
-            this.misc_Expense_Document.fileName = "image"+i+".jpg",this.selectedFile[i];
+            if(this.selectedFile[i].type == 'application/pdf') {
+              this.misc_Expense_Document['fileName'] = "document"+i+".pdf",this.selectedFile[i];
+            } else {
+              this.misc_Expense_Document['fileName'] = "document"+i+".jpg",this.selectedFile[i];
+            }
+            // this.misc_Expense_Document.fileName = "image"+i+".jpg",this.selectedFile[i];
           }
           console.log(this.misc_Expense_Document);
           let value=[];

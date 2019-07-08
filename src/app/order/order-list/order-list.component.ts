@@ -95,7 +95,7 @@ export class OrderListComponent implements OnInit {
     {
       // this.data.dealerStatus=2;
       this.getpendingorderList(2)
-
+      
       this.orderActive=false;
       this.cartActive=false;
       this.pendingActive=true;
@@ -147,6 +147,7 @@ export class OrderListComponent implements OnInit {
         
         this.orderlist = response['data'];
         this.finalOrderList=this.orderlist;
+        this.convertArrayToExcel();
       }
       if(response['status']=='Failed')
       {
@@ -163,7 +164,7 @@ export class OrderListComponent implements OnInit {
     // {
     //   value.networkId=this.userdata['distributerNetwork']['networkId'];
     //   value.userId=undefined
-      
+    
     // }
     // else
     // {
@@ -174,18 +175,18 @@ export class OrderListComponent implements OnInit {
     //   console.log(result);
     //   if(result['status']=='Success')
     //   {
-
+    
     //     for(let i=0;i<result['data'].length;i++)
     //     {
     //       const orderArray=this.orderlist.filter(row=>row.orderId!=result['data'][i]['orderId']);
-
+    
     //     }
-
+    
     //        this.finalOrderList=this.finalOrderList.concat(orderArray);
-
+    
     //     // this.pendingOrderQty=this.pendingOrderQty.concat(result['data']);
     //   }
-      
+    
     // })
   }
   
@@ -346,6 +347,44 @@ export class OrderListComponent implements OnInit {
     this.createdaDate='';
     this.data.createdOn=undefined
     this.order_list(0,1);
+  }
+  
+  dealerDetail:any={}
+  // orderDetail:any={}
+  xLXSArray:any=[];
+  convertArrayToExcel()
+  {
+   this.xLXSArray=[]; 
+    for(let i=0;i<this.orderlist.length;i++)
+    {
+      
+      for(let j=0;j<this.orderlist[i].orderDetail.length;j++)
+      {
+        this.xLXSArray.push({
+          
+          'Dist Name':(j==0?this.orderlist[i].establishment:''),
+          'Dist Code':(j==0?this.orderlist[i].networkCode:''),
+          'Created By':(j==0?this.orderlist[i].createdByName:''),
+          'Order date':(j==0?this.orderlist[i].createdOn:''),
+          'Order No.':(j==0?this.orderlist[i].orderNumber:''),
+          'Part Number':this.orderlist[i].orderDetail[j].partNumberCode,
+          'Product Name':this.orderlist[i].orderDetail[j].productName,
+          'OEM Code':this.orderlist[i].orderDetail[j].oem,
+          'Quantity':this.orderlist[i].orderDetail[j].quantity,
+          'Unit Price':this.orderlist[i].orderDetail[j].price,
+          'GST %':this.orderlist[i].orderDetail[j].gstPercentage,
+          'Amount':(j==0?this.orderlist[i].amount:''),
+          'Total Order Amount':(j==0?this.orderlist[i].totalAmount:''),
+          'Company Status':(this.orderlist[i].companyStatus==1?'Pending':(this.orderlist[i].companyStatus==2?'Approved':'Hold')),
+          'Distributor Status':(this.orderlist[i].dealerStatus==2?'Pending':(this.orderlist[i].dealerStatus==3?'Approved':'Reject'))
+        })
+      }
+    }
+  }
+  
+  exportAsXLSX():void {
+    console.log(this.xLXSArray);
+    this.db.exportAsExcelFile(this.xLXSArray, 'ORDER SHEET');
   }
   
 }
